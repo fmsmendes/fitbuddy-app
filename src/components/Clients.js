@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Search, Filter, ChevronDown, ChevronUp, Edit, Trash, Plus } from 'lucide-react';
+import { Search, Filter, ChevronDown, ChevronUp, Edit, Trash, Plus, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Clients = () => {
+  const navigate = useNavigate();
   const [clients, setClients] = useState([
     { id: 1, name: 'John Doe', email: 'john@example.com', phone: '(555) 123-4567', joinDate: '2023-01-15', lastSession: '2023-07-01', totalSessions: 15, status: 'Active', goals: ['Weight loss', 'Muscle gain'], notes: 'Prefers morning sessions' },
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '(555) 987-6543', joinDate: '2023-02-20', lastSession: '2023-06-28', totalSessions: 12, status: 'Active', goals: ['Flexibility', 'Endurance'], notes: 'Allergic to latex' },
@@ -11,6 +13,13 @@ const Clients = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [filterStatus, setFilterStatus] = useState('All');
+
+  const clientStats = {
+    totalClients: clients.length,
+    activeClients: clients.filter(client => client.status === 'Active').length,
+    inactiveClients: clients.filter(client => client.status === 'Inactive').length,
+    averageSessions: clients.reduce((sum, client) => sum + client.totalSessions, 0) / clients.length,
+  };
 
   const handleSort = (key) => {
     let direction = 'ascending';
@@ -42,7 +51,31 @@ const Clients = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Clients</h1>
+      <div className="flex items-center mb-6">
+        <button onClick={() => navigate('/trainer-dashboard')} className="mr-4">
+          <ArrowLeft size={24} />
+        </button>
+        <h1 className="text-3xl font-bold">Clients</h1>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-2">Total Clients</h2>
+          <p className="text-3xl font-bold text-orange-500">{clientStats.totalClients}</p>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-2">Active Clients</h2>
+          <p className="text-3xl font-bold text-green-500">{clientStats.activeClients}</p>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-2">Inactive Clients</h2>
+          <p className="text-3xl font-bold text-red-500">{clientStats.inactiveClients}</p>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-2">Avg Sessions</h2>
+          <p className="text-3xl font-bold text-blue-500">{clientStats.averageSessions.toFixed(1)}</p>
+        </div>
+      </div>
       
       <div className="mb-6 flex flex-wrap items-center justify-between">
         <div className="relative w-full md:w-64 mb-4 md:mb-0">
