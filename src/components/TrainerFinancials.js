@@ -176,11 +176,35 @@ const TrainerFinancials = () => {
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-lg shadow-md mb-8">
+      <div className="bg-white p-6 rounded-lg shadow-md mb-8">
         <h2 className="text-xl font-semibold mb-4">Payment Methods</h2>
-        <div className="flex items-center">
-          <CreditCard size={24} className="mr-2 text-gray-500" />
-          <span>Visa ending in 1234</span>
+        <div className="mb-4">
+          <h3 className="font-semibold mb-2">Current Payment Method</h3>
+          <div className="flex items-center bg-gray-100 p-3 rounded-lg">
+            <CreditCard size={24} className="mr-3 text-blue-500" />
+            <div>
+              <p className="font-medium">Visa ending in 1234</p>
+              <p className="text-sm text-gray-600">Expires 12/2025</p>
+            </div>
+          </div>
+        </div>
+        <div className="mb-4">
+          <h3 className="font-semibold mb-2">Add New Payment Method</h3>
+          <button className="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-600 transition-colors">
+            <Plus size={20} className="mr-2" />
+            Add New Card
+          </button>
+        </div>
+        <div>
+          <h3 className="font-semibold mb-2">Payment Settings</h3>
+          <div className="flex items-center justify-between mb-2">
+            <span>Auto-withdraw earnings</span>
+            <label className="switch">
+              <input type="checkbox" />
+              <span className="slider round"></span>
+            </label>
+          </div>
+          <p className="text-sm text-gray-600">Automatically withdraw earnings to your bank account when they reach $100</p>
         </div>
       </div>
 
