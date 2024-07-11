@@ -190,10 +190,16 @@ const TrainerFinancials = () => {
         </div>
         <div className="mb-4">
           <h3 className="font-semibold mb-2">Add New Payment Method</h3>
-          <button className="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-600 transition-colors">
-            <Plus size={20} className="mr-2" />
-            Add New Card
-          </button>
+          <div className="flex space-x-4">
+            <button onClick={() => navigate('/add-card')} className="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-green-600 transition-colors">
+              <Plus size={20} className="mr-2" />
+              Add New Card
+            </button>
+            <button onClick={() => navigate('/add-bank-account')} className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-blue-600 transition-colors">
+              <Plus size={20} className="mr-2" />
+              Add Bank Account
+            </button>
+          </div>
         </div>
         <div>
           <h3 className="font-semibold mb-2">Payment Settings</h3>

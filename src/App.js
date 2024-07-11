@@ -29,6 +29,8 @@ import TrainerChats from './components/TrainerChats';
 import CreateClass from './components/CreateClass';
 import TrainerSettings from './components/TrainerSettings'; 
 import Clients from './components/Clients';
+import AddCard from './components/AddCard';
+import AddBankAccount from './components/AddBankAccount';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -382,6 +384,16 @@ function App() {
         <Route path="/clients" element={
           isAuthenticated && currentUser.role === 'trainer' ?
           <Clients /> :
+          <Navigate to="/login" />
+        } />
+        <Route path="/add-card" element={
+          isAuthenticated && currentUser.role === 'trainer' ?
+          <AddCard /> :
+          <Navigate to="/login" />
+        } />
+        <Route path="/add-bank-account" element={
+          isAuthenticated && currentUser.role === 'trainer' ?
+          <AddBankAccount /> :
           <Navigate to="/login" />
         } />
       </Routes>
