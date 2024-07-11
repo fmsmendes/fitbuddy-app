@@ -5,6 +5,7 @@ import {
   Edit, Check, X, TrendingUp, Activity, Target, Globe 
 } from 'lucide-react';
 import TrainerNavigation from './TrainerNavigation';
+import Navigation from './Navigation';
 
 const TrainerProfile = ({ trainer, currentUser }) => {
   const navigate = useNavigate();
@@ -261,7 +262,11 @@ const TrainerProfile = ({ trainer, currentUser }) => {
         )}
       </div>
 
-      <TrainerNavigation activeTab="profile" />
+      {currentUser.role === 'trainer' ? (
+        <TrainerNavigation activeTab="profile" />
+      ) : (
+        <Navigation activeTab="trainers" />
+      )}
     </div>
   );
 };
