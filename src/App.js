@@ -379,6 +379,11 @@ function App() {
           <TrainerChats trainer={currentUser} /> :
           <Navigate to="/login" />
         } />
+        <Route path="/clients" element={
+          isAuthenticated && currentUser.role === 'trainer' ?
+          <Clients /> :
+          <Navigate to="/login" />
+        } />
       </Routes>
     </Router>
   );
