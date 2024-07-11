@@ -53,7 +53,7 @@ const TrainerDashboard = ({ trainer, setIsAuthenticated }) => {
   const sidebarItems = [
     { icon: <Home size={20} />, label: 'Dashboard', path: '/trainer-dashboard' },
     { icon: <Calendar size={20} />, label: 'Classes', path: '/trainer-classes' },
-    { icon: <Users size={20} />, label: 'Clients', path: '/trainer-clients' },
+    { icon: <Users size={20} />, label: 'Clients', path: '/clients' },
     { icon: <MessageSquare size={20} />, label: 'Messages', path: '/trainer-messages' },
     { icon: <DollarSign size={20} />, label: 'Financials', path: '/trainer-financials' },
     { icon: <Settings size={20} />, label: 'Settings', path: '/trainer-settings' },
