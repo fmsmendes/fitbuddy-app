@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Filter, ChevronDown, ChevronUp, Edit, Trash, Plus, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import AddClient from './AddClient';
 
 const Clients = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Clients = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [filterStatus, setFilterStatus] = useState('All');
+  const [showAddClient, setShowAddClient] = useState(false);
 
   const clientStats = {
     totalClients: clients.length,
@@ -48,6 +50,15 @@ const Clients = () => {
   const handleDeleteClient = (id) => {
     setClients(clients.filter(client => client.id !== id));
   };
+
+  const handleAddClient = (newClient) => {
+    setClients([...clients, { ...newClient, id: clients.length + 1, joinDate: new Date().toISOString().split('T')[0], status: 'Active', totalSessions: 0 }]);
+    setShowAddClient(false);
+  };
+
+  if (showAddClient) {
+    return <AddClient onAddClient={handleAddClient} />;
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -161,7 +172,10 @@ const Clients = () => {
         </table>
       </div>
 
-      <button className="mt-6 bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-orange-600 transition-colors">
+      <button 
+        className="mt-6 bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-orange-600 transition-colors"
+        onClick={() => setShowAddClient(true)}
+      >
         <Plus size={20} className="mr-2" />
         Add New Client
       </button>
