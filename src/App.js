@@ -28,6 +28,7 @@ import TrainerFinancials from './components/TrainerFinancials';
 import TrainerChats from './components/TrainerChats';
 import CreateClass from './components/CreateClass';
 import TrainerSettings from './components/TrainerSettings'; 
+import Clients from './components/Clients';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
