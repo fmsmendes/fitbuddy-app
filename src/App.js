@@ -198,10 +198,12 @@ function App() {
   }
 
   function TrainerProfileWrapper({ trainers, currentUser, isViewerTrainer }) {
+    const { id } = useParams();
+  
     if (!currentUser) {
       return <Navigate to="/login" />;
     }
-    const { id } = useParams();
+  
     const trainer = trainers.find(t => t.id === parseInt(id));
     return <TrainerProfile 
       trainer={trainer} 
