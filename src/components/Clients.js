@@ -57,7 +57,7 @@ const Clients = () => {
   };
 
   if (showAddClient) {
-    return <AddClient onAddClient={handleAddClient} />;
+    return <AddClient onAddClient={handleAddClient} onCancel={() => setShowAddClient(false)} />;
   }
 
   return (

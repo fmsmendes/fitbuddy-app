@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, User, Mail, Phone, Calendar, Target, Clipboard, Save } from 'lucide-react';
 
-const AddClient = ({ onAddClient }) => {
-  const navigate = useNavigate();
+const AddClient = ({ onAddClient, onCancel }) => {
   const [clientDetails, setClientDetails] = useState({
     name: '',
     email: '',
@@ -43,7 +41,7 @@ const AddClient = ({ onAddClient }) => {
   return (
     <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <div className="flex items-center mb-6">
-        <button onClick={() => navigate('/clients')} className="mr-4">
+        <button onClick={onCancel} className="mr-4">
           <ArrowLeft size={24} />
         </button>
         <h1 className="text-2xl font-semibold">Add New Client</h1>
