@@ -264,6 +264,23 @@ const TrainerProfile = ({ trainer, currentUser }) => {
         )}
       </div>
 
+      {!isOwnProfile && (
+        <div className="mt-8 flex justify-center space-x-4">
+          <button
+            onClick={() => navigate(`/trainer-classes/${trainer.id}`)}
+            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            View Available Classes
+          </button>
+          <button
+            onClick={() => navigate(`/book-session/${trainer.id}`)}
+            className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors"
+          >
+            Book a Session
+          </button>
+        </div>
+      )}
+
       {currentUser.role === 'trainer' ? (
         <TrainerNavigation activeTab="profile" />
       ) : (
