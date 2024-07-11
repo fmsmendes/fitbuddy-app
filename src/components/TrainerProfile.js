@@ -105,6 +105,22 @@ const TrainerProfile = ({ trainer, currentUser }) => {
               <span className="font-semibold">{trainer.rating}</span>
               <span className="text-gray-600 ml-1">({trainer.reviews} reviews)</span>
             </div>
+            {!isOwnProfile && (
+              <div className="mt-4 flex space-x-4">
+                <button
+                  onClick={() => navigate(`/trainer-classes/${trainer.id}`)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm"
+                >
+                  View Available Classes
+                </button>
+                <button
+                  onClick={() => navigate(`/book-session/${trainer.id}`)}
+                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-sm"
+                >
+                  Book a Session
+                </button>
+              </div>
+            )}
           </div>
         </div>
         
@@ -263,23 +279,6 @@ const TrainerProfile = ({ trainer, currentUser }) => {
           </div>
         )}
       </div>
-
-      {!isOwnProfile && (
-        <div className="mt-8 flex justify-center space-x-4">
-          <button
-            onClick={() => navigate(`/trainer-classes/${trainer.id}`)}
-            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            View Available Classes
-          </button>
-          <button
-            onClick={() => navigate(`/book-session/${trainer.id}`)}
-            className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors"
-          >
-            Book a Session
-          </button>
-        </div>
-      )}
 
       {currentUser.role === 'trainer' ? (
         <TrainerNavigation activeTab="profile" />
