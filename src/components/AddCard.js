@@ -26,7 +26,7 @@ const AddCard = () => {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <div className="flex items-center mb-6">
-        <button onClick={() => navigate('/trainer-financials')} className="mr-4">
+        <button onClick={() => navigate(-1)} className="mr-4">
           <ArrowLeft size={24} />
         </button>
         <h1 className="text-2xl font-semibold">Add New Card</h1>
