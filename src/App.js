@@ -235,7 +235,7 @@ function App() {
       <TrainerProfileWrapper 
         trainers={trainers} 
         currentUser={currentUser}
-        isViewerTrainer={currentUser.role === 'trainer'}
+        isViewerTrainer={false}
       />
     ) : (
       <Navigate to="/login" />
