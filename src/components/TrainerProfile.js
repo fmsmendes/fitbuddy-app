@@ -210,25 +210,27 @@ const TrainerProfile = ({ trainer, currentUser }) => {
           </div>
         </div>
 
-        <div className="p-8 border-t border-gray-200">
-          <h2 className="text-2xl font-semibold mb-4">Trainer Stats</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {renderStatCard(<Users className="text-blue-500" size={24} />, "Total Clients", trainer.stats?.totalClients)}
-            {renderStatCard(<Users className="text-green-500" size={24} />, "Active Clients", trainer.stats?.activeClients)}
-            {renderStatCard(<Activity className="text-purple-500" size={24} />, "Classes Completed", trainer.stats?.classesCompleted)}
-            {renderStatCard(<Globe className="text-indigo-500" size={24} />, "Online Sessions", trainer.stats?.onlineSessionsCompleted)}
-            {renderStatCard(<MapPin className="text-red-500" size={24} />, "In-Person Sessions", trainer.stats?.inPersonSessionsCompleted)}
-            {renderStatCard(<Clock className="text-yellow-500" size={24} />, "Total Hours Worked", trainer.stats?.totalHoursWorked)}
-            {renderStatCard(<Clock className="text-pink-500" size={24} />, "Avg Session Duration", trainer.stats?.avgSessionDuration, " min")}
-            {renderStatCard(<Users className="text-teal-500" size={24} />, "Client Retention Rate", trainer.stats?.clientRetentionRate, "%")}
-            {renderStatCard(<Target className="text-orange-500" size={24} />, "Client Goals Achieved", trainer.stats?.clientGoalsAchieved, "%")}
-            {renderStatCard(<Star className="text-yellow-500" size={24} />, "Top Class", trainer.stats?.topPerformingClass)}
-            {renderStatCard(<DollarSign className="text-green-500" size={24} />, "Monthly Earnings", trainer.stats?.monthlyEarnings, "$")}
-            {renderStatCard(<DollarSign className="text-blue-500" size={24} />, "YTD Earnings", trainer.stats?.yearToDateEarnings, "$")}
-            {renderStatCard(<Calendar className="text-purple-500" size={24} />, "Upcoming Sessions", trainer.stats?.upcomingSessions)}
-            {renderStatCard(<TrendingUp className="text-red-500" size={24} />, "Last Month Growth", trainer.stats?.lastMonthGrowth, "%")}
+        {isOwnProfile && (
+          <div className="p-8 border-t border-gray-200">
+            <h2 className="text-2xl font-semibold mb-4">Trainer Stats</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {renderStatCard(<Users className="text-blue-500" size={24} />, "Total Clients", trainer.stats?.totalClients)}
+              {renderStatCard(<Users className="text-green-500" size={24} />, "Active Clients", trainer.stats?.activeClients)}
+              {renderStatCard(<Activity className="text-purple-500" size={24} />, "Classes Completed", trainer.stats?.classesCompleted)}
+              {renderStatCard(<Globe className="text-indigo-500" size={24} />, "Online Sessions", trainer.stats?.onlineSessionsCompleted)}
+              {renderStatCard(<MapPin className="text-red-500" size={24} />, "In-Person Sessions", trainer.stats?.inPersonSessionsCompleted)}
+              {renderStatCard(<Clock className="text-yellow-500" size={24} />, "Total Hours Worked", trainer.stats?.totalHoursWorked)}
+              {renderStatCard(<Clock className="text-pink-500" size={24} />, "Avg Session Duration", trainer.stats?.avgSessionDuration, " min")}
+              {renderStatCard(<Users className="text-teal-500" size={24} />, "Client Retention Rate", trainer.stats?.clientRetentionRate, "%")}
+              {renderStatCard(<Target className="text-orange-500" size={24} />, "Client Goals Achieved", trainer.stats?.clientGoalsAchieved, "%")}
+              {renderStatCard(<Star className="text-yellow-500" size={24} />, "Top Class", trainer.stats?.topPerformingClass)}
+              {renderStatCard(<DollarSign className="text-green-500" size={24} />, "Monthly Earnings", trainer.stats?.monthlyEarnings, "$")}
+              {renderStatCard(<DollarSign className="text-blue-500" size={24} />, "YTD Earnings", trainer.stats?.yearToDateEarnings, "$")}
+              {renderStatCard(<Calendar className="text-purple-500" size={24} />, "Upcoming Sessions", trainer.stats?.upcomingSessions)}
+              {renderStatCard(<TrendingUp className="text-red-500" size={24} />, "Last Month Growth", trainer.stats?.lastMonthGrowth, "%")}
+            </div>
           </div>
-        </div>
+        )}
 
         {isOwnProfile && (
           <div className="p-8 border-t border-gray-200">
