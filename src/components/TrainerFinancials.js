@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, DollarSign, TrendingUp, Calendar, Users, ChevronDown, ChevronUp, Download, CreditCard, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import TrainerNavigation from './TrainerNavigation';
 
