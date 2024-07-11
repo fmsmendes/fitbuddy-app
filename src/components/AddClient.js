@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, User, Mail, Phone, Calendar, Target, Clipboard, Save } from 'lucide-react';
 
 const AddClient = ({ onAddClient, onCancel }) => {
+  const navigate = useNavigate();
   const [clientDetails, setClientDetails] = useState({
     name: '',
     email: '',
