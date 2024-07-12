@@ -349,7 +349,11 @@ function App() {
           isAuthenticated ? <MyBookings bookings={bookings} /> : <Navigate to="/login" />
         } />
         <Route path="/public-profile/:id" element={
-          isAuthenticated ? <PublicProfile /> : <Navigate to="/login" />
+          isAuthenticated ? (
+            <PublicProfile />
+          ) : (
+            <Navigate to="/login" />
+          )
         } />
         <Route path="/membership" element={
           isAuthenticated ? <Membership currentPlan={currentPlan} availablePlans={availablePlans} /> : <Navigate to="/login" />
