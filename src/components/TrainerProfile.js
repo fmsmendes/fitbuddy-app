@@ -120,13 +120,13 @@ const TrainerProfile = ({ trainer, currentUser }) => {
             {!isOwnProfile && (
               <div className="mt-4 flex space-x-4">
                 <button
-                  onClick={() => navigate(`/trainer-classes/${trainer.id}`)}
+                  onClick={() => navigate(`/trainer/${trainer.id}/classes`)}
                   className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm"
                 >
                   View Available Classes
                 </button>
                 <button
-                  onClick={() => navigate(`/book-session/${trainer.id}`)}
+                  onClick={() => navigate(`/trainer/${trainer.id}/book-session`)}
                   className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-sm"
                 >
                   Book a Session
