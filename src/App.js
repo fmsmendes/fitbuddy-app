@@ -348,13 +348,16 @@ function App() {
         <Route path="/my-bookings" element={
           isAuthenticated ? <MyBookings bookings={bookings} /> : <Navigate to="/login" />
         } />
-        <Route path="/public-profile/:id" element={
-          isAuthenticated ? (
-            <PublicProfile />
-          ) : (
-            <Navigate to="/login" />
-          )
-        } />
+        <Route 
+          path="/public-profile/:id" 
+          element={
+            isAuthenticated ? (
+              <PublicProfile buddies={buddies} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          } 
+        />
         <Route path="/membership" element={
           isAuthenticated ? <Membership currentPlan={currentPlan} availablePlans={availablePlans} /> : <Navigate to="/login" />
         } />

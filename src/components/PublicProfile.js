@@ -1,48 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { User, MapPin, Calendar, Star, Heart, Target } from 'lucide-react';
 
-const PublicProfile = () => {
+const PublicProfile = ({ buddies }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    console.log(`Fetching data for user with id: ${id}`);
-    // Simulating an API call
-    setTimeout(() => {
-      const fetchedUserData = {
-        id: id,
-        name: 'John Doe',
-        image: 'https://via.placeholder.com/150',
-        fitnessLevel: 'Intermediate',
-        rating: 4.5,
-        gender: 'Male',
-        age: 28,
-        location: 'New York, NY',
-        joinDate: 'January 2023',
-        interests: ['Running', 'Yoga', 'Weight Training'],
-        availability: ['Weekday Evenings', 'Weekend Mornings'],
-        fitnessGoals: ['Improve endurance', 'Build muscle'],
-        bio: 'Fitness enthusiast looking for workout buddies!',
-      };
-      setUserData(fetchedUserData);
-      setLoading(false);
-    }, 1000);
-  }, [id]);
-
-  if (loading) {
-    return <div>Loading user data...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  
+  const userData = buddies.find(buddy => buddy.id === parseInt(id));
 
   if (!userData) {
-    return <div>No user data found</div>;
+    return <div>No user data found for id: {id}</div>;
   }
 
   const renderRating = (rating) => {
