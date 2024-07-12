@@ -35,10 +35,6 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
     return <div>Loading user data...</div>;
   }
 
-  if (!userData) {
-    return <div>Loading user data...</div>;
-  }
-
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -100,30 +96,42 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
               <div>
                 <h3 className="font-semibold mb-2">Interests</h3>
                 <div className="flex flex-wrap">
-                  {userData.interests && userData.interests.map((interest, index) => (
-                    <span key={index} className="bg-orange-100 text-orange-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
-                      {interest}
-                    </span>
-                  ))}
+                  {userData.interests && userData.interests.length > 0 ? (
+                    userData.interests.map((interest, index) => (
+                      <span key={index} className="bg-orange-100 text-orange-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
+                        {interest}
+                      </span>
+                    ))
+                  ) : (
+                    <span>No interests specified</span>
+                  )}
                 </div>
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Availability</h3>
                 <div className="flex flex-wrap">
-                  {userData.availability && userData.availability.map((time, index) => (
-                    <span key={index} className="bg-green-100 text-green-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
-                      {time}
-                    </span>
-                  ))}
+                  {userData.availability && userData.availability.length > 0 ? (
+                    userData.availability.map((time, index) => (
+                      <span key={index} className="bg-green-100 text-green-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
+                        {time}
+                      </span>
+                    ))
+                  ) : (
+                    <span>No availability specified</span>
+                  )}
                 </div>
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Fitness Goals</h3>
-                <ul className="list-disc list-inside">
-                  {userData.fitnessGoals && userData.fitnessGoals.map((goal, index) => (
-                    <li key={index} className="text-gray-600">{goal}</li>
-                  ))}
-                </ul>
+                {userData.fitnessGoals && userData.fitnessGoals.length > 0 ? (
+                  <ul className="list-disc list-inside">
+                    {userData.fitnessGoals.map((goal, index) => (
+                      <li key={index} className="text-gray-600">{goal}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <span>No fitness goals specified</span>
+                )}
               </div>
             </div>
           )}
