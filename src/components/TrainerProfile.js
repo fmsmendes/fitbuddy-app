@@ -121,6 +121,14 @@ const TrainerProfile = ({ trainer, currentUser }) => {
                 </button>
               </div>
             )}
+            <div className="mt-4">
+              <button
+                onClick={() => navigate('/trainer-dashboard')}
+                className="text-orange-500 hover:text-orange-600 transition-colors text-sm"
+              >
+                Back to Dashboard
+              </button>
+            </div>
           </div>
         </div>
         
