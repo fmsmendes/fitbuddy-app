@@ -60,6 +60,23 @@ const BookSession = ({ trainer }) => {
               </div>
             </div>
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Select Session Type</label>
+              <div className="flex flex-wrap gap-2">
+                {sessionTypes.map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => setSelectedType(type)}
+                    className={`flex items-center px-3 py-2 rounded-lg ${
+                      selectedType === type ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
+                    <Activity size={16} className="mr-2" />
+                    {type}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Select Time</label>
               <div className="flex flex-wrap gap-2">
                 {availableTimes.map((time) => (
