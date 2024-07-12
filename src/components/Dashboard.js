@@ -79,10 +79,10 @@ const toggleFavoriteTrainer = (trainerId) => {
         </div>
       </div>
       <button 
-        onClick={() => navigate(`/buddy/${buddy.id}`)}
+        onClick={() => navigate(`/public-profile/${buddy.id}`)}
         className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors"
       >
-        Connect
+        View Profile
       </button>
     </div>
   );
