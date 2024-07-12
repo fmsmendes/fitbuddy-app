@@ -358,6 +358,7 @@ function App() {
             )
           } 
         />
+        {console.log('Buddies data in App:', buddies)}
         <Route path="/membership" element={
           isAuthenticated ? <Membership currentPlan={currentPlan} availablePlans={availablePlans} /> : <Navigate to="/login" />
         } />

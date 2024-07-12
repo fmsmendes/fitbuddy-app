@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { User, MapPin, Calendar, Star, Heart, Target } from 'lucide-react';
 
@@ -6,9 +6,18 @@ const PublicProfile = ({ buddies }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   
+  useEffect(() => {
+    console.log('PublicProfile component rendered');
+    console.log('ID from params:', id);
+    console.log('Buddies:', buddies);
+  }, [id, buddies]);
+
   const userData = buddies.find(buddy => buddy.id === parseInt(id));
 
+  console.log('User data found:', userData);
+
   if (!userData) {
+    console.log('No user data found for id:', id);
     return <div>No user data found for id: {id}</div>;
   }
 
