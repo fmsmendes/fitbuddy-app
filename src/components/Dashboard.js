@@ -241,7 +241,7 @@ const toggleFavoriteTrainer = (trainerId) => {
         </section>
       </main>
 
-      <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Navigation />
       <UserMenu isOpen={isUserMenuOpen} onClose={() => setIsUserMenuOpen(false)} />
     </div>
 
