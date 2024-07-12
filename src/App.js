@@ -32,6 +32,7 @@ import Clients from './components/Clients';
 import AddCard from './components/AddCard';
 import AddBankAccount from './components/AddBankAccount';
 import AddClient from './components/AddClient';
+import BookSession from './components/BookSession';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
