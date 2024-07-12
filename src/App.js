@@ -399,7 +399,7 @@ function App() {
           <Navigate to="/login" />
         } />
         <Route path="/trainer/:id/classes" element={
-          isAuthenticated ? <TrainerClasses /> : <Navigate to="/login" />
+          isAuthenticated ? <TrainerClasses isTrainer={currentUser.role === 'trainer'} /> : <Navigate to="/login" />
         } />
         <Route path="/trainer/:id/book-session" element={
           isAuthenticated ? <BookSession /> : <Navigate to="/login" />

@@ -19,7 +19,7 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-const TrainerClasses = () => {
+const TrainerClasses = ({ isTrainer = false }) => {
   const navigate = useNavigate();
   const [classes, setClasses] = useState([
     { id: 1, title: 'HIIT Workout', start: new Date(2024, 6, 15, 10, 0), end: new Date(2024, 6, 15, 11, 0), participants: 12, maxParticipants: 15 },
@@ -28,10 +28,6 @@ const TrainerClasses = () => {
   ]);
   const [view, setView] = useState('week');
   const [date, setDate] = useState(new Date());
-
-  const handleCreateClass = () => {
-    navigate('/create-class');
-  };
 
   const handleSelectEvent = useCallback((event) => {
     alert(`Selected class: ${event.title}`);
@@ -57,29 +53,31 @@ const TrainerClasses = () => {
     <div className="max-w-7xl mx-auto p-4 pb-16">
       <h1 className="text-2xl font-semibold mb-6">Your Classes</h1>
       
-      <div className="mb-6 flex justify-between items-center">
-        <div>
-          <button
-            className={`mr-2 px-4 py-2 rounded-lg ${view === 'week' ? 'bg-orange-500 text-white' : 'bg-gray-200'}`}
-            onClick={() => setView('week')}
+      {isTrainer && (
+        <div className="mb-6 flex justify-between items-center">
+          <div>
+            <button
+              className={`mr-2 px-4 py-2 rounded-lg ${view === 'week' ? 'bg-orange-500 text-white' : 'bg-gray-200'}`}
+              onClick={() => setView('week')}
+            >
+              Week
+            </button>
+            <button
+              className={`px-4 py-2 rounded-lg ${view === 'month' ? 'bg-orange-500 text-white' : 'bg-gray-200'}`}
+              onClick={() => setView('month')}
+            >
+              Month
+            </button>
+          </div>
+          <button 
+            onClick={() => navigate('/create-class')}
+            className="bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-orange-600 transition-colors"
           >
-            Week
-          </button>
-          <button
-            className={`px-4 py-2 rounded-lg ${view === 'month' ? 'bg-orange-500 text-white' : 'bg-gray-200'}`}
-            onClick={() => setView('month')}
-          >
-            Month
+            <Plus size={20} className="mr-2" />
+            Create New Class
           </button>
         </div>
-        <button 
-          onClick={handleCreateClass}
-          className="bg-orange-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-orange-600 transition-colors"
-        >
-          <Plus size={20} className="mr-2" />
-          Create New Class
-        </button>
-      </div>
+      )}
 
       <div className="bg-white p-4 rounded-lg shadow-md mb-8">
         <div className="flex justify-between items-center mb-4">
@@ -127,7 +125,7 @@ const TrainerClasses = () => {
         ))}
       </div>
 
-      <TrainerNavigation activeTab="classes" />
+      {isTrainer && <TrainerNavigation activeTab="classes" />}
     </div>
   );
 };
