@@ -199,11 +199,6 @@ function App() {
 
   function TrainerProfileWrapper({ trainers, currentUser, isViewerTrainer }) {
     const { id } = useParams();
-  
-    if (!currentUser) {
-      return <Navigate to="/login" />;
-    }
-  
     const trainer = trainers.find(t => t.id === parseInt(id));
     return <TrainerProfile 
       trainer={trainer} 
@@ -236,18 +231,17 @@ function App() {
           ) : <Navigate to="/login" />
         } />
         <Route path="/trainer/:id" 
-          element={
-            isAuthenticated && currentUser ? (
-              <TrainerProfileWrapper 
-                trainers={trainers} 
-                currentUser={currentUser}
-                isViewerTrainer={false}
-              />
-            ) : (
-              <Navigate to="/login" />
-            )
-          } 
-        />
+        element={isAuthenticated ? (
+      <TrainerProfileWrapper 
+        trainers={trainers} 
+        currentUser={currentUser}
+        isViewerTrainer={currentUser.role === 'trainer'}
+      />
+    ) : (
+      <Navigate to="/login" />
+    )
+  } 
+/>
         <Route 
           path="/trainer-profile" 
           element={
@@ -348,16 +342,9 @@ function App() {
         <Route path="/my-bookings" element={
           isAuthenticated ? <MyBookings bookings={bookings} /> : <Navigate to="/login" />
         } />
-        <Route 
-          path="/public-profile/:id" 
-          element={
-            isAuthenticated ? (
-              <PublicProfile buddies={buddies} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          } 
-        />
+        <Route path="/public-profile" element={
+          isAuthenticated ? <PublicProfile user={currentUser} /> : <Navigate to="/login" />
+        } />
         <Route path="/membership" element={
           isAuthenticated ? <Membership currentPlan={currentPlan} availablePlans={availablePlans} /> : <Navigate to="/login" />
         } />
