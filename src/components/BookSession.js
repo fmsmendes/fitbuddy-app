@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, Clock, MapPin } from 'lucide-react';
+import { Calendar, Clock, MapPin, Activity } from 'lucide-react';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 const BookSession = ({ trainer }) => {
   const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedType, setSelectedType] = useState('');
 
-  const availableDates = ['2024-07-15', '2024-07-16', '2024-07-17', '2024-07-18', '2024-07-19'];
   const availableTimes = ['9:00 AM', '11:00 AM', '2:00 PM', '4:00 PM', '6:00 PM'];
   const locations = ['City Gym', 'Park', 'Online'];
+  const sessionTypes = ['One-on-One Training', 'Group Class', 'Consultation', 'Specialized Workshop'];
 
   const handleBookSession = () => {
-    // Here you would typically send the booking information to your backend
-    console.log('Booking session:', { date: selectedDate, time: selectedTime, location: selectedLocation });
+    console.log('Booking session:', { date: selectedDate, time: selectedTime, location: selectedLocation, type: selectedType });
     alert('Session booked successfully!');
     navigate(-1);
   };
@@ -32,17 +34,27 @@ const BookSession = ({ trainer }) => {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Select Date</label>
+              <DatePicker
+                selected={selectedDate}
+                onChange={date => setSelectedDate(date)}
+                minDate={new Date()}
+                className="w-full p-2 border rounded-lg"
+                dateFormat="MMMM d, yyyy"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Select Session Type</label>
               <div className="flex flex-wrap gap-2">
-                {availableDates.map((date) => (
+                {sessionTypes.map((type) => (
                   <button
-                    key={date}
-                    onClick={() => setSelectedDate(date)}
+                    key={type}
+                    onClick={() => setSelectedType(type)}
                     className={`flex items-center px-3 py-2 rounded-lg ${
-                      selectedDate === date ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-800'
+                      selectedType === type ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-800'
                     }`}
                   >
-                    <Calendar size={16} className="mr-2" />
-                    {date}
+                    <Activity size={16} className="mr-2" />
+                    {type}
                   </button>
                 ))}
               </div>
@@ -85,7 +97,7 @@ const BookSession = ({ trainer }) => {
           <div className="mt-8">
             <button
               onClick={handleBookSession}
-              disabled={!selectedDate || !selectedTime || !selectedLocation}
+              disabled={!selectedDate || !selectedTime || !selectedLocation || !selectedType}
               className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
               Book Session
