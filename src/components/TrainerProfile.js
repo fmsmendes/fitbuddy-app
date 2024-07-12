@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   MapPin, Star, Award, Clock, Calendar, DollarSign, Users, 
-  Edit, Check, X, TrendingUp, Activity, Target, Globe 
+  Edit, Check, X, TrendingUp, Activity, Target, Globe, Heart
 } from 'lucide-react';
 import TrainerNavigation from './TrainerNavigation';
 import Navigation from './Navigation';
