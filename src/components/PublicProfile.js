@@ -1,24 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { User, MapPin, Calendar, Star, Heart, Target } from 'lucide-react';
 
 const PublicProfile = ({ buddies }) => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
   
   useEffect(() => {
     console.log('PublicProfile component rendered');
     console.log('ID from params:', id);
     console.log('Buddies:', buddies);
+
+    const foundUser = buddies.find(buddy => buddy.id === parseInt(id));
+    console.log('User data found:', foundUser);
+
+    if (foundUser) {
+      setUserData(foundUser);
+    } else {
+      console.log('No user data found for id:', id);
+    }
   }, [id, buddies]);
 
-  const userData = buddies.find(buddy => buddy.id === parseInt(id));
-
-  console.log('User data found:', userData);
-
   if (!userData) {
-    console.log('No user data found for id:', id);
-    return <div>No user data found for id: {id}</div>;
+    return <div>Loading user data...</div>;
   }
 
   const renderRating = (rating) => {
