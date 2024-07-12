@@ -84,6 +84,14 @@ const TrainerProfile = ({ trainer, currentUser }) => {
   return (
     <div className="max-w-4xl mx-auto p-4 pb-16">
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="p-4 border-b flex justify-between items-center">
+          <button
+            onClick={() => navigate('/trainer-dashboard')}
+            className="text-orange-500 hover:text-orange-600 transition-colors text-sm"
+          >
+            Back to Dashboard
+          </button>
+        </div>
         <div className="md:flex">
           <div className="md:flex-shrink-0">
             <img className="h-48 w-full object-cover md:w-48" src={trainer.image} alt={trainer.name} />
@@ -105,6 +113,10 @@ const TrainerProfile = ({ trainer, currentUser }) => {
               <span className="font-semibold">{trainer.rating}</span>
               <span className="text-gray-600 ml-1">({trainer.reviews} reviews)</span>
             </div>
+            <div className="flex items-center mt-2">
+              <Heart size={20} className="text-red-500 mr-2" />
+              <span className="font-semibold">{trainer.likes || 0} likes</span>
+            </div>
             {!isOwnProfile && (
               <div className="mt-4 flex space-x-4">
                 <button
@@ -121,14 +133,6 @@ const TrainerProfile = ({ trainer, currentUser }) => {
                 </button>
               </div>
             )}
-            <div className="mt-4">
-              <button
-                onClick={() => navigate('/trainer-dashboard')}
-                className="text-orange-500 hover:text-orange-600 transition-colors text-sm"
-              >
-                Back to Dashboard
-              </button>
-            </div>
           </div>
         </div>
         
