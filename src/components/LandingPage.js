@@ -153,11 +153,15 @@ const LandingPage = () => {
                 <img src={buddy.image} alt={buddy.name} className="w-full h-48 object-cover" />
                 <div className="p-4">
                   <h3 className="text-lg font-semibold mb-2">{buddy.name}</h3>
-                  <p className="text-sm text-gray-600 mb-2">Interests: {buddy.interests.join(", ")}</p>
-                  <p className="text-sm text-gray-600">Level: {buddy.level}</p>
-                  <button className="mt-4 w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
-                    Connect
-                  </button>
+                  <p className="text-sm text-gray-600 mb-1">Age: {buddy.age}</p>
+                  <p className="text-sm text-gray-600 mb-1">Interests: {buddy.interests.join(", ")}</p>
+                  <p className="text-sm text-gray-600 mb-1">Level: {buddy.level}</p>
+                  <p className="text-sm text-gray-600 mb-1">Workout Frequency: {buddy.workoutFrequency}</p>
+                  <div className="flex items-center mt-2">
+                    <Star className="text-yellow-400 w-4 h-4 mr-1" />
+                    <span className="text-sm font-medium">{buddy.rating.toFixed(1)}</span>
+                    <span className="text-sm text-gray-500 ml-1">({buddy.reviews} reviews)</span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -196,11 +200,16 @@ const LandingPage = () => {
                 <img src={event.image} alt={event.title} className="w-full h-48 object-cover" />
                 <div className="p-4">
                   <h3 className="text-lg font-semibold mb-2">{event.title}</h3>
-                  <p className="text-sm text-gray-600 mb-2">{event.date}</p>
-                  <p className="text-sm text-gray-600">{event.location}</p>
-                  <button className="mt-4 w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
-                    Join Event
-                  </button>
+                  <p className="text-sm text-gray-600 mb-1">Date: {event.date}</p>
+                  <p className="text-sm text-gray-600 mb-1">Time: {event.time}</p>
+                  <p className="text-sm text-gray-600 mb-1">Location: {event.location}</p>
+                  <p className="text-sm text-gray-600 mb-1">Type: {event.type}</p>
+                  <div className="flex justify-between items-center mt-2">
+                    <span className="text-sm font-medium">{event.participants} participants</span>
+                    <span className={`text-sm font-medium ${event.isFree ? 'text-green-600' : 'text-blue-600'}`}>
+                      {event.isFree ? 'Free' : `$${event.price}`}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -239,11 +248,18 @@ const LandingPage = () => {
                 <img src={trainer.image} alt={trainer.name} className="w-full h-48 object-cover" />
                 <div className="p-4">
                   <h3 className="text-lg font-semibold mb-2">{trainer.name}</h3>
-                  <p className="text-sm text-gray-600 mb-2">Specialties: {trainer.specialties.join(", ")}</p>
-                  <p className="text-sm text-gray-600">Experience: {trainer.experience}</p>
-                  <button className="mt-4 w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
-                    Book Session
-                  </button>
+                  <p className="text-sm text-gray-600 mb-1">Age: {trainer.age}</p>
+                  <p className="text-sm text-gray-600 mb-1">Specialties: {trainer.specialties.join(", ")}</p>
+                  <p className="text-sm text-gray-600 mb-1">Experience: {trainer.experience}</p>
+                  <p className="text-sm text-gray-600 mb-1">Certifications: {trainer.certifications.join(", ")}</p>
+                  <div className="flex items-center justify-between mt-2">
+                    <div className="flex items-center">
+                      <Star className="text-yellow-400 w-4 h-4 mr-1" />
+                      <span className="text-sm font-medium">{trainer.rating.toFixed(1)}</span>
+                      <span className="text-sm text-gray-500 ml-1">({trainer.reviews} reviews)</span>
+                    </div>
+                    <span className="text-sm font-medium text-gray-600">{trainer.distance} km away</span>
+                  </div>
                 </div>
               </div>
             ))}
