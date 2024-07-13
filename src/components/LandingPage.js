@@ -154,7 +154,7 @@ const LandingPage = () => {
                 <div className="p-4">
                   <h3 className="text-lg font-semibold mb-2">{buddy.name}</h3>
                   <p className="text-sm text-gray-600 mb-1">Age: {buddy.age}</p>
-                  <p className="text-sm text-gray-600 mb-1">Interests: {buddy.interests.join(", ")}</p>
+                  <p className="text-sm text-gray-600 mb-1">Interests: {buddy.interests ? buddy.interests.join(", ") : "N/A"}</p>
                   <p className="text-sm text-gray-600 mb-1">Level: {buddy.level}</p>
                   <p className="text-sm text-gray-600 mb-1">Workout Frequency: {buddy.workoutFrequency}</p>
                   <div className="flex items-center mt-2">
@@ -249,9 +249,9 @@ const LandingPage = () => {
                 <div className="p-4">
                   <h3 className="text-lg font-semibold mb-2">{trainer.name}</h3>
                   <p className="text-sm text-gray-600 mb-1">Age: {trainer.age}</p>
-                  <p className="text-sm text-gray-600 mb-1">Specialties: {trainer.specialties.join(", ")}</p>
+                  <p className="text-sm text-gray-600 mb-1">Specialties: {trainer.specialties ? trainer.specialties.join(", ") : "N/A"}</p>
                   <p className="text-sm text-gray-600 mb-1">Experience: {trainer.experience}</p>
-                  <p className="text-sm text-gray-600 mb-1">Certifications: {trainer.certifications.join(", ")}</p>
+                  <p className="text-sm text-gray-600 mb-1">Certifications: {trainer.certifications ? trainer.certifications.join(", ") : "N/A"}</p>
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center">
                       <Star className="text-yellow-400 w-4 h-4 mr-1" />
