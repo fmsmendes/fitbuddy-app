@@ -180,19 +180,23 @@ const LandingPage = () => {
                 <img src={buddy.image} alt={buddy.name} className="w-full h-32 object-cover" />
                 <div className="p-3 flex-grow flex flex-col justify-between">
                   <div>
-                    <h3 className="text-sm font-semibold">{buddy.name} <span className="text-xs font-normal text-gray-500">{buddy.age}</span></h3>
-                    <p className="text-xs text-gray-600 mb-1">{buddy.level}</p>
+                    <h3 className="text-sm font-semibold mb-1">{buddy.name} <span className="text-xs font-normal text-gray-500">{buddy.age}</span></h3>
+                    <div className="flex items-center text-xs text-gray-600 mb-1">
+                      <Activity size={12} className="mr-1" />
+                      <span>{buddy.level}</span>
+                    </div>
+                    <div className="flex items-center text-xs text-gray-600 mb-1">
+                      <MapPin size={12} className="mr-1" />
+                      <span>{buddy.distance} km away</span>
+                    </div>
+                    <div className="flex items-center text-xs text-gray-600 mb-1">
+                      <Star size={12} className="text-yellow-400 fill-current mr-1" />
+                      <span>{buddy.rating} ({buddy.reviews} reviews)</span>
+                    </div>
                     <div className="flex flex-wrap mb-1">
                       {buddy.interests.map((interest, i) => (
                         <span key={i} className="text-xs bg-orange-100 text-orange-800 rounded-full px-2 py-0.5 mr-1 mb-1">{interest}</span>
                       ))}
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center text-xs text-gray-500">
-                    <span>{buddy.distance} km away</span>
-                    <div className="flex items-center">
-                      <Star size={12} className="text-yellow-400 fill-current mr-1" />
-                      <span>{buddy.rating}</span>
                     </div>
                   </div>
                 </div>
@@ -261,12 +265,21 @@ const LandingPage = () => {
                 <div className="p-3 flex-grow flex flex-col justify-between">
                   <div>
                     <h3 className="text-sm font-semibold mb-1">{event.title}</h3>
-                    <p className="text-xs text-gray-600">{event.date}, {event.time}</p>
-                    <p className="text-xs text-gray-600 mb-1">{event.location}</p>
-                  </div>
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full">{event.type}</span>
-                    <span className="text-gray-500">{event.participants} participants</span>
+                    <div className="flex items-center text-xs text-gray-600 mb-1">
+                      <Calendar size={12} className="mr-1" />
+                      <span>{event.date}, {event.time}</span>
+                    </div>
+                    <div className="flex items-center text-xs text-gray-600 mb-1">
+                      <MapPin size={12} className="mr-1" />
+                      <span>{event.location}</span>
+                    </div>
+                    <div className="flex items-center text-xs text-gray-600 mb-1">
+                      <Users size={12} className="mr-1" />
+                      <span>{event.participants} participants</span>
+                    </div>
+                    <div className="flex items-center text-xs mb-1">
+                      <span className="bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full">{event.type}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -333,19 +346,23 @@ const LandingPage = () => {
                 <img src={trainer.image} alt={trainer.name} className="w-full h-32 object-cover" />
                 <div className="p-3 flex-grow flex flex-col justify-between">
                   <div>
-                    <h3 className="text-sm font-semibold">{trainer.name} <span className="text-xs font-normal text-gray-500">{trainer.age}</span></h3>
-                    <p className="text-xs text-gray-600 mb-1">{trainer.experience}</p>
+                    <h3 className="text-sm font-semibold mb-1">{trainer.name} <span className="text-xs font-normal text-gray-500">{trainer.age}</span></h3>
+                    <div className="flex items-center text-xs text-gray-600 mb-1">
+                      <Clock size={12} className="mr-1" />
+                      <span>{trainer.experience}</span>
+                    </div>
+                    <div className="flex items-center text-xs text-gray-600 mb-1">
+                      <MapPin size={12} className="mr-1" />
+                      <span>{trainer.distance} km away</span>
+                    </div>
+                    <div className="flex items-center text-xs text-gray-600 mb-1">
+                      <Star size={12} className="text-yellow-400 fill-current mr-1" />
+                      <span>{trainer.rating} ({trainer.reviews} reviews)</span>
+                    </div>
                     <div className="flex flex-wrap mb-1">
                       {trainer.specialties.map((specialty, i) => (
                         <span key={i} className="text-xs bg-blue-100 text-blue-800 rounded-full px-2 py-0.5 mr-1 mb-1">{specialty}</span>
                       ))}
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center text-xs text-gray-500">
-                    <span>{trainer.distance} km away</span>
-                    <div className="flex items-center">
-                      <Star size={12} className="text-yellow-400 fill-current mr-1" />
-                      <span>{trainer.rating}</span>
                     </div>
                   </div>
                 </div>
