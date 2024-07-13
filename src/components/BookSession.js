@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Clock, MapPin, Activity, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Clock, MapPin, Activity, ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 
 const BookSession = ({ trainer }) => {
   const navigate = useNavigate();
@@ -20,66 +20,18 @@ const BookSession = ({ trainer }) => {
     navigate(-1);
   };
 
-  const renderCalendar = () => {
-    const monthStart = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
-    const monthEnd = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
-    const startDate = new Date(monthStart);
-    startDate.setDate(startDate.getDate() - startDate.getDay());
-    const endDate = new Date(monthEnd);
-    endDate.setDate(endDate.getDate() + (6 - endDate.getDay()));
-
-    const dateFormat = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' });
-    const rows = [];
-    let days = [];
-    let day = startDate;
-
-    while (day <= endDate) {
-      for (let i = 0; i < 7; i++) {
-        const cloneDay = new Date(day);
-        days.push(
-          <div
-            key={day}
-            className={`p-2 text-center cursor-pointer hover:bg-orange-100 ${
-              day.getMonth() !== currentMonth.getMonth() ? 'text-gray-400' : ''
-            } ${
-              selectedDate && day.toDateString() === selectedDate.toDateString()
-                ? 'bg-orange-500 text-white hover:bg-orange-600'
-                : ''
-            }`}
-            onClick={() => setSelectedDate(cloneDay)}
-          >
-            {day.getDate()}
-          </div>
-        );
-        day.setDate(day.getDate() + 1);
-      }
-      rows.push(
-        <div key={day} className="grid grid-cols-7">
-          {days}
-        </div>
-      );
-      days = [];
-    }
-
+  const renderDateInput = () => {
     return (
       <div className="bg-white rounded-lg shadow p-4">
-        <div className="flex justify-between items-center mb-4">
-          <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))}>
-            <ChevronLeft />
-          </button>
-          <h2 className="text-lg font-semibold">{dateFormat.format(currentMonth)}</h2>
-          <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))}>
-            <ChevronRight />
-          </button>
+        <div className="flex items-center">
+          <Calendar size={20} className="text-gray-400 mr-2" />
+          <input
+            type="date"
+            value={selectedDate ? selectedDate.toISOString().split('T')[0] : ''}
+            onChange={(e) => setSelectedDate(new Date(e.target.value))}
+            className="border-gray-300 rounded-md shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+          />
         </div>
-        <div className="grid grid-cols-7 gap-1 mb-2">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-            <div key={day} className="text-center font-semibold">
-              {day}
-            </div>
-          ))}
-        </div>
-        {rows}
       </div>
     );
   };
@@ -97,7 +49,7 @@ const BookSession = ({ trainer }) => {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Select Date</label>
-              {renderCalendar()}
+              {renderDateInput()}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Select Session Type</label>
