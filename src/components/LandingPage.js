@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Users, Calendar, Dumbbell, Star, MapPin, Clock, Activity, Target, Heart, Zap } from 'lucide-react';
+import { ArrowRight, Users, Calendar, Dumbbell, Star, MapPin, Clock, Activity, Target, Heart, Zap, Award } from 'lucide-react';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -118,6 +118,55 @@ const LandingPage = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Sample Cards Section */}
+      <section className="py-20 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-16">
+            Discover What <span className="text-orange-500">FitBuddy</span> Offers
+          </h2>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            {/* Buddy Profile Card */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Buddy Profile" className="w-full h-48 object-cover" />
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2">Find Fitness Buddies</h3>
+                <p className="text-gray-600 mb-4">Connect with like-minded individuals who share your fitness goals and interests.</p>
+                <div className="flex items-center text-sm text-gray-500">
+                  <Users size={16} className="mr-2" />
+                  <span>500+ active buddies in your area</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Event Card */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <img src="https://source.unsplash.com/random/800x600?fitness" alt="Fitness Event" className="w-full h-48 object-cover" />
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2">Join Exciting Events</h3>
+                <p className="text-gray-600 mb-4">Participate in local fitness events, classes, and challenges to stay motivated.</p>
+                <div className="flex items-center text-sm text-gray-500">
+                  <Calendar size={16} className="mr-2" />
+                  <span>20+ upcoming events this week</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Personal Trainer Card */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Personal Trainer" className="w-full h-48 object-cover" />
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2">Expert Personal Trainers</h3>
+                <p className="text-gray-600 mb-4">Get personalized guidance from certified trainers to achieve your fitness goals.</p>
+                <div className="flex items-center text-sm text-gray-500">
+                  <Award size={16} className="mr-2" />
+                  <span>100+ certified trainers available</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
