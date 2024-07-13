@@ -123,12 +123,12 @@ const LandingPage = () => {
       </section>
 
       {/* Buddies Section */}
-      <section className="py-16 bg-gray-100">
+      <section className="py-16 bg-gray-100 overflow-x-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-12">
             Connect with <span className="text-orange-500">Fitness Buddies</span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="flex space-x-4 pb-4">
             {[
               {
                 name: "Sarah",
@@ -207,12 +207,12 @@ const LandingPage = () => {
       </section>
 
       {/* Events Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white overflow-x-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-12">
             Join Exciting <span className="text-orange-500">Fitness Events</span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="flex space-x-4 pb-4">
             {[
               {
                 title: "Morning Run",
@@ -289,12 +289,12 @@ const LandingPage = () => {
       </section>
 
       {/* Personal Trainers Section */}
-      <section className="py-16 bg-gray-100">
+      <section className="py-16 bg-gray-100 overflow-x-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-12">
             Expert <span className="text-orange-500">Personal Trainers</span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="flex space-x-4 pb-4">
             {[
               {
                 name: "John",
