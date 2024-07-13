@@ -128,42 +128,72 @@ const LandingPage = () => {
           <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-12">
             Connect with <span className="text-orange-500">Fitness Buddies</span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {[
               {
                 name: "Sarah",
+                age: 28,
                 interests: ["Running", "Yoga"],
                 level: "Intermediate",
+                distance: 0.5,
+                rating: 4.5,
                 image: "https://images.unsplash.com/photo-1595246140625-573b715d11dc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               },
               {
                 name: "Mike",
+                age: 32,
                 interests: ["Weightlifting", "HIIT"],
                 level: "Advanced",
+                distance: 1.2,
+                rating: 4.8,
                 image: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               },
               {
                 name: "Emma",
+                age: 25,
                 interests: ["Cycling", "Swimming"],
                 level: "Beginner",
+                distance: 0.8,
+                rating: 4.2,
                 image: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               },
               {
                 name: "Alex",
+                age: 30,
                 interests: ["CrossFit", "Boxing"],
                 level: "Intermediate",
+                distance: 1.5,
+                rating: 4.6,
                 image: "https://images.unsplash.com/photo-1549476464-37392f717541?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
+              },
+              {
+                name: "Lisa",
+                age: 27,
+                interests: ["Pilates", "Dance"],
+                level: "Advanced",
+                distance: 0.3,
+                rating: 4.9,
+                image: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               }
             ].map((buddy, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-80">
-                <img src={buddy.image} alt={buddy.name} className="w-full h-40 object-cover" />
-                <div className="p-4 flex-grow flex flex-col justify-between">
-                  <h3 className="text-base font-semibold mb-1">{buddy.name}</h3>
-                  <p className="text-xs text-gray-600 mb-1">Level: {buddy.level}</p>
-                  <div className="flex flex-wrap">
-                    {buddy.interests.map((interest, i) => (
-                      <span key={i} className="text-xs bg-orange-100 text-orange-800 rounded-full px-2 py-1 mr-1 mb-1">{interest}</span>
-                    ))}
+              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-72">
+                <img src={buddy.image} alt={buddy.name} className="w-full h-32 object-cover" />
+                <div className="p-3 flex-grow flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-sm font-semibold">{buddy.name} <span className="text-xs font-normal text-gray-500">{buddy.age}</span></h3>
+                    <p className="text-xs text-gray-600 mb-1">{buddy.level}</p>
+                    <div className="flex flex-wrap mb-1">
+                      {buddy.interests.map((interest, i) => (
+                        <span key={i} className="text-xs bg-orange-100 text-orange-800 rounded-full px-2 py-0.5 mr-1 mb-1">{interest}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center text-xs text-gray-500">
+                    <span>{buddy.distance} km away</span>
+                    <div className="flex items-center">
+                      <Star size={12} className="text-yellow-400 fill-current mr-1" />
+                      <span>{buddy.rating}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -178,39 +208,66 @@ const LandingPage = () => {
           <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-12">
             Join Exciting <span className="text-orange-500">Fitness Events</span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {[
               {
                 title: "Morning Run",
                 date: "July 15",
+                time: "6:00 AM",
                 location: "Central Park",
+                participants: 15,
+                type: "Running",
                 image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               },
               {
                 title: "Yoga in the Park",
                 date: "July 20",
+                time: "8:00 AM",
                 location: "Sunset Beach",
+                participants: 20,
+                type: "Yoga",
                 image: "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               },
               {
                 title: "HIIT Bootcamp",
                 date: "July 25",
+                time: "7:00 PM",
                 location: "City Gym",
+                participants: 12,
+                type: "HIIT",
                 image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               },
               {
                 title: "Cycling Tour",
                 date: "July 30",
+                time: "9:00 AM",
                 location: "Mountain Trail",
+                participants: 25,
+                type: "Cycling",
                 image: "https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              },
+              {
+                title: "Zumba Party",
+                date: "August 5",
+                time: "6:30 PM",
+                location: "Community Center",
+                participants: 30,
+                type: "Dance",
+                image: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               }
             ].map((event, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-80">
-                <img src={event.image} alt={event.title} className="w-full h-40 object-cover" />
-                <div className="p-4 flex-grow flex flex-col justify-between">
-                  <h3 className="text-base font-semibold mb-1">{event.title}</h3>
-                  <p className="text-xs text-gray-600 mb-1">{event.date}</p>
-                  <p className="text-xs text-gray-600">{event.location}</p>
+              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-72">
+                <img src={event.image} alt={event.title} className="w-full h-32 object-cover" />
+                <div className="p-3 flex-grow flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-sm font-semibold mb-1">{event.title}</h3>
+                    <p className="text-xs text-gray-600">{event.date}, {event.time}</p>
+                    <p className="text-xs text-gray-600 mb-1">{event.location}</p>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full">{event.type}</span>
+                    <span className="text-gray-500">{event.participants} participants</span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -224,42 +281,72 @@ const LandingPage = () => {
           <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-12">
             Expert <span className="text-orange-500">Personal Trainers</span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {[
               {
                 name: "John",
+                age: 35,
                 specialties: ["Strength", "HIIT"],
                 experience: "10 years",
+                rating: 4.9,
+                distance: 0.5,
                 image: "https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1472&q=80"
               },
               {
                 name: "Lisa",
+                age: 32,
                 specialties: ["Yoga", "Pilates"],
                 experience: "8 years",
+                rating: 4.7,
+                distance: 1.2,
                 image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               },
               {
                 name: "Mark",
+                age: 40,
                 specialties: ["Cardio", "Nutrition"],
                 experience: "12 years",
+                rating: 4.8,
+                distance: 0.8,
                 image: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80"
               },
               {
                 name: "Sarah",
+                age: 28,
                 specialties: ["CrossFit", "Boxing"],
                 experience: "7 years",
+                rating: 4.6,
+                distance: 1.5,
                 image: "https://images.unsplash.com/photo-1609899537878-88d5ba429bdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              },
+              {
+                name: "Mike",
+                age: 38,
+                specialties: ["Weightlifting", "Functional Training"],
+                experience: "15 years",
+                rating: 4.9,
+                distance: 0.3,
+                image: "https://images.unsplash.com/photo-1594381898411-846e7d193883?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
               }
             ].map((trainer, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-80">
-                <img src={trainer.image} alt={trainer.name} className="w-full h-40 object-cover" />
-                <div className="p-4 flex-grow flex flex-col justify-between">
-                  <h3 className="text-base font-semibold mb-1">{trainer.name}</h3>
-                  <p className="text-xs text-gray-600 mb-1">{trainer.experience}</p>
-                  <div className="flex flex-wrap">
-                    {trainer.specialties.map((specialty, i) => (
-                      <span key={i} className="text-xs bg-blue-100 text-blue-800 rounded-full px-2 py-1 mr-1 mb-1">{specialty}</span>
-                    ))}
+              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-72">
+                <img src={trainer.image} alt={trainer.name} className="w-full h-32 object-cover" />
+                <div className="p-3 flex-grow flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-sm font-semibold">{trainer.name} <span className="text-xs font-normal text-gray-500">{trainer.age}</span></h3>
+                    <p className="text-xs text-gray-600 mb-1">{trainer.experience}</p>
+                    <div className="flex flex-wrap mb-1">
+                      {trainer.specialties.map((specialty, i) => (
+                        <span key={i} className="text-xs bg-blue-100 text-blue-800 rounded-full px-2 py-0.5 mr-1 mb-1">{specialty}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center text-xs text-gray-500">
+                    <span>{trainer.distance} km away</span>
+                    <div className="flex items-center">
+                      <Star size={12} className="text-yellow-400 fill-current mr-1" />
+                      <span>{trainer.rating}</span>
+                    </div>
                   </div>
                 </div>
               </div>
