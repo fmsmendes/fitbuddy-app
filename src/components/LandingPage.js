@@ -123,12 +123,12 @@ const LandingPage = () => {
       </section>
 
       {/* Buddies Section */}
-      <section className="py-20 bg-gray-100">
+      <section className="py-16 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-16">
+          <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-12">
             Connect with <span className="text-orange-500">Fitness Buddies</span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {[
               {
                 name: "Sarah",
@@ -147,20 +147,23 @@ const LandingPage = () => {
                 interests: ["Cycling", "Swimming"],
                 level: "Beginner",
                 image: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              },
+              {
+                name: "Alex",
+                interests: ["CrossFit", "Boxing"],
+                level: "Intermediate",
+                image: "https://images.unsplash.com/photo-1549476464-37392f717541?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
               }
             ].map((buddy, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                <img src={buddy.image} alt={buddy.name} className="w-full h-48 object-cover" />
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold mb-2">{buddy.name}</h3>
-                  <p className="text-sm text-gray-600 mb-1">Age: {buddy.age}</p>
-                  <p className="text-sm text-gray-600 mb-1">Interests: {buddy.interests ? buddy.interests.join(", ") : "N/A"}</p>
-                  <p className="text-sm text-gray-600 mb-1">Level: {buddy.level}</p>
-                  <p className="text-sm text-gray-600 mb-1">Workout Frequency: {buddy.workoutFrequency}</p>
-                  <div className="flex items-center mt-2">
-                    <Star className="text-yellow-400 w-4 h-4 mr-1" />
-                    <span className="text-sm font-medium">{buddy.rating ? buddy.rating.toFixed(1) : 'N/A'}</span>
-                    <span className="text-sm text-gray-500 ml-1">({buddy.reviews || 0} reviews)</span>
+              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md">
+                <img src={buddy.image} alt={buddy.name} className="w-full h-32 object-cover" />
+                <div className="p-3">
+                  <h3 className="text-base font-semibold mb-1">{buddy.name}</h3>
+                  <p className="text-xs text-gray-600 mb-1">Level: {buddy.level}</p>
+                  <div className="flex flex-wrap">
+                    {buddy.interests.map((interest, i) => (
+                      <span key={i} className="text-xs bg-orange-100 text-orange-800 rounded-full px-2 py-1 mr-1 mb-1">{interest}</span>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -170,46 +173,44 @@ const LandingPage = () => {
       </section>
 
       {/* Events Section */}
-      <section className="py-20 bg-white">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-16">
+          <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-12">
             Join Exciting <span className="text-orange-500">Fitness Events</span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {[
               {
                 title: "Morning Run",
-                date: "July 15, 2024",
+                date: "July 15",
                 location: "Central Park",
                 image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               },
               {
                 title: "Yoga in the Park",
-                date: "July 20, 2024",
+                date: "July 20",
                 location: "Sunset Beach",
                 image: "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               },
               {
                 title: "HIIT Bootcamp",
-                date: "July 25, 2024",
+                date: "July 25",
                 location: "City Gym",
                 image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              },
+              {
+                title: "Cycling Tour",
+                date: "July 30",
+                location: "Mountain Trail",
+                image: "https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               }
             ].map((event, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                <img src={event.image} alt={event.title} className="w-full h-48 object-cover" />
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold mb-2">{event.title}</h3>
-                  <p className="text-sm text-gray-600 mb-1">Date: {event.date}</p>
-                  <p className="text-sm text-gray-600 mb-1">Time: {event.time}</p>
-                  <p className="text-sm text-gray-600 mb-1">Location: {event.location}</p>
-                  <p className="text-sm text-gray-600 mb-1">Type: {event.type}</p>
-                  <div className="flex justify-between items-center mt-2">
-                    <span className="text-sm font-medium">{event.participants} participants</span>
-                    <span className={`text-sm font-medium ${event.isFree ? 'text-green-600' : 'text-blue-600'}`}>
-                      {event.isFree ? 'Free' : `$${event.price}`}
-                    </span>
-                  </div>
+              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md">
+                <img src={event.image} alt={event.title} className="w-full h-32 object-cover" />
+                <div className="p-3">
+                  <h3 className="text-base font-semibold mb-1">{event.title}</h3>
+                  <p className="text-xs text-gray-600 mb-1">{event.date}</p>
+                  <p className="text-xs text-gray-600">{event.location}</p>
                 </div>
               </div>
             ))}
@@ -218,16 +219,16 @@ const LandingPage = () => {
       </section>
 
       {/* Personal Trainers Section */}
-      <section className="py-20 bg-gray-100">
+      <section className="py-16 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-16">
+          <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-12">
             Expert <span className="text-orange-500">Personal Trainers</span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {[
               {
                 name: "John",
-                specialties: ["Strength Training", "HIIT"],
+                specialties: ["Strength", "HIIT"],
                 experience: "10 years",
                 image: "https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1472&q=80"
               },
@@ -242,23 +243,23 @@ const LandingPage = () => {
                 specialties: ["Cardio", "Nutrition"],
                 experience: "12 years",
                 image: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80"
+              },
+              {
+                name: "Sarah",
+                specialties: ["CrossFit", "Boxing"],
+                experience: "7 years",
+                image: "https://images.unsplash.com/photo-1609899537878-88d5ba429bdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               }
             ].map((trainer, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                <img src={trainer.image} alt={trainer.name} className="w-full h-48 object-cover" />
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold mb-2">{trainer.name}</h3>
-                  <p className="text-sm text-gray-600 mb-1">Age: {trainer.age}</p>
-                  <p className="text-sm text-gray-600 mb-1">Specialties: {trainer.specialties ? trainer.specialties.join(", ") : "N/A"}</p>
-                  <p className="text-sm text-gray-600 mb-1">Experience: {trainer.experience}</p>
-                  <p className="text-sm text-gray-600 mb-1">Certifications: {trainer.certifications ? trainer.certifications.join(", ") : "N/A"}</p>
-                  <div className="flex items-center justify-between mt-2">
-                    <div className="flex items-center">
-                      <Star className="text-yellow-400 w-4 h-4 mr-1" />
-                      <span className="text-sm font-medium">{trainer.rating ? trainer.rating.toFixed(1) : 'N/A'}</span>
-                      <span className="text-sm text-gray-500 ml-1">({trainer.reviews || 0} reviews)</span>
-                    </div>
-                    <span className="text-sm font-medium text-gray-600">{trainer.distance} km away</span>
+              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md">
+                <img src={trainer.image} alt={trainer.name} className="w-full h-32 object-cover" />
+                <div className="p-3">
+                  <h3 className="text-base font-semibold mb-1">{trainer.name}</h3>
+                  <p className="text-xs text-gray-600 mb-1">{trainer.experience}</p>
+                  <div className="flex flex-wrap">
+                    {trainer.specialties.map((specialty, i) => (
+                      <span key={i} className="text-xs bg-blue-100 text-blue-800 rounded-full px-2 py-1 mr-1 mb-1">{specialty}</span>
+                    ))}
                   </div>
                 </div>
               </div>
