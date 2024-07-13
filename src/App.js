@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, useParams } from 'react-router-dom';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import LandingPage from './components/LandingPage';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import BuddyProfile from './components/BuddyProfile';
@@ -211,15 +212,27 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={
+          isAuthenticated ? (
+            currentUser.role === 'trainer' ? 
+              <TrainerDashboard trainer={currentUser} setIsAuthenticated={setIsAuthenticated} /> :
+              <Dashboard 
+                buddies={buddies} 
+                events={events} 
+                trainers={trainers} 
+                currentUser={currentUser}
+              />
+          ) : <LandingPage />
+        } />
         <Route path="/login" element={
-          isAuthenticated ? <Navigate to="/" /> : 
+          isAuthenticated ? <Navigate to="/dashboard" /> : 
           <Login 
             setIsAuthenticated={setIsAuthenticated}
             setCurrentUser={setCurrentUser}
             defaultTrainer={defaultTrainer}
           />
         } />
-        <Route path="/" element={
+        <Route path="/dashboard" element={
           isAuthenticated ? (
             currentUser.role === 'trainer' ? 
               <TrainerDashboard trainer={currentUser} setIsAuthenticated={setIsAuthenticated} /> :
