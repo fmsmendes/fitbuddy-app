@@ -128,45 +128,47 @@ const LandingPage = () => {
           <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-16">
             Discover What <span className="text-orange-500">FitBuddy</span> Offers
           </h2>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {/* Buddy Profile Card */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Buddy Profile" className="w-full h-48 object-cover" />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Find Fitness Buddies</h3>
-                <p className="text-gray-600 mb-4">Connect with like-minded individuals who share your fitness goals and interests.</p>
-                <div className="flex items-center text-sm text-gray-500">
-                  <Users size={16} className="mr-2" />
-                  <span>500+ active buddies in your area</span>
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                title: "Find Fitness Buddies",
+                description: "Connect with like-minded individuals who share your fitness goals.",
+                icon: <Users size={24} className="text-orange-500" />,
+                stat: "500+ active buddies",
+                image: "https://randomuser.me/api/portraits/men/32.jpg"
+              },
+              {
+                title: "Join Exciting Events",
+                description: "Participate in local fitness events, classes, and challenges.",
+                icon: <Calendar size={24} className="text-orange-500" />,
+                stat: "20+ weekly events",
+                image: "https://source.unsplash.com/random/800x600?fitness"
+              },
+              {
+                title: "Expert Personal Trainers",
+                description: "Get personalized guidance from certified trainers.",
+                icon: <Award size={24} className="text-orange-500" />,
+                stat: "100+ certified trainers",
+                image: "https://randomuser.me/api/portraits/women/68.jpg"
+              }
+            ].map((card, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                <img src={card.image} alt={card.title} className="w-full h-40 object-cover" />
+                <div className="p-4">
+                  <div className="flex items-center mb-2">
+                    {card.icon}
+                    <h3 className="text-lg font-semibold ml-2">{card.title}</h3>
+                  </div>
+                  <p className="text-gray-600 text-sm mb-3">{card.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-orange-500">{card.stat}</span>
+                    <button className="text-sm text-white bg-orange-500 px-3 py-1 rounded-full hover:bg-orange-600 transition-colors">
+                      Learn More
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            {/* Event Card */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://source.unsplash.com/random/800x600?fitness" alt="Fitness Event" className="w-full h-48 object-cover" />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Join Exciting Events</h3>
-                <p className="text-gray-600 mb-4">Participate in local fitness events, classes, and challenges to stay motivated.</p>
-                <div className="flex items-center text-sm text-gray-500">
-                  <Calendar size={16} className="mr-2" />
-                  <span>20+ upcoming events this week</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Personal Trainer Card */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Personal Trainer" className="w-full h-48 object-cover" />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">Expert Personal Trainers</h3>
-                <p className="text-gray-600 mb-4">Get personalized guidance from certified trainers to achieve your fitness goals.</p>
-                <div className="flex items-center text-sm text-gray-500">
-                  <Award size={16} className="mr-2" />
-                  <span>100+ certified trainers available</span>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
