@@ -176,29 +176,36 @@ const LandingPage = () => {
                 image: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               }
             ].map((buddy, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-full">
-                <img src={buddy.image} alt={buddy.name} className="w-full h-40 object-cover" />
+              <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105 flex flex-col h-full">
+                <div className="relative">
+                  <img src={buddy.image} alt={buddy.name} className="w-full h-48 object-cover" />
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                    <h3 className="text-lg font-semibold text-white">{buddy.name} <span className="text-sm font-normal">{buddy.age}</span></h3>
+                  </div>
+                </div>
                 <div className="p-4 flex-grow flex flex-col justify-between">
                   <div>
-                    <h3 className="text-sm font-semibold mb-1">{buddy.name} <span className="text-xs font-normal text-gray-500">{buddy.age}</span></h3>
-                    <div className="flex items-center text-xs text-gray-600 mb-1">
-                      <Activity size={12} className="mr-1" />
+                    <div className="flex items-center text-sm text-gray-600 mb-2">
+                      <Activity size={16} className="mr-2 text-orange-500" />
                       <span>{buddy.level}</span>
                     </div>
-                    <div className="flex items-center text-xs text-gray-600 mb-1">
-                      <MapPin size={12} className="mr-1" />
+                    <div className="flex items-center text-sm text-gray-600 mb-2">
+                      <MapPin size={16} className="mr-2 text-orange-500" />
                       <span>{buddy.distance} km away</span>
                     </div>
-                    <div className="flex items-center text-xs text-gray-600 mb-1">
-                      <Star size={12} className="text-yellow-400 fill-current mr-1" />
+                    <div className="flex items-center text-sm text-gray-600 mb-3">
+                      <Star size={16} className="text-yellow-400 fill-current mr-2" />
                       <span>{buddy.rating} ({buddy.reviews} reviews)</span>
                     </div>
-                    <div className="flex flex-wrap mb-1">
+                    <div className="flex flex-wrap mb-3">
                       {buddy.interests.map((interest, i) => (
-                        <span key={i} className="text-xs bg-orange-100 text-orange-800 rounded-full px-2 py-0.5 mr-1 mb-1">{interest}</span>
+                        <span key={i} className="text-xs bg-orange-100 text-orange-800 rounded-full px-3 py-1 mr-2 mb-2">{interest}</span>
                       ))}
                     </div>
                   </div>
+                  <button className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    Connect
+                  </button>
                 </div>
               </div>
             ))}
@@ -260,27 +267,32 @@ const LandingPage = () => {
                 image: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               }
             ].map((event, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-full">
-                <img src={event.image} alt={event.title} className="w-full h-40 object-cover" />
+              <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105 flex flex-col h-full">
+                <div className="relative">
+                  <img src={event.image} alt={event.title} className="w-full h-48 object-cover" />
+                  <div className="absolute top-0 right-0 bg-orange-500 text-white px-3 py-1 rounded-bl-lg">
+                    {event.type}
+                  </div>
+                </div>
                 <div className="p-4 flex-grow flex flex-col justify-between">
                   <div>
-                    <h3 className="text-sm font-semibold mb-1">{event.title}</h3>
-                    <div className="flex items-center text-xs text-gray-600 mb-1">
-                      <Calendar size={12} className="mr-1" />
+                    <h3 className="text-lg font-semibold mb-2">{event.title}</h3>
+                    <div className="flex items-center text-sm text-gray-600 mb-2">
+                      <Calendar size={16} className="mr-2 text-orange-500" />
                       <span>{event.date}, {event.time}</span>
                     </div>
-                    <div className="flex items-center text-xs text-gray-600 mb-1">
-                      <MapPin size={12} className="mr-1" />
+                    <div className="flex items-center text-sm text-gray-600 mb-2">
+                      <MapPin size={16} className="mr-2 text-orange-500" />
                       <span>{event.location}</span>
                     </div>
-                    <div className="flex items-center text-xs text-gray-600 mb-1">
-                      <Users size={12} className="mr-1" />
+                    <div className="flex items-center text-sm text-gray-600 mb-3">
+                      <Users size={16} className="mr-2 text-orange-500" />
                       <span>{event.participants} participants</span>
                     </div>
-                    <div className="flex items-center text-xs mb-1">
-                      <span className="bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full">{event.type}</span>
-                    </div>
                   </div>
+                  <button className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    Join Event
+                  </button>
                 </div>
               </div>
             ))}
@@ -342,29 +354,36 @@ const LandingPage = () => {
                 image: "https://images.unsplash.com/photo-1594381898411-846e7d193883?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
               }
             ].map((trainer, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-full">
-                <img src={trainer.image} alt={trainer.name} className="w-full h-40 object-cover" />
+              <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-105 flex flex-col h-full">
+                <div className="relative">
+                  <img src={trainer.image} alt={trainer.name} className="w-full h-48 object-cover" />
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                    <h3 className="text-lg font-semibold text-white">{trainer.name} <span className="text-sm font-normal">{trainer.age}</span></h3>
+                  </div>
+                </div>
                 <div className="p-4 flex-grow flex flex-col justify-between">
                   <div>
-                    <h3 className="text-sm font-semibold mb-1">{trainer.name} <span className="text-xs font-normal text-gray-500">{trainer.age}</span></h3>
-                    <div className="flex items-center text-xs text-gray-600 mb-1">
-                      <Clock size={12} className="mr-1" />
+                    <div className="flex items-center text-sm text-gray-600 mb-2">
+                      <Clock size={16} className="mr-2 text-orange-500" />
                       <span>{trainer.experience}</span>
                     </div>
-                    <div className="flex items-center text-xs text-gray-600 mb-1">
-                      <MapPin size={12} className="mr-1" />
+                    <div className="flex items-center text-sm text-gray-600 mb-2">
+                      <MapPin size={16} className="mr-2 text-orange-500" />
                       <span>{trainer.distance} km away</span>
                     </div>
-                    <div className="flex items-center text-xs text-gray-600 mb-1">
-                      <Star size={12} className="text-yellow-400 fill-current mr-1" />
+                    <div className="flex items-center text-sm text-gray-600 mb-3">
+                      <Star size={16} className="text-yellow-400 fill-current mr-2" />
                       <span>{trainer.rating} ({trainer.reviews} reviews)</span>
                     </div>
-                    <div className="flex flex-wrap mb-1">
+                    <div className="flex flex-wrap mb-3">
                       {trainer.specialties.map((specialty, i) => (
-                        <span key={i} className="text-xs bg-blue-100 text-blue-800 rounded-full px-2 py-0.5 mr-1 mb-1">{specialty}</span>
+                        <span key={i} className="text-xs bg-blue-100 text-blue-800 rounded-full px-3 py-1 mr-2 mb-2">{specialty}</span>
                       ))}
                     </div>
                   </div>
+                  <button className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    Book Session
+                  </button>
                 </div>
               </div>
             ))}
