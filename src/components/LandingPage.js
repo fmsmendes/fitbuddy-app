@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { ArrowRight, Users, Calendar, Dumbbell, Star, MapPin, Clock, Activity, Target, Heart, Zap, Award } from 'lucide-react';
 
 const LandingPage = () => {
@@ -203,9 +203,11 @@ const LandingPage = () => {
                       ))}
                     </div>
                   </div>
-                  <button className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
-                    Connect
-                  </button>
+                  <Link to="/login" className="block w-full">
+                    <button className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                      Connect
+                    </button>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -290,9 +292,11 @@ const LandingPage = () => {
                       <span>{event.participants} participants</span>
                     </div>
                   </div>
-                  <button className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
-                    Join Event
-                  </button>
+                  <Link to="/login" className="block w-full">
+                    <button className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                      Join Event
+                    </button>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -381,9 +385,11 @@ const LandingPage = () => {
                       ))}
                     </div>
                   </div>
-                  <button className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
-                    Book Session
-                  </button>
+                  <Link to="/login" className="block w-full">
+                    <button className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                      Book Session
+                    </button>
+                  </Link>
                 </div>
               </div>
             ))}
