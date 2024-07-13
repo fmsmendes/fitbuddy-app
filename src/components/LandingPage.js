@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Users, Calendar, Dumbbell, Star, MapPin, Clock, Activity, Target } from 'lucide-react';
+import { ArrowRight, Users, Calendar, Dumbbell, Star, MapPin, Clock, Activity, Target, Heart, Zap } from 'lucide-react';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -12,6 +12,24 @@ const LandingPage = () => {
   const handleSignUpClick = () => {
     navigate('/login');
   };
+
+  const features = [
+    { icon: <Users className="h-8 w-8 text-orange-500" />, title: 'Find Fitness Buddies', description: 'Connect with people who share your fitness interests and goals.' },
+    { icon: <Calendar className="h-8 w-8 text-orange-500" />, title: 'Join Events', description: 'Discover and participate in local fitness events and classes.' },
+    { icon: <Activity className="h-8 w-8 text-orange-500" />, title: 'Track Progress', description: 'Set goals, log workouts, and monitor your fitness journey.' },
+    { icon: <MapPin className="h-8 w-8 text-orange-500" />, title: 'Explore Nearby', description: 'Find fitness spots, parks, and gyms in your local area.' },
+    { icon: <Clock className="h-8 w-8 text-orange-500" />, title: 'Flexible Scheduling', description: 'Plan workouts and events that fit your busy lifestyle.' },
+    { icon: <Target className="h-8 w-8 text-orange-500" />, title: 'Community Challenges', description: 'Participate in motivating fitness challenges with the community.' },
+    { icon: <Dumbbell className="h-8 w-8 text-orange-500" />, title: 'Personalized Workouts', description: 'Get custom workout plans tailored to your fitness level and goals.' },
+    { icon: <Zap className="h-8 w-8 text-orange-500" />, title: 'Instant Motivation', description: 'Receive daily motivation and tips to keep you on track.' },
+  ];
+
+  const testimonials = [
+    { name: 'Sarah J.', image: 'https://randomuser.me/api/portraits/women/32.jpg', quote: 'FitBuddy helped me find a running partner, and now I\'m training for my first marathon!', rating: 5 },
+    { name: 'Mike T.', image: 'https://randomuser.me/api/portraits/men/54.jpg', quote: 'The variety of events on FitBuddy keeps my workouts exciting and challenging.', rating: 4 },
+    { name: 'Emily R.', image: 'https://randomuser.me/api/portraits/women/68.jpg', quote: 'I\'ve made great friends and achieved my fitness goals thanks to FitBuddy.', rating: 5 },
+    { name: 'Alex K.', image: 'https://randomuser.me/api/portraits/men/78.jpg', quote: 'As a trainer, FitBuddy has helped me connect with clients and grow my business.', rating: 5 },
+  ];
   return (
     <div className="font-sans">
       {/* Header */}
