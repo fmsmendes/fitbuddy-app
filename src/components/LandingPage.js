@@ -132,10 +132,6 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-import { Link } from 'react-router-dom';
-import { ArrowRight, Users, Calendar, Dumbbell, Star } from 'lucide-react';
-
-const LandingPage = () => {
   return (
     <div className="bg-gradient-to-b from-orange-50 to-white min-h-screen">
       <header className="bg-white shadow-sm">
