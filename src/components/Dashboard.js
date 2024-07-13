@@ -79,12 +79,10 @@ const toggleFavoriteTrainer = (trainerId) => {
         </div>
       </div>
       <button 
-        onClick={() => {
-          navigate(`/public-profile/${buddy.id}`);
-        }}
+        onClick={() => navigate(`/buddy/${buddy.id}`)}
         className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors"
       >
-        View Profile
+        Connect
       </button>
     </div>
   );
@@ -243,7 +241,7 @@ const toggleFavoriteTrainer = (trainerId) => {
         </section>
       </main>
 
-      <Navigation />
+      <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
       <UserMenu isOpen={isUserMenuOpen} onClose={() => setIsUserMenuOpen(false)} />
     </div>
 
