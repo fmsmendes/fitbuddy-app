@@ -128,47 +128,63 @@ const LandingPage = () => {
           <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-16">
             Discover What <span className="text-orange-500">FitBuddy</span> Offers
           </h2>
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                title: "Find Fitness Buddies",
-                description: "Connect with like-minded individuals who share your fitness goals.",
-                icon: <Users size={24} className="text-orange-500" />,
-                stat: "500+ active buddies",
-                image: "https://randomuser.me/api/portraits/men/32.jpg"
-              },
-              {
-                title: "Join Exciting Events",
-                description: "Participate in local fitness events, classes, and challenges.",
-                icon: <Calendar size={24} className="text-orange-500" />,
-                stat: "20+ weekly events",
-                image: "https://source.unsplash.com/random/800x600?fitness"
-              },
-              {
-                title: "Expert Personal Trainers",
-                description: "Get personalized guidance from certified trainers.",
-                icon: <Award size={24} className="text-orange-500" />,
-                stat: "100+ certified trainers",
-                image: "https://randomuser.me/api/portraits/women/68.jpg"
-              }
-            ].map((card, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                <img src={card.image} alt={card.title} className="w-full h-40 object-cover" />
-                <div className="p-4">
-                  <div className="flex items-center mb-2">
-                    {card.icon}
-                    <h3 className="text-lg font-semibold ml-2">{card.title}</h3>
-                  </div>
-                  <p className="text-gray-600 text-sm mb-3">{card.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-orange-500">{card.stat}</span>
-                    <button className="text-sm text-white bg-orange-500 px-3 py-1 rounded-full hover:bg-orange-600 transition-colors">
-                      Learn More
-                    </button>
+          <div className="overflow-x-auto pb-4">
+            <div className="flex space-x-6 min-w-max">
+              {[
+                {
+                  title: "Find Fitness Buddies",
+                  description: "Connect with like-minded individuals who share your fitness goals.",
+                  icon: <Users size={24} className="text-orange-500" />,
+                  stat: "500+ active buddies",
+                  image: "https://randomuser.me/api/portraits/men/32.jpg"
+                },
+                {
+                  title: "Join Exciting Events",
+                  description: "Participate in local fitness events, classes, and challenges.",
+                  icon: <Calendar size={24} className="text-orange-500" />,
+                  stat: "20+ weekly events",
+                  image: "https://source.unsplash.com/random/800x600?fitness"
+                },
+                {
+                  title: "Expert Personal Trainers",
+                  description: "Get personalized guidance from certified trainers.",
+                  icon: <Award size={24} className="text-orange-500" />,
+                  stat: "100+ certified trainers",
+                  image: "https://randomuser.me/api/portraits/women/68.jpg"
+                },
+                {
+                  title: "Yoga Classes",
+                  description: "Join relaxing and rejuvenating yoga sessions.",
+                  icon: <Activity size={24} className="text-orange-500" />,
+                  stat: "50+ yoga instructors",
+                  image: "https://randomuser.me/api/portraits/women/65.jpg"
+                },
+                {
+                  title: "Nutrition Plans",
+                  description: "Get customized nutrition advice from experts.",
+                  icon: <Utensils size={24} className="text-orange-500" />,
+                  stat: "30+ nutrition specialists",
+                  image: "https://randomuser.me/api/portraits/men/41.jpg"
+                }
+              ].map((card, index) => (
+                <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0 w-72 transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                  <img src={card.image} alt={card.title} className="w-full h-72 object-cover" />
+                  <div className="p-4">
+                    <div className="flex items-center mb-2">
+                      {card.icon}
+                      <h3 className="text-lg font-semibold ml-2">{card.title}</h3>
+                    </div>
+                    <p className="text-gray-600 text-sm mb-3">{card.description}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-orange-500">{card.stat}</span>
+                      <button className="text-sm text-white bg-orange-500 px-3 py-1 rounded-full hover:bg-orange-600 transition-colors">
+                        Learn More
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
