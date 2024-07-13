@@ -110,7 +110,7 @@ const LandingPage = () => {
                     <Star
                       key={i}
                       className={`h-5 w-5 ${
-                        i < testimonial.rating ? 'text-yellow-400' : 'text-gray-300'
+                        i < (testimonial.rating || 0) ? 'text-yellow-400' : 'text-gray-300'
                       }`}
                       fill="currentColor"
                     />
@@ -159,8 +159,8 @@ const LandingPage = () => {
                   <p className="text-sm text-gray-600 mb-1">Workout Frequency: {buddy.workoutFrequency}</p>
                   <div className="flex items-center mt-2">
                     <Star className="text-yellow-400 w-4 h-4 mr-1" />
-                    <span className="text-sm font-medium">{buddy.rating.toFixed(1)}</span>
-                    <span className="text-sm text-gray-500 ml-1">({buddy.reviews} reviews)</span>
+                    <span className="text-sm font-medium">{buddy.rating ? buddy.rating.toFixed(1) : 'N/A'}</span>
+                    <span className="text-sm text-gray-500 ml-1">({buddy.reviews || 0} reviews)</span>
                   </div>
                 </div>
               </div>
@@ -255,8 +255,8 @@ const LandingPage = () => {
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center">
                       <Star className="text-yellow-400 w-4 h-4 mr-1" />
-                      <span className="text-sm font-medium">{trainer.rating.toFixed(1)}</span>
-                      <span className="text-sm text-gray-500 ml-1">({trainer.reviews} reviews)</span>
+                      <span className="text-sm font-medium">{trainer.rating ? trainer.rating.toFixed(1) : 'N/A'}</span>
+                      <span className="text-sm text-gray-500 ml-1">({trainer.reviews || 0} reviews)</span>
                     </div>
                     <span className="text-sm font-medium text-gray-600">{trainer.distance} km away</span>
                   </div>
