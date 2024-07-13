@@ -80,7 +80,7 @@ const CreateEvent = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           <div>
             <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
             <div className="mt-1 relative rounded-md shadow-sm">
@@ -116,20 +116,25 @@ const CreateEvent = () => {
               />
             </div>
           </div>
-        </div>
 
-        <div>
-          <label htmlFor="duration" className="block text-sm font-medium text-gray-700">Duration (in minutes)</label>
-          <input
-            type="number"
-            id="duration"
-            name="duration"
-            value={eventDetails.duration}
-            onChange={handleChange}
-            required
-            min="1"
-            className="mt-1 focus:ring-orange-500 focus:border-orange-500 block w-full sm:text-sm border-gray-300 rounded-md"
-          />
+          <div>
+            <label htmlFor="duration" className="block text-sm font-medium text-gray-700">Duration</label>
+            <select
+              id="duration"
+              name="duration"
+              value={eventDetails.duration}
+              onChange={handleChange}
+              required
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
+            >
+              <option value="">Select duration</option>
+              <option value="15">15 minutes</option>
+              <option value="30">30 minutes</option>
+              <option value="45">45 minutes</option>
+              <option value="60">60 minutes</option>
+              <option value="90">90 minutes</option>
+            </select>
+          </div>
         </div>
 
         <div>
