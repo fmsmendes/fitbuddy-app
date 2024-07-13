@@ -123,12 +123,12 @@ const LandingPage = () => {
       </section>
 
       {/* Buddies Section */}
-      <section className="py-16 bg-gray-100 overflow-x-auto">
+      <section className="py-16 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-12">
             Connect with <span className="text-orange-500">Fitness Buddies</span>
           </h2>
-          <div className="flex space-x-4 pb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {[
               {
                 name: "Sarah",
@@ -176,9 +176,9 @@ const LandingPage = () => {
                 image: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               }
             ].map((buddy, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-72">
-                <img src={buddy.image} alt={buddy.name} className="w-full h-32 object-cover" />
-                <div className="p-3 flex-grow flex flex-col justify-between">
+              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-full">
+                <img src={buddy.image} alt={buddy.name} className="w-full h-40 object-cover" />
+                <div className="p-4 flex-grow flex flex-col justify-between">
                   <div>
                     <h3 className="text-sm font-semibold mb-1">{buddy.name} <span className="text-xs font-normal text-gray-500">{buddy.age}</span></h3>
                     <div className="flex items-center text-xs text-gray-600 mb-1">
@@ -207,12 +207,12 @@ const LandingPage = () => {
       </section>
 
       {/* Events Section */}
-      <section className="py-16 bg-white overflow-x-auto">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-12">
             Join Exciting <span className="text-orange-500">Fitness Events</span>
           </h2>
-          <div className="flex space-x-4 pb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {[
               {
                 title: "Morning Run",
@@ -260,9 +260,9 @@ const LandingPage = () => {
                 image: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
               }
             ].map((event, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-72">
-                <img src={event.image} alt={event.title} className="w-full h-32 object-cover" />
-                <div className="p-3 flex-grow flex flex-col justify-between">
+              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-full">
+                <img src={event.image} alt={event.title} className="w-full h-40 object-cover" />
+                <div className="p-4 flex-grow flex flex-col justify-between">
                   <div>
                     <h3 className="text-sm font-semibold mb-1">{event.title}</h3>
                     <div className="flex items-center text-xs text-gray-600 mb-1">
@@ -289,12 +289,12 @@ const LandingPage = () => {
       </section>
 
       {/* Personal Trainers Section */}
-      <section className="py-16 bg-gray-100 overflow-x-auto">
+      <section className="py-16 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-12">
             Expert <span className="text-orange-500">Personal Trainers</span>
           </h2>
-          <div className="flex space-x-4 pb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {[
               {
                 name: "John",
@@ -342,9 +342,9 @@ const LandingPage = () => {
                 image: "https://images.unsplash.com/photo-1594381898411-846e7d193883?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
               }
             ].map((trainer, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-72">
-                <img src={trainer.image} alt={trainer.name} className="w-full h-32 object-cover" />
-                <div className="p-3 flex-grow flex flex-col justify-between">
+              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden transition-transform duration-300 hover:shadow-md flex flex-col h-full">
+                <img src={trainer.image} alt={trainer.name} className="w-full h-40 object-cover" />
+                <div className="p-4 flex-grow flex flex-col justify-between">
                   <div>
                     <h3 className="text-sm font-semibold mb-1">{trainer.name} <span className="text-xs font-normal text-gray-500">{trainer.age}</span></h3>
                     <div className="flex items-center text-xs text-gray-600 mb-1">
