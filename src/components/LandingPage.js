@@ -114,7 +114,7 @@ const LandingPage = () => {
               {
                 name: 'Sarah J.',
                 image: 'https://randomuser.me/api/portraits/women/32.jpg',
-                quote: 'FitBuddy helped me find a running partner, and now I'm training for my first marathon!',
+                quote: 'FitBuddy helped me find a running partner, and now I\'m training for my first marathon!',
                 rating: 5,
               },
               {
@@ -126,7 +126,7 @@ const LandingPage = () => {
               {
                 name: 'Emily R.',
                 image: 'https://randomuser.me/api/portraits/women/68.jpg',
-                quote: 'I've made great friends and achieved my fitness goals thanks to FitBuddy.',
+                quote: 'I\'ve made great friends and achieved my fitness goals thanks to FitBuddy.',
                 rating: 5,
               },
             ].map((testimonial) => (
