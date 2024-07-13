@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, Clock, MapPin, Users, DollarSign, ArrowLeft } from 'lucide-react';
+import { Calendar, Clock, MapPin, Users, DollarSign, ArrowLeft, Image as ImageIcon } from 'lucide-react';
 
 const CreateEvent = () => {
   const navigate = useNavigate();
@@ -13,11 +13,27 @@ const CreateEvent = () => {
     maxParticipants: '',
     price: '',
     description: '',
+    images: [],
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEventDetails(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    setEventDetails(prev => ({
+      ...prev,
+      images: [...prev.images, ...files],
+    }));
+  };
+
+  const handleRemoveImage = (index) => {
+    setEventDetails(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -180,6 +196,43 @@ const CreateEvent = () => {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
           ></textarea>
         </div>
+
+        <div>
+          <label htmlFor="images" className="block text-sm font-medium text-gray-700">Event Images</label>
+          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+            <div className="space-y-1 text-center">
+              <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
+              <div className="flex text-sm text-gray-600">
+                <label htmlFor="images" className="relative cursor-pointer bg-white rounded-md font-medium text-orange-600 hover:text-orange-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-orange-500">
+                  <span>Upload images</span>
+                  <input id="images" name="images" type="file" className="sr-only" multiple onChange={handleImageUpload} />
+                </label>
+                <p className="pl-1">or drag and drop</p>
+              </div>
+              <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+            </div>
+          </div>
+        </div>
+
+        {eventDetails.images.length > 0 && (
+          <div>
+            <h4 className="text-sm font-medium text-gray-700 mb-2">Uploaded Images:</h4>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {eventDetails.images.map((image, index) => (
+                <div key={index} className="relative">
+                  <img src={URL.createObjectURL(image)} alt={`Event image ${index + 1}`} className="h-24 w-full object-cover rounded-md" />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(index)}
+                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="flex justify-end space-x-4">
           <button
