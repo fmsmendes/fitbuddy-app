@@ -37,10 +37,10 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div className="flex items-center">
             <img src="/logo.png" alt="FitBuddy Logo" className="h-8 w-auto mr-2" />
-            <span className="text-xl font-bold text-gray-900">FitBuddy</span>
+            <span className="font-bold text-xl text-orange-500">FitBuddy</span>
           </div>
           <div>
-            <button onClick={handleLoginClick} className="text-gray-500 hover:text-gray-700 mr-4">Login</button>
+            <button onClick={handleLoginClick} className="text-gray-600 hover:text-orange-500 mr-4 transition duration-300">Login</button>
             <button onClick={handleSignUpClick} className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition duration-300">Sign Up</button>
           </div>
         </div>
@@ -50,8 +50,8 @@ const LandingPage = () => {
       <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white pt-32 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl font-extrabold sm:text-5xl md:text-6xl">
-              Find Your Perfect Fitness Partner
+            <h1 className="text-4xl font-extrabold sm:text-5xl md:text-6xl mb-6">
+              Find Your Perfect <span className="text-yellow-300">Fitness Partner</span>
             </h1>
             <p className="mt-3 max-w-md mx-auto text-xl sm:text-2xl md:mt-5 md:max-w-3xl">
               Connect with like-minded fitness enthusiasts, join events, and achieve your goals together.
@@ -69,63 +69,24 @@ const LandingPage = () => {
       {/* Feature Highlights */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
+          <div className="text-center mb-16">
             <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-              Why Choose FitBuddy?
+              Why Choose <span className="text-orange-500">FitBuddy</span>?
             </h2>
             <p className="mt-4 text-xl text-gray-600">
               Discover the features that make FitBuddy the perfect platform for your fitness journey.
             </p>
           </div>
-          <div className="mt-20">
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {[
-                {
-                  icon: <Users className="h-12 w-12 text-orange-500" />,
-                  title: 'Find Fitness Buddies',
-                  description: 'Connect with people who share your fitness interests and goals.'
-                },
-                {
-                  icon: <Calendar className="h-12 w-12 text-orange-500" />,
-                  title: 'Join Events',
-                  description: 'Discover and participate in local fitness events and classes.'
-                },
-                {
-                  icon: <Activity className="h-12 w-12 text-orange-500" />,
-                  title: 'Track Progress',
-                  description: 'Set goals, log workouts, and monitor your fitness journey.'
-                },
-                {
-                  icon: <MapPin className="h-12 w-12 text-orange-500" />,
-                  title: 'Explore Nearby',
-                  description: 'Find fitness spots, parks, and gyms in your local area.'
-                },
-                {
-                  icon: <Clock className="h-12 w-12 text-orange-500" />,
-                  title: 'Flexible Scheduling',
-                  description: 'Plan workouts and events that fit your busy lifestyle.'
-                },
-                {
-                  icon: <Target className="h-12 w-12 text-orange-500" />,
-                  title: 'Community Challenges',
-                  description: 'Participate in motivating fitness challenges with the community.'
-                },
-              ].map((feature) => (
-                <div key={feature.title} className="pt-6">
-                  <div className="flow-root bg-white rounded-lg px-6 pb-8">
-                    <div className="-mt-6">
-                      <div>
-                        <span className="inline-flex items-center justify-center p-3 bg-orange-500 rounded-md shadow-lg">
-                          {feature.icon}
-                        </span>
-                      </div>
-                      <h3 className="mt-8 text-lg font-medium text-gray-900 tracking-tight">{feature.title}</h3>
-                      <p className="mt-5 text-base text-gray-500">{feature.description}</p>
-                    </div>
-                  </div>
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {features.map((feature) => (
+              <div key={feature.title} className="bg-white rounded-lg shadow-md p-6 transition duration-300 hover:shadow-lg">
+                <div className="flex items-center justify-center w-12 h-12 bg-orange-100 rounded-md mb-4">
+                  {feature.icon}
                 </div>
-              ))}
-            </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -133,48 +94,27 @@ const LandingPage = () => {
       {/* Testimonials */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl">
-            What Our Users Say
+          <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-16">
+            What Our <span className="text-orange-500">Users Say</span>
           </h2>
-          <div className="mt-20 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                name: 'Sarah J.',
-                image: 'https://randomuser.me/api/portraits/women/32.jpg',
-                quote: 'FitBuddy helped me find a running partner, and now I\'m training for my first marathon!',
-                rating: 5,
-              },
-              {
-                name: 'Mike T.',
-                image: 'https://randomuser.me/api/portraits/men/54.jpg',
-                quote: 'The variety of events on FitBuddy keeps my workouts exciting and challenging.',
-                rating: 4,
-              },
-              {
-                name: 'Emily R.',
-                image: 'https://randomuser.me/api/portraits/women/68.jpg',
-                quote: 'I\'ve made great friends and achieved my fitness goals thanks to FitBuddy.',
-                rating: 5,
-              },
-            ].map((testimonial) => (
-              <div key={testimonial.name} className="bg-gray-50 rounded-lg px-6 py-8 text-center">
-                <img className="mx-auto h-16 w-16 rounded-full" src={testimonial.image} alt={testimonial.name} />
-                <blockquote className="mt-6 text-gray-700">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+            {testimonials.map((testimonial) => (
+              <div key={testimonial.name} className="bg-gray-50 rounded-lg px-6 py-8 text-center shadow-md transition duration-300 hover:shadow-lg">
+                <img className="mx-auto h-20 w-20 rounded-full mb-4" src={testimonial.image} alt={testimonial.name} />
+                <blockquote className="text-gray-700 mb-4">
                   <p>"{testimonial.quote}"</p>
                 </blockquote>
-                <div className="mt-4">
-                  <h3 className="text-gray-900 font-medium">{testimonial.name}</h3>
-                  <div className="mt-1 flex justify-center">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-5 w-5 ${
-                          i < testimonial.rating ? 'text-yellow-400' : 'text-gray-300'
-                        }`}
-                        fill="currentColor"
-                      />
-                    ))}
-                  </div>
+                <div className="font-medium text-gray-900">{testimonial.name}</div>
+                <div className="mt-2 flex justify-center">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`h-5 w-5 ${
+                        i < testimonial.rating ? 'text-yellow-400' : 'text-gray-300'
+                      }`}
+                      fill="currentColor"
+                    />
+                  ))}
                 </div>
               </div>
             ))}
