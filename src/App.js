@@ -222,6 +222,7 @@ function App() {
                 events={events} 
                 trainers={trainers} 
                 currentUser={currentUser}
+                setIsAuthenticated={setIsAuthenticated}
               />
           ) : <LandingPage />
         } />

@@ -5,7 +5,7 @@ import Navigation from './Navigation';
 import UserMenu from './UserMenu';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-const Dashboard = ({ buddies, events, trainers }) => {
+const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
     const [activeTab, setActiveTab] = useState('home');
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [favoriteBuddies, setFavoriteBuddies] = useState([]);
@@ -242,7 +242,7 @@ const toggleFavoriteTrainer = (trainerId) => {
       </main>
 
       <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
-      <UserMenu isOpen={isUserMenuOpen} onClose={() => setIsUserMenuOpen(false)} />
+      <UserMenu isOpen={isUserMenuOpen} onClose={() => setIsUserMenuOpen(false)} setIsAuthenticated={setIsAuthenticated} />
     </div>
 
   );
