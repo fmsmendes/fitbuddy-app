@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Calendar as CalendarIcon, Filter, MapPin, Clock, Users } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Calendar as CalendarIcon, Filter, MapPin, Clock, Users, Search, Plus } from 'lucide-react';
 import { Calendar } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
@@ -15,6 +15,7 @@ const EventsPage = ({ events }) => {
     isFree: null,
   });
   const [filteredEvents, setFilteredEvents] = useState(events);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const filtered = events.filter(event => {
@@ -24,12 +25,13 @@ const EventsPage = ({ events }) => {
       const dateMatch = date ? eventDate.toDateString() === date.toDateString() : true;
       const typeMatch = !filters.type || event.type === filters.type;
       const freeMatch = filters.isFree === null || event.isFree === filters.isFree;
+      const searchMatch = event.name.toLowerCase().includes(searchTerm.toLowerCase());
 
-      return dateMatch && typeMatch && freeMatch;
+      return dateMatch && typeMatch && freeMatch && searchMatch;
     });
 
     setFilteredEvents(filtered);
-  }, [date, filters, events]);
+  }, [date, filters, events, searchTerm]);
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -43,14 +45,20 @@ const EventsPage = ({ events }) => {
     <div className="max-w-7xl mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Events</h1>
-        <button onClick={() => navigate(-1)} className="text-orange-500 font-medium">
-          Back to Dashboard
-        </button>
+        <div className="flex space-x-4">
+          <Link to="/create-event" className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors flex items-center">
+            <Plus size={20} className="mr-2" />
+            Create Event
+          </Link>
+          <button onClick={() => navigate(-1)} className="text-orange-500 font-medium">
+            Back to Dashboard
+          </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <div className="relative">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-4">
+          <div className="relative w-full md:w-auto mb-4 md:mb-0">
             <button
               onClick={() => setShowCalendar(!showCalendar)}
               className="flex items-center px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
@@ -82,7 +90,17 @@ const EventsPage = ({ events }) => {
               </div>
             )}
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 w-full md:w-auto">
+            <div className="relative flex-grow">
+              <input
+                type="text"
+                placeholder="Search events..."
+                className="w-full p-2 pl-10 border rounded-lg"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
+            </div>
             <button
               onClick={() => setShowFilters(!showFilters)}
               className="flex items-center px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
