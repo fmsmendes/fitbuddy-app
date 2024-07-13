@@ -34,6 +34,7 @@ import AddCard from './components/AddCard';
 import AddBankAccount from './components/AddBankAccount';
 import AddClient from './components/AddClient';
 import BookSession from './components/BookSession';
+import CreateEvent from './components/CreateEvent';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -385,6 +386,9 @@ function App() {
           isAuthenticated && currentUser.role === 'trainer' ?
           <CreateClass /> :
           <Navigate to="/login" />
+        } />
+        <Route path="/create-event" element={
+          isAuthenticated ? <CreateEvent /> : <Navigate to="/login" />
         } />
         <Route path="/trainer-financials" element={
           isAuthenticated && currentUser.role === 'trainer' ?
