@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Users, Calendar, Dumbbell, Star, MapPin, Clock, Activity, Target, Heart, Zap, Award, Apple } from 'lucide-react';
+import { ArrowRight, Users, Calendar, Dumbbell, Star, MapPin, Clock, Activity, Target, Heart, Zap, Award } from 'lucide-react';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -122,69 +122,131 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Sample Cards Section */}
+      {/* Buddies Section */}
       <section className="py-20 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-16">
-            Discover What <span className="text-orange-500">FitBuddy</span> Offers
+            Connect with <span className="text-orange-500">Fitness Buddies</span>
           </h2>
-          <div className="overflow-x-auto pb-4">
-            <div className="flex space-x-6 min-w-max">
-              {[
-                {
-                  title: "Find Fitness Buddies",
-                  description: "Connect with like-minded individuals who share your fitness goals.",
-                  icon: <Users size={24} className="text-orange-500" />,
-                  stat: "500+ active buddies",
-                  image: "https://randomuser.me/api/portraits/men/32.jpg"
-                },
-                {
-                  title: "Join Exciting Events",
-                  description: "Participate in local fitness events, classes, and challenges.",
-                  icon: <Calendar size={24} className="text-orange-500" />,
-                  stat: "20+ weekly events",
-                  image: "https://source.unsplash.com/random/800x600?fitness"
-                },
-                {
-                  title: "Expert Personal Trainers",
-                  description: "Get personalized guidance from certified trainers.",
-                  icon: <Award size={24} className="text-orange-500" />,
-                  stat: "100+ certified trainers",
-                  image: "https://randomuser.me/api/portraits/women/68.jpg"
-                },
-                {
-                  title: "Yoga Classes",
-                  description: "Join relaxing and rejuvenating yoga sessions.",
-                  icon: <Activity size={24} className="text-orange-500" />,
-                  stat: "50+ yoga instructors",
-                  image: "https://randomuser.me/api/portraits/women/65.jpg"
-                },
-                {
-                  title: "Nutrition Plans",
-                  description: "Get customized nutrition advice from experts.",
-                  icon: <Apple size={24} className="text-orange-500" />,
-                  stat: "30+ nutrition specialists",
-                  image: "https://randomuser.me/api/portraits/men/41.jpg"
-                }
-              ].map((card, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0 w-72 transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                  <img src={card.image} alt={card.title} className="w-full h-72 object-cover" />
-                  <div className="p-4">
-                    <div className="flex items-center mb-2">
-                      {card.icon}
-                      <h3 className="text-lg font-semibold ml-2">{card.title}</h3>
-                    </div>
-                    <p className="text-gray-600 text-sm mb-3">{card.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-orange-500">{card.stat}</span>
-                      <button className="text-sm text-white bg-orange-500 px-3 py-1 rounded-full hover:bg-orange-600 transition-colors">
-                        Learn More
-                      </button>
-                    </div>
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Sarah",
+                interests: ["Running", "Yoga"],
+                level: "Intermediate",
+                image: "https://images.unsplash.com/photo-1595246140625-573b715d11dc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              },
+              {
+                name: "Mike",
+                interests: ["Weightlifting", "HIIT"],
+                level: "Advanced",
+                image: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              },
+              {
+                name: "Emma",
+                interests: ["Cycling", "Swimming"],
+                level: "Beginner",
+                image: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              }
+            ].map((buddy, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                <img src={buddy.image} alt={buddy.name} className="w-full h-48 object-cover" />
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold mb-2">{buddy.name}</h3>
+                  <p className="text-sm text-gray-600 mb-2">Interests: {buddy.interests.join(", ")}</p>
+                  <p className="text-sm text-gray-600">Level: {buddy.level}</p>
+                  <button className="mt-4 w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    Connect
+                  </button>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Events Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-16">
+            Join Exciting <span className="text-orange-500">Fitness Events</span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Morning Run",
+                date: "July 15, 2024",
+                location: "Central Park",
+                image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              },
+              {
+                title: "Yoga in the Park",
+                date: "July 20, 2024",
+                location: "Sunset Beach",
+                image: "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              },
+              {
+                title: "HIIT Bootcamp",
+                date: "July 25, 2024",
+                location: "City Gym",
+                image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              }
+            ].map((event, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                <img src={event.image} alt={event.title} className="w-full h-48 object-cover" />
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold mb-2">{event.title}</h3>
+                  <p className="text-sm text-gray-600 mb-2">{event.date}</p>
+                  <p className="text-sm text-gray-600">{event.location}</p>
+                  <button className="mt-4 w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    Join Event
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Personal Trainers Section */}
+      <section className="py-20 bg-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-extrabold text-gray-900 text-center sm:text-4xl mb-16">
+            Expert <span className="text-orange-500">Personal Trainers</span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                name: "John",
+                specialties: ["Strength Training", "HIIT"],
+                experience: "10 years",
+                image: "https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1472&q=80"
+              },
+              {
+                name: "Lisa",
+                specialties: ["Yoga", "Pilates"],
+                experience: "8 years",
+                image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+              },
+              {
+                name: "Mark",
+                specialties: ["Cardio", "Nutrition"],
+                experience: "12 years",
+                image: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80"
+              }
+            ].map((trainer, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                <img src={trainer.image} alt={trainer.name} className="w-full h-48 object-cover" />
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold mb-2">{trainer.name}</h3>
+                  <p className="text-sm text-gray-600 mb-2">Specialties: {trainer.specialties.join(", ")}</p>
+                  <p className="text-sm text-gray-600">Experience: {trainer.experience}</p>
+                  <button className="mt-4 w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                    Book Session
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
