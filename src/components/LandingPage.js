@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Users, Calendar, Dumbbell, Star, MapPin, Clock, Activity, Target, Heart, Zap, Award } from 'lucide-react';
+import { ArrowRight, Users, Calendar, Dumbbell, Star, MapPin, Clock, Activity, Target, Heart, Zap, Award, Apple } from 'lucide-react';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -162,7 +162,7 @@ const LandingPage = () => {
                 {
                   title: "Nutrition Plans",
                   description: "Get customized nutrition advice from experts.",
-                  icon: <Utensils size={24} className="text-orange-500" />,
+                  icon: <Apple size={24} className="text-orange-500" />,
                   stat: "30+ nutrition specialists",
                   image: "https://randomuser.me/api/portraits/men/41.jpg"
                 }
