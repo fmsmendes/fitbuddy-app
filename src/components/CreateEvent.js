@@ -17,6 +17,7 @@ const CreateEvent = () => {
     duration: '',
     isRecurring: false,
     recurringFrequency: '',
+    recurringEndDate: '',
   });
 
   const handleChange = (e) => {
@@ -45,7 +46,10 @@ const CreateEvent = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Here you would typically send the data to your backend
-    console.log('Event details:', eventDetails);
+    console.log('Event details:', {
+      ...eventDetails,
+      recurringEndDate: eventDetails.isRecurring ? eventDetails.recurringEndDate : null
+    });
     alert('Event created successfully!');
     navigate('/events');
   };
@@ -232,23 +236,37 @@ const CreateEvent = () => {
         </div>
 
         {eventDetails.isRecurring && (
-          <div>
-            <label htmlFor="recurringFrequency" className="block text-sm font-medium text-gray-700">Recurring Frequency</label>
-            <select
-              id="recurringFrequency"
-              name="recurringFrequency"
-              value={eventDetails.recurringFrequency}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
-            >
-              <option value="">Select frequency</option>
-              <option value="daily">Daily</option>
-              <option value="weekly">Weekly</option>
-              <option value="biweekly">Bi-weekly</option>
-              <option value="monthly">Monthly</option>
-            </select>
-          </div>
+          <>
+            <div>
+              <label htmlFor="recurringFrequency" className="block text-sm font-medium text-gray-700">Recurring Frequency</label>
+              <select
+                id="recurringFrequency"
+                name="recurringFrequency"
+                value={eventDetails.recurringFrequency}
+                onChange={handleChange}
+                required
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
+              >
+                <option value="">Select frequency</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="biweekly">Bi-weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="recurringEndDate" className="block text-sm font-medium text-gray-700">End Date for Recurring Event</label>
+              <input
+                type="date"
+                id="recurringEndDate"
+                name="recurringEndDate"
+                value={eventDetails.recurringEndDate}
+                onChange={handleChange}
+                required
+                className="mt-1 focus:ring-orange-500 focus:border-orange-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
+          </>
         )}
 
         <div>
