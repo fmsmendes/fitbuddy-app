@@ -1,8 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight, Users, Calendar, Dumbbell, Star, MapPin, Clock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight, Users, Calendar, Dumbbell, Star, MapPin, Clock, Activity, Target } from 'lucide-react';
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleSignUpClick = () => {
+    navigate('/login');
+  };
   return (
     <div className="font-sans">
       {/* Header */}
@@ -13,8 +22,8 @@ const LandingPage = () => {
             <span className="text-xl font-bold text-gray-900">FitBuddy</span>
           </div>
           <div>
-            <Link to="/login" className="text-gray-500 hover:text-gray-700 mr-4">Login</Link>
-            <Link to="/signup" className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition duration-300">Sign Up</Link>
+            <button onClick={handleLoginClick} className="text-gray-500 hover:text-gray-700 mr-4">Login</button>
+            <button onClick={handleSignUpClick} className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition duration-300">Sign Up</button>
           </div>
         </div>
       </header>
@@ -30,10 +39,10 @@ const LandingPage = () => {
               Connect with like-minded fitness enthusiasts, join events, and achieve your goals together.
             </p>
             <div className="mt-10 flex justify-center">
-              <Link to="/signup" className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-orange-600 bg-white hover:bg-orange-50 transition duration-300">
+              <button onClick={handleSignUpClick} className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-orange-600 bg-white hover:bg-orange-50 transition duration-300">
                 Get Started
                 <ArrowRight className="ml-2 -mr-1 h-5 w-5" aria-hidden="true" />
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -54,32 +63,32 @@ const LandingPage = () => {
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {[
                 {
-                  icon: <Users className="h-8 w-8 text-orange-500" />,
+                  icon: <Users className="h-12 w-12 text-orange-500" />,
                   title: 'Find Fitness Buddies',
                   description: 'Connect with people who share your fitness interests and goals.'
                 },
                 {
-                  icon: <Calendar className="h-8 w-8 text-orange-500" />,
+                  icon: <Calendar className="h-12 w-12 text-orange-500" />,
                   title: 'Join Events',
                   description: 'Discover and participate in local fitness events and classes.'
                 },
                 {
-                  icon: <Dumbbell className="h-8 w-8 text-orange-500" />,
+                  icon: <Activity className="h-12 w-12 text-orange-500" />,
                   title: 'Track Progress',
                   description: 'Set goals, log workouts, and monitor your fitness journey.'
                 },
                 {
-                  icon: <MapPin className="h-8 w-8 text-orange-500" />,
+                  icon: <MapPin className="h-12 w-12 text-orange-500" />,
                   title: 'Explore Nearby',
                   description: 'Find fitness spots, parks, and gyms in your local area.'
                 },
                 {
-                  icon: <Clock className="h-8 w-8 text-orange-500" />,
+                  icon: <Clock className="h-12 w-12 text-orange-500" />,
                   title: 'Flexible Scheduling',
                   description: 'Plan workouts and events that fit your busy lifestyle.'
                 },
                 {
-                  icon: <Star className="h-8 w-8 text-orange-500" />,
+                  icon: <Target className="h-12 w-12 text-orange-500" />,
                   title: 'Community Challenges',
                   description: 'Participate in motivating fitness challenges with the community.'
                 },
@@ -164,9 +173,9 @@ const LandingPage = () => {
           </h2>
           <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
             <div className="inline-flex rounded-md shadow">
-              <Link to="/signup" className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-orange-600 bg-white hover:bg-orange-50 transition duration-300">
+              <button onClick={handleSignUpClick} className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-orange-600 bg-white hover:bg-orange-50 transition duration-300">
                 Sign Up Now
-              </Link>
+              </button>
             </div>
           </div>
         </div>
