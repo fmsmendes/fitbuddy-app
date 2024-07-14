@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X, Dumbbell, Bike, Waves, Mountain, Snowflake, Tennis, Yoga, Volleyball, Surfboard, Footprints } from 'lucide-react';
+import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X, Dumbbell, Bike, Waves, Mountain, Snowflake, Tennis, Volleyball, Surfboard, Footprints } from 'lucide-react';
 
 const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
   const navigate = useNavigate();
@@ -193,7 +193,7 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
                   <div className="grid grid-cols-3 gap-2">
                     {[
                       { icon: <Activity size={20} />, label: 'Running' },
-                      { icon: <Yoga size={20} />, label: 'Yoga' },
+                      { icon: <Activity size={20} />, label: 'Yoga' },
                       { icon: <Dumbbell size={20} />, label: 'Weightlifting' },
                       { icon: <Bike size={20} />, label: 'Cycling' },
                       { icon: <Waves size={20} />, label: 'Swimming' },
