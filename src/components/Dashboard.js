@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, Calendar, User, Users, Search, MapPin, Star, Activity, Clock, Dumbbell, Heart, TrendingUp, Award } from 'lucide-react';
+import { Bell, Calendar, User, Users, Search, MapPin, Star, Activity, Clock, Dumbbell, Heart, TrendingUp, Award, Sun, Moon } from 'lucide-react';
 import Navigation from './Navigation';
 import UserMenu from './UserMenu';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -74,9 +74,15 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
       </div>
       <div className="mb-3">
         <p className="text-sm font-medium text-gray-700 mb-1">Availability:</p>
-        <div className="flex items-center text-sm text-gray-600">
-          <Clock size={14} className="mr-1" />
-          {buddy.availability ? buddy.availability.join(', ') : 'N/A'}
+        <div className="flex flex-wrap items-center text-sm text-gray-600">
+          {buddy.availability ? buddy.availability.map((time, index) => (
+            <div key={index} className="flex items-center mr-2 mb-1">
+              {time === 'Morning' && <Sun size={14} className="mr-1 text-yellow-500" />}
+              {time === 'Afternoon' && <Sun size={14} className="mr-1 text-orange-500" />}
+              {time === 'Evening' && <Moon size={14} className="mr-1 text-indigo-500" />}
+              {time}
+            </div>
+          )) : 'N/A'}
         </div>
       </div>
       <button 
