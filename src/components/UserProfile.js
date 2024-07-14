@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X, Dumbbell, Bike, Mountain, Snowflake, Footprints, Zap, Shirt } from 'lucide-react';
+import { FaUser, FaEnvelope, FaMapMarkerAlt, FaCalendarAlt, FaRunning, FaAward, FaEdit, FaSignOutAlt, FaClock, FaStar, FaHeart, FaBullseye, FaSave, FaTimes, FaDumbbell, FaBiking, FaMountain, FaSnowflake, FaShoe, FaBolt, FaTshirt } from 'react-icons/fa';
 
 const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
   const navigate = useNavigate();
@@ -129,7 +129,7 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center text-gray-600">
-                  <User className="mr-2" size={20} />
+                  <FaUser className="mr-2" size={20} />
                   {isEditing ? (
                     <>
                       <select
