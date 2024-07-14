@@ -14,6 +14,9 @@ import FindBuddy from './components/FindBuddy';
 import EventsPage from './components/EventsPage';
 import UserProfile from './components/UserProfile';
 import TrainersPage from './components/TrainersPage';
+import AllBuddiesPage from './components/AllBuddiesPage';
+import AllEventsPage from './components/AllEventsPage';
+import AllTrainersPage from './components/AllTrainersPage';
 import BuddiesPage from './components/BuddiesPage';
 import ExplorePage from './components/ExplorePage';
 import MyEvents from './components/MyEvents';
@@ -326,6 +329,15 @@ function App() {
 } />
         <Route path="/trainers" element={
           isAuthenticated ? <TrainersPage trainers={trainers} /> : <Navigate to="/login" />
+        } />
+        <Route path="/all-buddies" element={
+          isAuthenticated ? <AllBuddiesPage buddies={buddies} /> : <Navigate to="/login" />
+        } />
+        <Route path="/all-events" element={
+          isAuthenticated ? <AllEventsPage events={events} /> : <Navigate to="/login" />
+        } />
+        <Route path="/all-trainers" element={
+          isAuthenticated ? <AllTrainersPage trainers={trainers} /> : <Navigate to="/login" />
         } />
         <Route 
   path="/trainer-settings" 

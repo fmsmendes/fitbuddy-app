@@ -233,7 +233,7 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
         >
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Suggested Buddies</h2>
-            <button className="text-orange-500 font-medium">View All</button>
+            <button onClick={() => navigate('/all-buddies')} className="text-orange-500 font-medium">View All</button>
           </div>
           <div className="flex flex-nowrap overflow-x-auto pb-4 -mx-4 px-4">
             {buddies.map((buddy, index) => (
@@ -258,7 +258,7 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
         >
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Suggested Events</h2>
-            <button className="text-orange-500 font-medium">View All</button>
+            <button onClick={() => navigate('/all-events')} className="text-orange-500 font-medium">View All</button>
           </div>
           <div className="flex flex-nowrap overflow-x-auto pb-4 -mx-4 px-4">
             {events.map((event, index) => (
@@ -283,7 +283,7 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
         >
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Featured Trainers</h2>
-            <button className="text-orange-500 font-medium">View All</button>
+            <button onClick={() => navigate('/all-trainers')} className="text-orange-500 font-medium">View All</button>
           </div>
           <div className="flex flex-nowrap overflow-x-auto pb-4 -mx-4 px-4">
             {trainers.map((trainer, index) => (
