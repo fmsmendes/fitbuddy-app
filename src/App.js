@@ -35,6 +35,8 @@ import AddBankAccount from './components/AddBankAccount';
 import AddClient from './components/AddClient';
 import BookSession from './components/BookSession';
 import CreateEvent from './components/CreateEvent';
+import MessageBuddy from './components/MessageBuddy';
+import ScheduleWorkout from './components/ScheduleWorkout';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
