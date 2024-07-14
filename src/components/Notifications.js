@@ -51,7 +51,7 @@ const Notifications = () => {
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <div className="flex border-b">
           <button
-            className={`flex-1 py-3 px-4 text-center font-medium transition-colors duration-200 ${
+            className={`flex-1 py-2 px-4 text-center font-medium transition-colors duration-200 ${
               activeTab === 'general' 
                 ? 'bg-orange-500 text-white' 
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
