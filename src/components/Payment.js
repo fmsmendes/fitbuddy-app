@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreditCard, DollarSign, ArrowLeft } from 'lucide-react';
+import AddPaymentMethod from './AddPaymentMethod';
 
-const Payment = ({ paymentMethods, transactions }) => {
+const Payment = ({ paymentMethods, transactions, onAddPaymentMethod }) => {
   const navigate = useNavigate();
+  const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false);
+
+  const handleAddPaymentMethod = (newPaymentMethod) => {
+    onAddPaymentMethod(newPaymentMethod);
+    setShowAddPaymentMethod(false);
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -25,7 +32,10 @@ const Payment = ({ paymentMethods, transactions }) => {
             </div>
           </div>
         ))}
-        <button className="mt-4 bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors">
+        <button 
+          className="mt-4 bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition-colors"
+          onClick={() => setShowAddPaymentMethod(true)}
+        >
           Add Payment Method
         </button>
       </div>
@@ -47,6 +57,13 @@ const Payment = ({ paymentMethods, transactions }) => {
           </div>
         ))}
       </div>
+
+      {showAddPaymentMethod && (
+        <AddPaymentMethod
+          onClose={() => setShowAddPaymentMethod(false)}
+          onAddPaymentMethod={handleAddPaymentMethod}
+        />
+      )}
     </div>
   );
 };
