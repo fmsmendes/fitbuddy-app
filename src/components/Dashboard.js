@@ -11,13 +11,7 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [favoriteBuddies, setFavoriteBuddies] = useState([]);
     const [favoriteTrainers, setFavoriteTrainers] = useState([]);
-    const [showWelcome, setShowWelcome] = useState(true);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const timer = setTimeout(() => setShowWelcome(false), 3000);
-        return () => clearTimeout(timer);
-    }, []);
 
     const toggleFavoriteBuddy = (buddyId) => {
         setFavoriteBuddies(prev => 
@@ -170,20 +164,6 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
 
   return (
     <div className="font-sans max-w-7xl mx-auto bg-gray-100 min-h-screen overflow-y-auto pb-16">
-      {showWelcome && (
-        <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -50 }}
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-        >
-          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-            <h2 className="text-2xl font-bold mb-4">Welcome back, Diana!</h2>
-            <p>Let's make today a great fitness day!</p>
-          </div>
-        </motion.div>
-      )}
-
       <header className="bg-white p-4 flex justify-between items-center sticky top-0 z-10 shadow-sm">
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-orange-500 rounded-full"></div>
