@@ -93,6 +93,19 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
           )) : 'N/A'}
         </div>
       </div>
+      <div className="mb-3">
+        <p className="text-sm font-medium text-gray-700 mb-1">Availability:</p>
+        <div className="flex flex-wrap items-center text-sm text-gray-600">
+          {buddy.availability ? buddy.availability.map((time, index) => (
+            <div key={index} className="flex items-center mr-2 mb-1">
+              {time === 'Morning' && <Sun size={14} className="mr-1 text-yellow-500" />}
+              {time === 'Afternoon' && <Sun size={14} className="mr-1 text-orange-500" />}
+              {time === 'Evening' && <Moon size={14} className="mr-1 text-indigo-500" />}
+              {time}
+            </div>
+          )) : 'N/A'}
+        </div>
+      </div>
       <button 
         onClick={() => navigate(`/buddy/${buddy.id}`)}
         className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors"
