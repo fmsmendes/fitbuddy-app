@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X, Dumbbell, Bike, Waves, Mountain, Snowflake, Footprints } from 'lucide-react';
+import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X, Dumbbell, Bike, Swim, Mountain, Snowflake, Footprints, Yoga, Zap, Shirt } from 'lucide-react';
 
 const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
   const navigate = useNavigate();
@@ -193,10 +193,10 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
                   <div className="grid grid-cols-3 gap-2">
                     {[
                       { icon: <Activity size={20} />, label: 'Running' },
-                      { icon: <Activity size={20} />, label: 'Yoga' },
+                      { icon: <Yoga size={20} />, label: 'Yoga' },
                       { icon: <Dumbbell size={20} />, label: 'Weightlifting' },
                       { icon: <Bike size={20} />, label: 'Cycling' },
-                      { icon: <Waves size={20} />, label: 'Swimming' },
+                      { icon: <Swim size={20} />, label: 'Swimming' },
                       { icon: <Target size={20} />, label: 'Archery' },
                       { icon: <Activity size={20} />, label: 'Tennis' },
                       { icon: <Mountain size={20} />, label: 'Hiking' },
@@ -204,9 +204,9 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
                       { icon: <Footprints size={20} />, label: 'Walking' },
                       { icon: <Activity size={20} />, label: 'Volleyball' },
                       { icon: <Activity size={20} />, label: 'Beach Tennis' },
-                      { icon: <Waves size={20} />, label: 'Surfing' },
-                      { icon: <Activity size={20} />, label: 'HIIT' },
-                      { icon: <Dumbbell size={20} />, label: 'CrossFit' },
+                      { icon: <Swim size={20} />, label: 'Surfing' },
+                      { icon: <Zap size={20} />, label: 'HIIT' },
+                      { icon: <Shirt size={20} />, label: 'CrossFit' },
                     ].map((interest, index) => (
                       <button
                         key={index}
