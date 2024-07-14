@@ -53,18 +53,18 @@ const Notifications = () => {
           <button
             className={`flex-1 py-2 px-4 text-center font-medium transition-colors duration-200 ${
               activeTab === 'general' 
-                ? 'bg-orange-500 text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'text-orange-500 border-b-2 border-orange-500' 
+                : 'text-gray-700 hover:text-orange-500'
             }`}
             onClick={() => setActiveTab('general')}
           >
             General
           </button>
           <button
-            className={`flex-1 py-3 px-4 text-center font-medium transition-colors duration-200 ${
+            className={`flex-1 py-2 px-4 text-center font-medium transition-colors duration-200 ${
               activeTab === 'requests' 
-                ? 'bg-orange-500 text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'text-orange-500 border-b-2 border-orange-500' 
+                : 'text-gray-700 hover:text-orange-500'
             }`}
             onClick={() => setActiveTab('requests')}
           >
