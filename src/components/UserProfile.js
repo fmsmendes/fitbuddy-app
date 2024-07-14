@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X, Dumbbell, Bike, Waves, Mountain, Snowflake, Surfboard, Footprints } from 'lucide-react';
+import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X, Dumbbell, Bike, Waves, Mountain, Snowflake, Footprints } from 'lucide-react';
 
 const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
   const navigate = useNavigate();
@@ -204,7 +204,7 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
                       { icon: <Footprints size={20} />, label: 'Walking' },
                       { icon: <Activity size={20} />, label: 'Volleyball' },
                       { icon: <Activity size={20} />, label: 'Beach Tennis' },
-                      { icon: <Surfboard size={20} />, label: 'Surfing' },
+                      { icon: <Waves size={20} />, label: 'Surfing' },
                       { icon: <Activity size={20} />, label: 'HIIT' },
                       { icon: <Dumbbell size={20} />, label: 'CrossFit' },
                     ].map((interest, index) => (
