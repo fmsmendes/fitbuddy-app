@@ -294,11 +294,12 @@ function App() {
     <UserProfile 
       user={{
         ...currentUser,
-        fitnessLevel: 'Intermediate', // You can adjust this based on user data
-        joinDate: '2023-01-01', // You should set this when a user first signs up
-        interests: ['Running', 'Yoga', 'Weightlifting'], // These could be part of the user profile
+        fitnessLevel: 'Intermediate',
+        joinDate: '2023-01-01',
+        interests: ['Running', 'Yoga', 'Weightlifting'],
         availability: ['Morning', 'Evening'],
         fitnessGoals: ['Lose weight', 'Build muscle', 'Improve endurance'],
+        dob: '1990-01-01', // Add this line for Date of Birth
         stats: {
           eventsAttended: 10,
           buddiesConnected: 5,
@@ -313,6 +314,11 @@ function App() {
         ]
       }} 
       setIsAuthenticated={setIsAuthenticated}
+      updateUser={(updatedUser) => {
+        // Here you would typically update the user data in your backend
+        console.log('Updating user:', updatedUser);
+        setCurrentUser(prevUser => ({...prevUser, ...updatedUser}));
+      }}
     />
   ) : <Navigate to="/login" />
 } />

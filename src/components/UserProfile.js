@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target } from 'lucide-react';
+import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X } from 'lucide-react';
 
-const UserProfile = ({ user, setIsAuthenticated }) => {
+const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('info');
   const [userData, setUserData] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedData, setEditedData] = useState(null);
 
   useEffect(() => {
     console.log("User data received:", user);
     setUserData(user);
+    setEditedData(user);
   }, [user]);
 
   const handleLogout = () => {
@@ -31,9 +34,48 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
     );
   };
 
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = () => {
+    updateUser(editedData);
+    setUserData(editedData);
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditedData(userData);
+    setIsEditing(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleArrayChange = (e, field) => {
+    const { value } = e.target;
+    setEditedData(prev => ({
+      ...prev,
+      [field]: value.split(',').map(item => item.trim())
+    }));
+  };
+
   if (!userData) {
     return <div>Loading user data...</div>;
   }
+
+  const calculateAge = (dob) => {
+    const today = new Date();
+    const birthDate = new Date(dob);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -48,7 +90,17 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
           <div className="flex items-center mb-6">
             <img src={userData.image} alt={userData.name} className="w-24 h-24 rounded-full object-cover mr-6" />
             <div>
-              <h2 className="text-2xl font-semibold">{userData.name}</h2>
+              {isEditing ? (
+                <input
+                  type="text"
+                  name="name"
+                  value={editedData.name}
+                  onChange={handleChange}
+                  className="text-2xl font-semibold mb-1 border rounded px-2 py-1"
+                />
+              ) : (
+                <h2 className="text-2xl font-semibold">{userData.name}</h2>
+              )}
               <p className="text-gray-600">{userData.fitnessLevel} Fitness Enthusiast</p>
               {renderRating(userData.rating)}
             </div>
@@ -78,15 +130,57 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center text-gray-600">
                   <User className="mr-2" size={20} />
-                  <span>{userData.gender}, {userData.age} years old</span>
+                  {isEditing ? (
+                    <>
+                      <select
+                        name="gender"
+                        value={editedData.gender}
+                        onChange={handleChange}
+                        className="border rounded px-2 py-1 mr-2"
+                      >
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                      </select>
+                      <input
+                        type="date"
+                        name="dob"
+                        value={editedData.dob}
+                        onChange={handleChange}
+                        className="border rounded px-2 py-1"
+                      />
+                    </>
+                  ) : (
+                    <span>{userData.gender}, {calculateAge(userData.dob)} years old</span>
+                  )}
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Mail className="mr-2" size={20} />
-                  <span>{userData.email}</span>
+                  {isEditing ? (
+                    <input
+                      type="email"
+                      name="email"
+                      value={editedData.email}
+                      onChange={handleChange}
+                      className="border rounded px-2 py-1"
+                    />
+                  ) : (
+                    <span>{userData.email}</span>
+                  )}
                 </div>
                 <div className="flex items-center text-gray-600">
                   <MapPin className="mr-2" size={20} />
-                  <span>{userData.location}</span>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      name="location"
+                      value={editedData.location}
+                      onChange={handleChange}
+                      className="border rounded px-2 py-1"
+                    />
+                  ) : (
+                    <span>{userData.location}</span>
+                  )}
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Calendar className="mr-2" size={20} />
@@ -95,42 +189,72 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Interests</h3>
-                <div className="flex flex-wrap">
-                  {userData.interests && userData.interests.length > 0 ? (
-                    userData.interests.map((interest, index) => (
-                      <span key={index} className="bg-orange-100 text-orange-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
-                        {interest}
-                      </span>
-                    ))
-                  ) : (
-                    <span>No interests specified</span>
-                  )}
-                </div>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editedData.interests.join(', ')}
+                    onChange={(e) => handleArrayChange(e, 'interests')}
+                    className="w-full border rounded px-2 py-1"
+                    placeholder="Enter interests separated by commas"
+                  />
+                ) : (
+                  <div className="flex flex-wrap">
+                    {userData.interests && userData.interests.length > 0 ? (
+                      userData.interests.map((interest, index) => (
+                        <span key={index} className="bg-orange-100 text-orange-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
+                          {interest}
+                        </span>
+                      ))
+                    ) : (
+                      <span>No interests specified</span>
+                    )}
+                  </div>
+                )}
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Availability</h3>
-                <div className="flex flex-wrap">
-                  {userData.availability && userData.availability.length > 0 ? (
-                    userData.availability.map((time, index) => (
-                      <span key={index} className="bg-green-100 text-green-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
-                        {time}
-                      </span>
-                    ))
-                  ) : (
-                    <span>No availability specified</span>
-                  )}
-                </div>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editedData.availability.join(', ')}
+                    onChange={(e) => handleArrayChange(e, 'availability')}
+                    className="w-full border rounded px-2 py-1"
+                    placeholder="Enter availability separated by commas"
+                  />
+                ) : (
+                  <div className="flex flex-wrap">
+                    {userData.availability && userData.availability.length > 0 ? (
+                      userData.availability.map((time, index) => (
+                        <span key={index} className="bg-green-100 text-green-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
+                          {time}
+                        </span>
+                      ))
+                    ) : (
+                      <span>No availability specified</span>
+                    )}
+                  </div>
+                )}
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Fitness Goals</h3>
-                {userData.fitnessGoals && userData.fitnessGoals.length > 0 ? (
-                  <ul className="list-disc list-inside">
-                    {userData.fitnessGoals.map((goal, index) => (
-                      <li key={index} className="text-gray-600">{goal}</li>
-                    ))}
-                  </ul>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editedData.fitnessGoals.join(', ')}
+                    onChange={(e) => handleArrayChange(e, 'fitnessGoals')}
+                    className="w-full border rounded px-2 py-1"
+                    placeholder="Enter fitness goals separated by commas"
+                  />
                 ) : (
-                  <span>No fitness goals specified</span>
+                  userData.fitnessGoals && userData.fitnessGoals.length > 0 ? (
+                    <ul className="list-disc list-inside">
+                      {userData.fitnessGoals.map((goal, index) => (
+                        <li key={index} className="text-gray-600">{goal}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <span>No fitness goals specified</span>
+                  )
                 )}
               </div>
             </div>
@@ -187,14 +311,29 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
         </div>
         <div className="border-t border-gray-200 p-6">
           <div className="flex justify-between">
-            <button className="flex items-center text-orange-500 hover:text-orange-600">
-              <Edit size={20} className="mr-2" />
-              Edit Profile
-            </button>
-            <button onClick={handleLogout} className="flex items-center text-red-500 hover:text-red-600">
-              <LogOut size={20} className="mr-2" />
-              Logout
-            </button>
+            {isEditing ? (
+              <>
+                <button onClick={handleSave} className="flex items-center text-green-500 hover:text-green-600">
+                  <Save size={20} className="mr-2" />
+                  Save Changes
+                </button>
+                <button onClick={handleCancel} className="flex items-center text-red-500 hover:text-red-600">
+                  <X size={20} className="mr-2" />
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button onClick={handleEdit} className="flex items-center text-orange-500 hover:text-orange-600">
+                  <Edit size={20} className="mr-2" />
+                  Edit Profile
+                </button>
+                <button onClick={handleLogout} className="flex items-center text-red-500 hover:text-red-600">
+                  <LogOut size={20} className="mr-2" />
+                  Logout
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
