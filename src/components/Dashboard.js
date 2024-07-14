@@ -14,6 +14,14 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
     const navigate = useNavigate();
 
     const toggleFavoriteBuddy = (buddyId) => {
+      setFavoriteBuddies(prev => 
+        prev.includes(buddyId) 
+        ? prev.filter(id => id !== buddyId) 
+        : [...prev, buddyId]
+      );
+    };
+
+    const toggleFavoriteBuddy = (buddyId) => {
         setFavoriteBuddies(prev => 
             prev.includes(buddyId) 
             ? prev.filter(id => id !== buddyId) 
