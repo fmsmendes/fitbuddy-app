@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, UserPlus, Calendar, Star, ArrowLeft } from 'lucide-react';
+import { Bell, UserPlus, Calendar, Star, ArrowLeft, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Notifications = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('general');
-
-  const notifications = [
+  const [notifications, setNotifications] = useState([
     { id: 1, type: 'connection', message: 'John Doe wants to connect with you', time: '2 hours ago', icon: <UserPlus size={20} className="text-blue-500" /> },
     { id: 2, type: 'event', message: 'Reminder: Yoga in the Park tomorrow at 8 AM', time: '5 hours ago', icon: <Calendar size={20} className="text-green-500" /> },
     { id: 3, type: 'system', message: 'Welcome to FitBuddy! Complete your profile to get started.', time: '1 day ago', icon: <Bell size={20} className="text-orange-500" /> },
     { id: 4, type: 'trainer', message: 'Your trainer Alex posted a new workout plan', time: '2 days ago', icon: <Star size={20} className="text-purple-500" /> },
-  ];
+  ]);
 
   const generalNotifications = notifications.filter(n => n.type !== 'connection' && n.type !== 'trainer');
   const requestNotifications = notifications.filter(n => n.type === 'connection' || n.type === 'trainer');
+
+  const deleteNotification = (id) => {
+    setNotifications(notifications.filter(n => n.id !== id));
+  };
 
   const renderNotification = (notification) => (
     <motion.div
@@ -24,7 +27,7 @@ const Notifications = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
-      className="p-4 border-b last:border-b-0 hover:bg-gray-50 transition-colors duration-200"
+      className="p-4 border-b last:border-b-0 hover:bg-gray-50 transition-colors duration-200 relative"
     >
       <div className="flex items-start">
         <div className="mr-4 p-2 bg-gray-100 rounded-full">{notification.icon}</div>
@@ -32,6 +35,12 @@ const Notifications = () => {
           <p className="text-sm font-medium text-gray-900">{notification.message}</p>
           <p className="text-xs text-gray-500 mt-1">{notification.time}</p>
         </div>
+        <button 
+          onClick={() => deleteNotification(notification.id)}
+          className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+        >
+          <X size={16} />
+        </button>
       </div>
     </motion.div>
   );
