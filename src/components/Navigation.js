@@ -13,7 +13,7 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around p-2">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around py-1 px-2">
       {navItems.map((item) => (
         <Link
           key={item.path}
