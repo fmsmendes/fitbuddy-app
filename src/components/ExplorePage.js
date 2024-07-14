@@ -54,7 +54,12 @@ const ExplorePage = ({ user, recommendations, trendingActivities, communityHighl
 
   return (
     <div className="max-w-4xl mx-auto p-4 bg-gray-100">
-      {/* ... (keep the header as is) ... */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Explore</h1>
+        <button onClick={() => navigate('/dashboard')} className="text-orange-500 font-medium">
+          Back to Dashboard
+        </button>
+      </div>
 
       <section className="mb-8">
         <SectionTitle title="For You" viewAll={() => navigate('/recommendations')} />
