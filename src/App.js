@@ -371,7 +371,25 @@ function App() {
           isAuthenticated ? <Membership currentPlan={currentPlan} availablePlans={availablePlans} /> : <Navigate to="/login" />
         } />
         <Route path="/payment" element={
-          isAuthenticated ? <Payment paymentMethods={paymentMethods} transactions={transactions} /> : <Navigate to="/login" />
+          isAuthenticated ? (
+            <Payment 
+              paymentMethods={paymentMethods} 
+              transactions={transactions} 
+              onAddPaymentMethod={(newMethod) => {
+                // Here you would typically send this data to your backend
+                console.log('New payment method:', newMethod);
+                // For now, we'll just add it to the existing methods
+                const newPaymentMethod = {
+                  id: paymentMethods.length + 1,
+                  type: 'Credit Card',
+                  lastFour: newMethod.cardNumber.slice(-4),
+                  expiryMonth: newMethod.expiryMonth,
+                  expiryYear: newMethod.expiryYear
+                };
+                setPaymentMethods([...paymentMethods, newPaymentMethod]);
+              }}
+            />
+          ) : <Navigate to="/login" />
         } />
         <Route path="/settings" element={
           isAuthenticated ? <Settings user={currentUser} /> : <Navigate to="/login" />
