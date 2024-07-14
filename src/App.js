@@ -344,6 +344,12 @@ function App() {
         <Route path="/buddies" element={
           isAuthenticated ? <BuddiesPage connectedBuddies={buddies} /> : <Navigate to="/login" />
         } />
+        <Route path="/message-buddy/:id" element={
+          isAuthenticated ? <MessageBuddy buddies={buddies} /> : <Navigate to="/login" />
+        } />
+        <Route path="/schedule-workout/:id" element={
+          isAuthenticated ? <ScheduleWorkout buddies={buddies} /> : <Navigate to="/login" />
+        } />
         <Route path="/explore" element={
           isAuthenticated ? (
             <ExplorePage
