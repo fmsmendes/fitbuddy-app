@@ -140,7 +140,7 @@ function App() {
     { id: 2, name: 'Pro Plan', price: 39.99, features: ['Access to app', 'Unlimited trainer sessions', 'Nutrition planning'] },
   ]);
 
-  const [paymentMethods] = useState([
+  const [paymentMethods, setPaymentMethods] = useState([
     { id: 1, type: 'Credit Card', lastFour: '1234', expiryMonth: '12', expiryYear: '2025' },
   ]);
 
