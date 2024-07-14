@@ -1,44 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, Calendar, User, Users, Search, MapPin, Star, Activity, Clock, Dumbbell, Heart } from 'lucide-react';
+import { Bell, Calendar, User, Users, Search, MapPin, Star, Activity, Clock, Dumbbell, Heart, TrendingUp, Award } from 'lucide-react';
 import Navigation from './Navigation';
 import UserMenu from './UserMenu';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { motion } from 'framer-motion';
 
 const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
     const [activeTab, setActiveTab] = useState('home');
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [favoriteBuddies, setFavoriteBuddies] = useState([]);
     const [favoriteTrainers, setFavoriteTrainers] = useState([]);
+    const [showWelcome, setShowWelcome] = useState(true);
     const navigate = useNavigate();
 
-const toggleFavoriteBuddy = (buddyId) => {
+    useEffect(() => {
+        const timer = setTimeout(() => setShowWelcome(false), 3000);
+        return () => clearTimeout(timer);
+    }, []);
+
+    const toggleFavoriteBuddy = (buddyId) => {
         setFavoriteBuddies(prev => 
-          prev.includes(buddyId) 
+            prev.includes(buddyId) 
             ? prev.filter(id => id !== buddyId) 
             : [...prev, buddyId]
         );
-      };
+    };
     
-const toggleFavoriteTrainer = (trainerId) => {
+    const toggleFavoriteTrainer = (trainerId) => {
         setFavoriteTrainers(prev => 
-          prev.includes(trainerId) 
+            prev.includes(trainerId) 
             ? prev.filter(id => id !== trainerId) 
             : [...prev, trainerId]
         );
-      };  
+    };  
 
-  const renderRating = (rating, reviews) => (
-    <div className="flex items-center mb-2">
-      <div className="flex items-center mr-2">
-        {[...Array(5)].map((_, i) => (
-          <Star key={i} size={16} className={`${i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'} fill-current`} />
-        ))}
-      </div>
-      <span className="text-sm font-medium text-gray-700">{rating?.toFixed(1) || 'N/A'}</span>
-      <span className="text-sm text-gray-500 ml-1">({reviews || 0} reviews)</span>
-    </div>
-  );
+    const renderRating = (rating, reviews) => (
+        <div className="flex items-center mb-2">
+            <div className="flex items-center mr-2">
+                {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={16} className={`${i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'} fill-current`} />
+                ))}
+            </div>
+            <span className="text-sm font-medium text-gray-700">{rating?.toFixed(1) || 'N/A'}</span>
+            <span className="text-sm text-gray-500 ml-1">({reviews || 0} reviews)</span>
+        </div>
+    );
 
   const renderBuddyCard = (buddy) => (
     <div className="flex-shrink-0 w-full sm:w-72 bg-white rounded-lg shadow-md p-4 mr-4 relative">
@@ -163,6 +170,20 @@ const toggleFavoriteTrainer = (trainerId) => {
 
   return (
     <div className="font-sans max-w-7xl mx-auto bg-gray-100 min-h-screen overflow-y-auto pb-16">
+      {showWelcome && (
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -50 }}
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+        >
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+            <h2 className="text-2xl font-bold mb-4">Welcome back, Diana!</h2>
+            <p>Let's make today a great fitness day!</p>
+          </div>
+        </motion.div>
+      )}
+
       <header className="bg-white p-4 flex justify-between items-center sticky top-0 z-10 shadow-sm">
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-orange-500 rounded-full"></div>
@@ -183,68 +204,120 @@ const toggleFavoriteTrainer = (trainerId) => {
       </header>
 
       <main className="p-4">
-        <h1 className="text-2xl font-semibold mb-6">Hello, Diana Soto</h1>
+        <motion.h1 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-2xl font-semibold mb-6"
+        >
+          Hello, Diana Soto
+        </motion.h1>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8"
+        >
           {[
             { icon: <Users size={24} />, label: 'Find a Buddy', description: 'Connect with fitness partners', onClick: () => navigate('/find-buddy') },
             { icon: <Calendar size={24} />, label: 'Events', description: 'Join local fitness activities', onClick: () => navigate('/events') },
             { icon: <Dumbbell size={24} />, label: 'Trainers', description: 'Book sessions with pros', onClick: () => navigate('/trainers') },
             { icon: <Activity size={24} />, label: 'My Progress', description: 'Track your fitness journey', onClick: () => navigate('/progress') },
           ].map((item, index) => (
-            <button 
+            <motion.button 
               key={index} 
               className="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md hover:bg-orange-50 transition-colors"
               onClick={item.onClick}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               {React.cloneElement(item.icon, { className: "text-orange-500 mb-2" })}
               <span className="text-sm font-medium mb-1">{item.label}</span>
               <span className="text-xs text-gray-500 text-center">{item.description}</span>
-            </button>
+            </motion.button>
           ))}
-        </div>
+        </motion.div>
 
-        <section className="mb-8">
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mb-8"
+        >
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Suggested Buddies</h2>
             <button className="text-orange-500 font-medium">View All</button>
           </div>
           <div className="flex flex-nowrap overflow-x-auto pb-4 -mx-4 px-4">
             {buddies.map((buddy, index) => (
-              <div key={index} className="mr-4 w-full sm:w-auto">{renderBuddyCard(buddy)}</div>
+              <motion.div 
+                key={index} 
+                className="mr-4 w-full sm:w-auto"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                {renderBuddyCard(buddy)}
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
-        <section className="mb-8">
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="mb-8"
+        >
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Suggested Events</h2>
             <button className="text-orange-500 font-medium">View All</button>
           </div>
           <div className="flex flex-nowrap overflow-x-auto pb-4 -mx-4 px-4">
             {events.map((event, index) => (
-              <div key={index} className="mr-4 w-full sm:w-auto">{renderEventCard(event)}</div>
+              <motion.div 
+                key={index} 
+                className="mr-4 w-full sm:w-auto"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                {renderEventCard(event)}
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
-        <section className="mb-8">
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+          className="mb-8"
+        >
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Featured Trainers</h2>
             <button className="text-orange-500 font-medium">View All</button>
           </div>
           <div className="flex flex-nowrap overflow-x-auto pb-4 -mx-4 px-4">
             {trainers.map((trainer, index) => (
-              <div key={index} className="mr-4 w-full sm:w-auto">{renderTrainerCard(trainer)}</div>
+              <motion.div 
+                key={index} 
+                className="mr-4 w-full sm:w-auto"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                {renderTrainerCard(trainer)}
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
       </main>
 
       <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
       <UserMenu isOpen={isUserMenuOpen} onClose={() => setIsUserMenuOpen(false)} setIsAuthenticated={setIsAuthenticated} />
     </div>
-
   );
 };
 
