@@ -204,7 +204,7 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
                       { icon: <Footprints size={20} />, label: 'Walking' },
                       { icon: <Activity size={20} />, label: 'Volleyball' },
                       { icon: <Activity size={20} />, label: 'Beach Tennis' },
-                      { icon: <Swim size={20} />, label: 'Surfing' },
+                      { icon: <Activity size={20} />, label: 'Surfing' },
                       { icon: <Zap size={20} />, label: 'HIIT' },
                       { icon: <Shirt size={20} />, label: 'CrossFit' },
                     ].map((interest, index) => (
