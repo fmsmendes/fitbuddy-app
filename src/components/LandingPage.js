@@ -369,7 +369,7 @@ const LandingPage = () => {
                   <div>
                     <div className="flex items-center text-sm text-gray-600 mb-2">
                       <Clock size={16} className="mr-2 text-orange-500" />
-                      <span>{trainer.experience}</span>
+                      <span>Experience: {trainer.experience}</span>
                     </div>
                     <div className="flex items-center text-sm text-gray-600 mb-2">
                       <MapPin size={16} className="mr-2 text-orange-500" />
@@ -379,10 +379,13 @@ const LandingPage = () => {
                       <Star size={16} className="text-yellow-400 fill-current mr-2" />
                       <span>{trainer.rating} ({trainer.reviews} reviews)</span>
                     </div>
-                    <div className="flex flex-wrap mb-3">
-                      {trainer.specialties.map((specialty, i) => (
-                        <span key={i} className="text-xs bg-blue-100 text-blue-800 rounded-full px-3 py-1 mr-2 mb-2">{specialty}</span>
-                      ))}
+                    <div className="mb-3">
+                      <p className="text-sm font-medium text-gray-700 mb-1">Specialties:</p>
+                      <div className="flex flex-wrap">
+                        {trainer.specialties.map((specialty, i) => (
+                          <span key={i} className="text-xs bg-blue-100 text-blue-800 rounded-full px-3 py-1 mr-2 mb-2">{specialty}</span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                   <Link to="/login" className="block w-full">
