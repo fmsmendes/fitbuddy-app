@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X, Dumbbell, Bike, Waves, Mountain, Snowflake, Racquet, Volleyball, Surfboard, Footprints } from 'lucide-react';
+import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X, Dumbbell, Bike, Waves, Mountain, Snowflake, Volleyball, Surfboard, Footprints } from 'lucide-react';
 
 const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
   const navigate = useNavigate();
@@ -198,12 +198,12 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
                       { icon: <Bike size={20} />, label: 'Cycling' },
                       { icon: <Waves size={20} />, label: 'Swimming' },
                       { icon: <Target size={20} />, label: 'Archery' },
-                      { icon: <Racquet size={20} />, label: 'Tennis' },
+                      { icon: <Activity size={20} />, label: 'Tennis' },
                       { icon: <Mountain size={20} />, label: 'Hiking' },
                       { icon: <Snowflake size={20} />, label: 'Skiing' },
                       { icon: <Footprints size={20} />, label: 'Walking' },
                       { icon: <Volleyball size={20} />, label: 'Volleyball' },
-                      { icon: <Racquet size={20} />, label: 'Beach Tennis' },
+                      { icon: <Activity size={20} />, label: 'Beach Tennis' },
                       { icon: <Surfboard size={20} />, label: 'Surfing' },
                       { icon: <Activity size={20} />, label: 'HIIT' },
                       { icon: <Dumbbell size={20} />, label: 'CrossFit' },
