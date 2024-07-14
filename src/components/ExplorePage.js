@@ -10,6 +10,10 @@ import placeholderFitness from '../assets/placeholder-fitness.jpg';
 const ExplorePage = ({ user, recommendations, trendingActivities, communityHighlights, localSpots, fitnessArticles, trendingTrainers, localAds }) => {
   const navigate = useNavigate();
 
+  const handleBackToDashboard = () => {
+    navigate('/dashboard');
+  };
+
   const SectionTitle = ({ title, viewAll }) => (
     <div className="flex justify-between items-center mb-4">
       <h2 className="text-xl font-semibold">{title}</h2>
