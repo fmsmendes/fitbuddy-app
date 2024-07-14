@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X } from 'lucide-react';
+import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X, Running, Yoga, Dumbbell, Bike, Swim, Tennis, Mountain, Snowflake } from 'lucide-react';
 
 const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
   const navigate = useNavigate();
@@ -190,13 +190,37 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
               <div>
                 <h3 className="font-semibold mb-2">Interests</h3>
                 {isEditing ? (
-                  <input
-                    type="text"
-                    value={editedData.interests.join(', ')}
-                    onChange={(e) => handleArrayChange(e, 'interests')}
-                    className="w-full border rounded px-2 py-1"
-                    placeholder="Enter interests separated by commas"
-                  />
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { icon: <Running size={20} />, label: 'Running' },
+                      { icon: <Yoga size={20} />, label: 'Yoga' },
+                      { icon: <Dumbbell size={20} />, label: 'Weightlifting' },
+                      { icon: <Bike size={20} />, label: 'Cycling' },
+                      { icon: <Swim size={20} />, label: 'Swimming' },
+                      { icon: <Target size={20} />, label: 'Archery' },
+                      { icon: <Tennis size={20} />, label: 'Tennis' },
+                      { icon: <Mountain size={20} />, label: 'Hiking' },
+                      { icon: <Snowflake size={20} />, label: 'Skiing' },
+                    ].map((interest, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          const newInterests = editedData.interests.includes(interest.label)
+                            ? editedData.interests.filter(i => i !== interest.label)
+                            : [...editedData.interests, interest.label];
+                          setEditedData({...editedData, interests: newInterests});
+                        }}
+                        className={`flex items-center justify-center p-2 rounded ${
+                          editedData.interests.includes(interest.label)
+                            ? 'bg-orange-500 text-white'
+                            : 'bg-gray-200 text-gray-700'
+                        }`}
+                      >
+                        {interest.icon}
+                        <span className="ml-2">{interest.label}</span>
+                      </button>
+                    ))}
+                  </div>
                 ) : (
                   <div className="flex flex-wrap">
                     {userData.interests && userData.interests.length > 0 ? (
@@ -214,13 +238,26 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
               <div>
                 <h3 className="font-semibold mb-2">Availability</h3>
                 {isEditing ? (
-                  <input
-                    type="text"
-                    value={editedData.availability.join(', ')}
-                    onChange={(e) => handleArrayChange(e, 'availability')}
-                    className="w-full border rounded px-2 py-1"
-                    placeholder="Enter availability separated by commas"
-                  />
+                  <div className="grid grid-cols-3 gap-2">
+                    {['Morning', 'Afternoon', 'Evening', 'Weekdays', 'Weekends'].map((time, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          const newAvailability = editedData.availability.includes(time)
+                            ? editedData.availability.filter(t => t !== time)
+                            : [...editedData.availability, time];
+                          setEditedData({...editedData, availability: newAvailability});
+                        }}
+                        className={`p-2 rounded ${
+                          editedData.availability.includes(time)
+                            ? 'bg-green-500 text-white'
+                            : 'bg-gray-200 text-gray-700'
+                        }`}
+                      >
+                        {time}
+                      </button>
+                    ))}
+                  </div>
                 ) : (
                   <div className="flex flex-wrap">
                     {userData.availability && userData.availability.length > 0 ? (
