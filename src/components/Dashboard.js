@@ -20,14 +20,6 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
         : [...prev, buddyId]
       );
     };
-
-    const toggleFavoriteBuddy = (buddyId) => {
-        setFavoriteBuddies(prev => 
-            prev.includes(buddyId) 
-            ? prev.filter(id => id !== buddyId) 
-            : [...prev, buddyId]
-        );
-    };
     
     const toggleFavoriteTrainer = (trainerId) => {
         setFavoriteTrainers(prev => 
@@ -78,19 +70,6 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
           {buddy.interests?.map((interest, index) => (
             <span key={index} className="bg-orange-100 text-orange-800 text-xs font-medium mr-2 mb-2 px-2 py-1 rounded-full">{interest}</span>
           ))}
-        </div>
-      </div>
-      <div className="mb-3">
-        <p className="text-sm font-medium text-gray-700 mb-1">Availability:</p>
-        <div className="flex flex-wrap items-center text-sm text-gray-600">
-          {buddy.availability ? buddy.availability.map((time, index) => (
-            <div key={index} className="flex items-center mr-2 mb-1">
-              {time === 'Morning' && <Sun size={14} className="mr-1 text-yellow-500" />}
-              {time === 'Afternoon' && <Sun size={14} className="mr-1 text-orange-500" />}
-              {time === 'Evening' && <Moon size={14} className="mr-1 text-indigo-500" />}
-              {time}
-            </div>
-          )) : 'N/A'}
         </div>
       </div>
       <div className="mb-3">
@@ -280,7 +259,7 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Suggested Events</h2>
             <button onClick={() => navigate('/all-events')} className="text-orange-500 font-medium">View All</button>
-          </div>
+            </div>
           <div className="flex flex-nowrap overflow-x-auto pb-4 -mx-4 px-4">
             {events.map((event, index) => (
               <motion.div 
