@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bell, Calendar, User, Users, Search, MapPin, Star, Activity, Clock, Dumbbell, Heart, TrendingUp, Award, Sun, Moon } from 'lucide-react';
@@ -7,12 +8,23 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { motion } from 'framer-motion';
 
 const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
+=======
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Bell, Calendar, User, Users, Search, MapPin, Star, Activity, Clock, Dumbbell, Heart } from 'lucide-react';
+import Navigation from './Navigation';
+import UserMenu from './UserMenu';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+const Dashboard = ({ buddies, events, trainers }) => {
+>>>>>>> ef830e1 (Save local changes before rebase)
     const [activeTab, setActiveTab] = useState('home');
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [favoriteBuddies, setFavoriteBuddies] = useState([]);
     const [favoriteTrainers, setFavoriteTrainers] = useState([]);
     const navigate = useNavigate();
 
+<<<<<<< HEAD
     const toggleFavoriteBuddy = (buddyId) => {
       setFavoriteBuddies(prev => 
         prev.includes(buddyId) 
@@ -40,6 +52,35 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
             <span className="text-sm text-gray-500 ml-1">({reviews || 0} reviews)</span>
         </div>
     );
+=======
+const toggleFavoriteBuddy = (buddyId) => {
+        setFavoriteBuddies(prev => 
+          prev.includes(buddyId) 
+            ? prev.filter(id => id !== buddyId) 
+            : [...prev, buddyId]
+        );
+      };
+    
+const toggleFavoriteTrainer = (trainerId) => {
+        setFavoriteTrainers(prev => 
+          prev.includes(trainerId) 
+            ? prev.filter(id => id !== trainerId) 
+            : [...prev, trainerId]
+        );
+      };  
+
+  const renderRating = (rating, reviews) => (
+    <div className="flex items-center mb-2">
+      <div className="flex items-center mr-2">
+        {[...Array(5)].map((_, i) => (
+          <Star key={i} size={16} className={`${i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-300'} fill-current`} />
+        ))}
+      </div>
+      <span className="text-sm font-medium text-gray-700">{rating?.toFixed(1) || 'N/A'}</span>
+      <span className="text-sm text-gray-500 ml-1">({reviews || 0} reviews)</span>
+    </div>
+  );
+>>>>>>> ef830e1 (Save local changes before rebase)
 
   const renderBuddyCard = (buddy) => (
     <div className="flex-shrink-0 w-full sm:w-72 bg-white rounded-lg shadow-md p-4 mr-4 relative">
@@ -74,6 +115,7 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
       </div>
       <div className="mb-3">
         <p className="text-sm font-medium text-gray-700 mb-1">Availability:</p>
+<<<<<<< HEAD
         <div className="flex flex-wrap items-center text-sm text-gray-600">
           {buddy.availability ? buddy.availability.map((time, index) => (
             <div key={index} className="flex items-center mr-2 mb-1">
@@ -83,6 +125,11 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
               {time}
             </div>
           )) : 'N/A'}
+=======
+        <div className="flex items-center text-sm text-gray-600">
+          <Clock size={14} className="mr-1" />
+          {buddy.availability ? buddy.availability.join(', ') : 'N/A'}
+>>>>>>> ef830e1 (Save local changes before rebase)
         </div>
       </div>
       <button 
@@ -190,6 +237,7 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
       </header>
 
       <main className="p-4">
+<<<<<<< HEAD
         <motion.h1 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -205,22 +253,35 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
           transition={{ delay: 0.4 }}
           className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8"
         >
+=======
+        <h1 className="text-2xl font-semibold mb-6">Hello, Diana Soto</h1>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+>>>>>>> ef830e1 (Save local changes before rebase)
           {[
             { icon: <Users size={24} />, label: 'Find a Buddy', description: 'Connect with fitness partners', onClick: () => navigate('/find-buddy') },
             { icon: <Calendar size={24} />, label: 'Events', description: 'Join local fitness activities', onClick: () => navigate('/events') },
             { icon: <Dumbbell size={24} />, label: 'Trainers', description: 'Book sessions with pros', onClick: () => navigate('/trainers') },
             { icon: <Activity size={24} />, label: 'My Progress', description: 'Track your fitness journey', onClick: () => navigate('/progress') },
           ].map((item, index) => (
+<<<<<<< HEAD
             <motion.button 
               key={index} 
               className="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md hover:bg-orange-50 transition-colors"
               onClick={item.onClick}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+=======
+            <button 
+              key={index} 
+              className="flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md hover:bg-orange-50 transition-colors"
+              onClick={item.onClick}
+>>>>>>> ef830e1 (Save local changes before rebase)
             >
               {React.cloneElement(item.icon, { className: "text-orange-500 mb-2" })}
               <span className="text-sm font-medium mb-1">{item.label}</span>
               <span className="text-xs text-gray-500 text-center">{item.description}</span>
+<<<<<<< HEAD
             </motion.button>
           ))}
         </motion.div>
@@ -304,6 +365,53 @@ const Dashboard = ({ buddies, events, trainers, setIsAuthenticated }) => {
       <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
       <UserMenu isOpen={isUserMenuOpen} onClose={() => setIsUserMenuOpen(false)} setIsAuthenticated={setIsAuthenticated} />
     </div>
+=======
+            </button>
+          ))}
+        </div>
+
+        <section className="mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Suggested Buddies</h2>
+            <button className="text-orange-500 font-medium">View All</button>
+          </div>
+          <div className="flex flex-nowrap overflow-x-auto pb-4 -mx-4 px-4">
+            {buddies.map((buddy, index) => (
+              <div key={index} className="mr-4 w-full sm:w-auto">{renderBuddyCard(buddy)}</div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Suggested Events</h2>
+            <button className="text-orange-500 font-medium">View All</button>
+          </div>
+          <div className="flex flex-nowrap overflow-x-auto pb-4 -mx-4 px-4">
+            {events.map((event, index) => (
+              <div key={index} className="mr-4 w-full sm:w-auto">{renderEventCard(event)}</div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Featured Trainers</h2>
+            <button className="text-orange-500 font-medium">View All</button>
+          </div>
+          <div className="flex flex-nowrap overflow-x-auto pb-4 -mx-4 px-4">
+            {trainers.map((trainer, index) => (
+              <div key={index} className="mr-4 w-full sm:w-auto">{renderTrainerCard(trainer)}</div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      <UserMenu isOpen={isUserMenuOpen} onClose={() => setIsUserMenuOpen(false)} />
+    </div>
+
+>>>>>>> ef830e1 (Save local changes before rebase)
   );
 };
 

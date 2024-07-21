@@ -72,6 +72,7 @@ const BuddiesPage = ({ connectedBuddies }) => {
                 {renderRating(buddy.rating)}
               </div>
               <div className="flex flex-col items-end">
+<<<<<<< HEAD
                 <button 
                   onClick={() => navigate(`/message-buddy/${buddy.id}`)}
                   className="mb-2 px-3 py-1 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors flex items-center"
@@ -82,6 +83,12 @@ const BuddiesPage = ({ connectedBuddies }) => {
                   onClick={() => navigate(`/schedule-workout/${buddy.id}`)}
                   className="px-3 py-1 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors flex items-center"
                 >
+=======
+                <button className="mb-2 px-3 py-1 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors flex items-center">
+                  <MessageCircle size={16} className="mr-1" /> Message
+                </button>
+                <button className="px-3 py-1 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors flex items-center">
+>>>>>>> ef830e1 (Save local changes before rebase)
                   <Calendar size={16} className="mr-1" /> Schedule Workout
                 </button>
               </div>
@@ -138,4 +145,8 @@ const BuddiesPage = ({ connectedBuddies }) => {
   );
 };
 
+<<<<<<< HEAD
 export default BuddiesPage;
+=======
+export default BuddiesPage;
+>>>>>>> ef830e1 (Save local changes before rebase)

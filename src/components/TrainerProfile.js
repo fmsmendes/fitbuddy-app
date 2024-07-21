@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   MapPin, Star, Award, Clock, Calendar, DollarSign, Users, 
+<<<<<<< HEAD
   Edit, Check, X, TrendingUp, Activity, Target, Globe, Heart
 } from 'lucide-react';
 import TrainerNavigation from './TrainerNavigation';
 import Navigation from './Navigation';
+=======
+  Edit, Check, X
+} from 'lucide-react';
+import TrainerNavigation from './TrainerNavigation';
+>>>>>>> ef830e1 (Save local changes before rebase)
 
 const TrainerProfile = ({ trainer, currentUser }) => {
   const navigate = useNavigate();
@@ -56,6 +62,7 @@ const TrainerProfile = ({ trainer, currentUser }) => {
     });
   };
 
+<<<<<<< HEAD
   const renderStatCard = (icon, title, value, suffix = '') => (
     <div className="bg-white p-4 rounded-lg shadow-md">
       <div className="flex items-center mb-2">
@@ -68,6 +75,8 @@ const TrainerProfile = ({ trainer, currentUser }) => {
     </div>
   );
 
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
   const renderEditableField = (label, name, value, type = 'text') => (
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700">{label}</label>
@@ -84,6 +93,7 @@ const TrainerProfile = ({ trainer, currentUser }) => {
   return (
     <div className="max-w-4xl mx-auto p-4 pb-16">
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
+<<<<<<< HEAD
         <div className="p-4 border-b flex justify-between items-center">
           <button
             onClick={() => navigate('/trainer-dashboard')}
@@ -92,6 +102,8 @@ const TrainerProfile = ({ trainer, currentUser }) => {
             Back to Dashboard
           </button>
         </div>
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
         <div className="md:flex">
           <div className="md:flex-shrink-0">
             <img className="h-48 w-full object-cover md:w-48" src={trainer.image} alt={trainer.name} />
@@ -113,6 +125,7 @@ const TrainerProfile = ({ trainer, currentUser }) => {
               <span className="font-semibold">{trainer.rating}</span>
               <span className="text-gray-600 ml-1">({trainer.reviews} reviews)</span>
             </div>
+<<<<<<< HEAD
             <div className="flex items-center mt-2">
               <Heart size={20} className="text-red-500 mr-2" />
               <span className="font-semibold">{trainer.likes || 0} likes</span>
@@ -133,6 +146,8 @@ const TrainerProfile = ({ trainer, currentUser }) => {
                 </button>
               </div>
             )}
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
           </div>
         </div>
         
@@ -240,6 +255,7 @@ const TrainerProfile = ({ trainer, currentUser }) => {
 
         {isOwnProfile && (
           <div className="p-8 border-t border-gray-200">
+<<<<<<< HEAD
             <h2 className="text-2xl font-semibold mb-4">Trainer Stats</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {renderStatCard(<Users className="text-blue-500" size={24} />, "Total Clients", trainer.stats?.totalClients)}
@@ -262,6 +278,8 @@ const TrainerProfile = ({ trainer, currentUser }) => {
 
         {isOwnProfile && (
           <div className="p-8 border-t border-gray-200">
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
             {isEditing ? (
               <div className="flex justify-end space-x-4">
                 <button
@@ -292,13 +310,21 @@ const TrainerProfile = ({ trainer, currentUser }) => {
         )}
       </div>
 
+<<<<<<< HEAD
       {currentUser.role === 'trainer' ? (
         <TrainerNavigation activeTab="profile" />
       ) : (
         <Navigation activeTab="trainers" />
       )}
+=======
+      <TrainerNavigation activeTab="profile" />
+>>>>>>> ef830e1 (Save local changes before rebase)
     </div>
   );
 };
 
+<<<<<<< HEAD
 export default TrainerProfile;
+=======
+export default TrainerProfile;
+>>>>>>> ef830e1 (Save local changes before rebase)

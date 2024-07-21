@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X, Dumbbell, Bike, Mountain, Snowflake, Footprints, Zap, Shirt } from 'lucide-react';
 
 const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
@@ -8,11 +9,22 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState(null);
+=======
+import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target } from 'lucide-react';
+
+const UserProfile = ({ user, setIsAuthenticated }) => {
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('info');
+  const [userData, setUserData] = useState(null);
+>>>>>>> ef830e1 (Save local changes before rebase)
 
   useEffect(() => {
     console.log("User data received:", user);
     setUserData(user);
+<<<<<<< HEAD
     setEditedData(user);
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
   }, [user]);
 
   const handleLogout = () => {
@@ -34,6 +46,7 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
     );
   };
 
+<<<<<<< HEAD
   const handleEdit = () => {
     setIsEditing(true);
   };
@@ -62,10 +75,13 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
     }));
   };
 
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
   if (!userData) {
     return <div>Loading user data...</div>;
   }
 
+<<<<<<< HEAD
   const calculateAge = (dob) => {
     const today = new Date();
     const birthDate = new Date(dob);
@@ -77,6 +93,8 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
     return age;
   };
 
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -90,6 +108,7 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
           <div className="flex items-center mb-6">
             <img src={userData.image} alt={userData.name} className="w-24 h-24 rounded-full object-cover mr-6" />
             <div>
+<<<<<<< HEAD
               {isEditing ? (
                 <input
                   type="text"
@@ -101,6 +120,9 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
               ) : (
                 <h2 className="text-2xl font-semibold">{userData.name}</h2>
               )}
+=======
+              <h2 className="text-2xl font-semibold">{userData.name}</h2>
+>>>>>>> ef830e1 (Save local changes before rebase)
               <p className="text-gray-600">{userData.fitnessLevel} Fitness Enthusiast</p>
               {renderRating(userData.rating)}
             </div>
@@ -130,6 +152,7 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center text-gray-600">
                   <User className="mr-2" size={20} />
+<<<<<<< HEAD
                   {isEditing ? (
                     <>
                       <select
@@ -181,6 +204,17 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
                   ) : (
                     <span>{userData.location}</span>
                   )}
+=======
+                  <span>{userData.gender}, {userData.age} years old</span>
+                </div>
+                <div className="flex items-center text-gray-600">
+                  <Mail className="mr-2" size={20} />
+                  <span>{userData.email}</span>
+                </div>
+                <div className="flex items-center text-gray-600">
+                  <MapPin className="mr-2" size={20} />
+                  <span>{userData.location}</span>
+>>>>>>> ef830e1 (Save local changes before rebase)
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Calendar className="mr-2" size={20} />
@@ -189,6 +223,7 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Interests</h3>
+<<<<<<< HEAD
                 {isEditing ? (
                   <div className="grid grid-cols-3 gap-2">
                     {[
@@ -299,6 +334,33 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
                     <span>No fitness goals specified</span>
                   )
                 )}
+=======
+                <div className="flex flex-wrap">
+                  {userData.interests && userData.interests.map((interest, index) => (
+                    <span key={index} className="bg-orange-100 text-orange-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
+                      {interest}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">Availability</h3>
+                <div className="flex flex-wrap">
+                  {userData.availability && userData.availability.map((time, index) => (
+                    <span key={index} className="bg-green-100 text-green-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
+                      {time}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">Fitness Goals</h3>
+                <ul className="list-disc list-inside">
+                  {userData.fitnessGoals && userData.fitnessGoals.map((goal, index) => (
+                    <li key={index} className="text-gray-600">{goal}</li>
+                  ))}
+                </ul>
+>>>>>>> ef830e1 (Save local changes before rebase)
               </div>
             </div>
           )}
@@ -354,6 +416,7 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
         </div>
         <div className="border-t border-gray-200 p-6">
           <div className="flex justify-between">
+<<<<<<< HEAD
             {isEditing ? (
               <>
                 <button onClick={handleSave} className="flex items-center text-green-500 hover:text-green-600">
@@ -377,6 +440,16 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
                 </button>
               </>
             )}
+=======
+            <button className="flex items-center text-orange-500 hover:text-orange-600">
+              <Edit size={20} className="mr-2" />
+              Edit Profile
+            </button>
+            <button onClick={handleLogout} className="flex items-center text-red-500 hover:text-red-600">
+              <LogOut size={20} className="mr-2" />
+              Logout
+            </button>
+>>>>>>> ef830e1 (Save local changes before rebase)
           </div>
         </div>
       </div>
@@ -384,4 +457,8 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
   );
 };
 
+<<<<<<< HEAD
 export default UserProfile;
+=======
+export default UserProfile;
+>>>>>>> ef830e1 (Save local changes before rebase)

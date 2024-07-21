@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, useParams } from 'react-router-dom';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+<<<<<<< HEAD
 import LandingPage from './components/LandingPage';
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import BuddyProfile from './components/BuddyProfile';
@@ -14,9 +17,12 @@ import FindBuddy from './components/FindBuddy';
 import EventsPage from './components/EventsPage';
 import UserProfile from './components/UserProfile';
 import TrainersPage from './components/TrainersPage';
+<<<<<<< HEAD
 import AllBuddiesPage from './components/AllBuddiesPage';
 import AllEventsPage from './components/AllEventsPage';
 import AllTrainersPage from './components/AllTrainersPage';
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
 import BuddiesPage from './components/BuddiesPage';
 import ExplorePage from './components/ExplorePage';
 import MyEvents from './components/MyEvents';
@@ -32,6 +38,7 @@ import TrainerFinancials from './components/TrainerFinancials';
 import TrainerChats from './components/TrainerChats';
 import CreateClass from './components/CreateClass';
 import TrainerSettings from './components/TrainerSettings'; 
+<<<<<<< HEAD
 import Clients from './components/Clients';
 import AddCard from './components/AddCard';
 import AddBankAccount from './components/AddBankAccount';
@@ -40,6 +47,8 @@ import BookSession from './components/BookSession';
 import CreateEvent from './components/CreateEvent';
 import MessageBuddy from './components/MessageBuddy';
 import ScheduleWorkout from './components/ScheduleWorkout';
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -145,7 +154,11 @@ function App() {
     { id: 2, name: 'Pro Plan', price: 39.99, features: ['Access to app', 'Unlimited trainer sessions', 'Nutrition planning'] },
   ]);
 
+<<<<<<< HEAD
   const [paymentMethods, setPaymentMethods] = useState([
+=======
+  const [paymentMethods] = useState([
+>>>>>>> ef830e1 (Save local changes before rebase)
     { id: 1, type: 'Credit Card', lastFour: '1234', expiryMonth: '12', expiryYear: '2025' },
   ]);
 
@@ -205,6 +218,7 @@ function App() {
     return <div>Loading app data...</div>;
   }
 
+<<<<<<< HEAD
   function TrainerProfileWrapper({ trainers, currentUser, isViewerTrainer }) {
     const { id } = useParams();
     const trainer = trainers.find(t => t.id === parseInt(id));
@@ -213,11 +227,18 @@ function App() {
       currentUser={currentUser}
       isViewerTrainer={isViewerTrainer}
     />;
+=======
+  function TrainerProfileWrapper({ trainers, currentUser }) {
+    const { id } = useParams();
+    const trainer = trainers.find(t => t.id === parseInt(id));
+    return <TrainerProfile trainer={trainer} currentUser={currentUser} />;
+>>>>>>> ef830e1 (Save local changes before rebase)
   }
 
   return (
     <Router>
       <Routes>
+<<<<<<< HEAD
         <Route path="/" element={
           isAuthenticated ? (
             currentUser.role === 'trainer' ? 
@@ -233,13 +254,21 @@ function App() {
         } />
         <Route path="/login" element={
           isAuthenticated ? <Navigate to="/dashboard" /> : 
+=======
+        <Route path="/login" element={
+          isAuthenticated ? <Navigate to="/" /> : 
+>>>>>>> ef830e1 (Save local changes before rebase)
           <Login 
             setIsAuthenticated={setIsAuthenticated}
             setCurrentUser={setCurrentUser}
             defaultTrainer={defaultTrainer}
           />
         } />
+<<<<<<< HEAD
         <Route path="/dashboard" element={
+=======
+        <Route path="/" element={
+>>>>>>> ef830e1 (Save local changes before rebase)
           isAuthenticated ? (
             currentUser.role === 'trainer' ? 
               <TrainerDashboard trainer={currentUser} setIsAuthenticated={setIsAuthenticated} /> :
@@ -251,6 +280,7 @@ function App() {
               />
           ) : <Navigate to="/login" />
         } />
+<<<<<<< HEAD
         <Route path="/trainer/:id" 
         element={isAuthenticated ? (
       <TrainerProfileWrapper 
@@ -263,6 +293,18 @@ function App() {
     )
   } 
 />
+=======
+        <Route 
+          path="/trainer/:id" 
+          element={
+            isAuthenticated ? (
+              <TrainerProfileWrapper trainers={trainers} currentUser={currentUser} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          } 
+        />
+>>>>>>> ef830e1 (Save local changes before rebase)
         <Route 
           path="/trainer-profile" 
           element={
@@ -299,12 +341,20 @@ function App() {
     <UserProfile 
       user={{
         ...currentUser,
+<<<<<<< HEAD
         fitnessLevel: 'Intermediate',
         joinDate: '2023-01-01',
         interests: ['Running', 'Yoga', 'Weightlifting'],
         availability: ['Morning', 'Evening'],
         fitnessGoals: ['Lose weight', 'Build muscle', 'Improve endurance'],
         dob: '1990-01-01', // Add this line for Date of Birth
+=======
+        fitnessLevel: 'Intermediate', // You can adjust this based on user data
+        joinDate: '2023-01-01', // You should set this when a user first signs up
+        interests: ['Running', 'Yoga', 'Weightlifting'], // These could be part of the user profile
+        availability: ['Morning', 'Evening'],
+        fitnessGoals: ['Lose weight', 'Build muscle', 'Improve endurance'],
+>>>>>>> ef830e1 (Save local changes before rebase)
         stats: {
           eventsAttended: 10,
           buddiesConnected: 5,
@@ -319,17 +369,21 @@ function App() {
         ]
       }} 
       setIsAuthenticated={setIsAuthenticated}
+<<<<<<< HEAD
       updateUser={(updatedUser) => {
         // Here you would typically update the user data in your backend
         console.log('Updating user:', updatedUser);
         setCurrentUser(prevUser => ({...prevUser, ...updatedUser}));
       }}
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
     />
   ) : <Navigate to="/login" />
 } />
         <Route path="/trainers" element={
           isAuthenticated ? <TrainersPage trainers={trainers} /> : <Navigate to="/login" />
         } />
+<<<<<<< HEAD
         <Route path="/all-buddies" element={
           isAuthenticated ? <AllBuddiesPage buddies={buddies} /> : <Navigate to="/login" />
         } />
@@ -339,6 +393,8 @@ function App() {
         <Route path="/all-trainers" element={
           isAuthenticated ? <AllTrainersPage trainers={trainers} /> : <Navigate to="/login" />
         } />
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
         <Route 
   path="/trainer-settings" 
   element={
@@ -358,12 +414,15 @@ function App() {
         <Route path="/buddies" element={
           isAuthenticated ? <BuddiesPage connectedBuddies={buddies} /> : <Navigate to="/login" />
         } />
+<<<<<<< HEAD
         <Route path="/message-buddy/:id" element={
           isAuthenticated ? <MessageBuddy buddies={buddies} /> : <Navigate to="/login" />
         } />
         <Route path="/schedule-workout/:id" element={
           isAuthenticated ? <ScheduleWorkout buddies={buddies} /> : <Navigate to="/login" />
         } />
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
         <Route path="/explore" element={
           isAuthenticated ? (
             <ExplorePage
@@ -391,6 +450,7 @@ function App() {
           isAuthenticated ? <Membership currentPlan={currentPlan} availablePlans={availablePlans} /> : <Navigate to="/login" />
         } />
         <Route path="/payment" element={
+<<<<<<< HEAD
           isAuthenticated ? (
             <Payment 
               paymentMethods={paymentMethods} 
@@ -410,6 +470,9 @@ function App() {
               }}
             />
           ) : <Navigate to="/login" />
+=======
+          isAuthenticated ? <Payment paymentMethods={paymentMethods} transactions={transactions} /> : <Navigate to="/login" />
+>>>>>>> ef830e1 (Save local changes before rebase)
         } />
         <Route path="/settings" element={
           isAuthenticated ? <Settings user={currentUser} /> : <Navigate to="/login" />
@@ -432,9 +495,12 @@ function App() {
           <CreateClass /> :
           <Navigate to="/login" />
         } />
+<<<<<<< HEAD
         <Route path="/create-event" element={
           isAuthenticated ? <CreateEvent /> : <Navigate to="/login" />
         } />
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
         <Route path="/trainer-financials" element={
           isAuthenticated && currentUser.role === 'trainer' ?
           <TrainerFinancials trainer={currentUser} /> :
@@ -445,6 +511,7 @@ function App() {
           <TrainerChats trainer={currentUser} /> :
           <Navigate to="/login" />
         } />
+<<<<<<< HEAD
         <Route path="/clients" element={
           isAuthenticated && currentUser.role === 'trainer' ?
           <Clients /> :
@@ -466,6 +533,8 @@ function App() {
         <Route path="/trainer/:id/book-session" element={
           isAuthenticated ? <BookSession /> : <Navigate to="/login" />
         } />
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
       </Routes>
     </Router>
   );

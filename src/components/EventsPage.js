@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import { useNavigate, Link } from 'react-router-dom';
 import { Calendar as CalendarIcon, Filter, MapPin, Clock, Users, Search, Plus } from 'lucide-react';
+=======
+import { useNavigate } from 'react-router-dom';
+import { Calendar as CalendarIcon, Filter, MapPin, Clock, Users } from 'lucide-react';
+>>>>>>> ef830e1 (Save local changes before rebase)
 import { Calendar } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
@@ -15,7 +20,10 @@ const EventsPage = ({ events }) => {
     isFree: null,
   });
   const [filteredEvents, setFilteredEvents] = useState(events);
+<<<<<<< HEAD
   const [searchTerm, setSearchTerm] = useState('');
+=======
+>>>>>>> ef830e1 (Save local changes before rebase)
 
   useEffect(() => {
     const filtered = events.filter(event => {
@@ -25,6 +33,7 @@ const EventsPage = ({ events }) => {
       const dateMatch = date ? eventDate.toDateString() === date.toDateString() : true;
       const typeMatch = !filters.type || event.type === filters.type;
       const freeMatch = filters.isFree === null || event.isFree === filters.isFree;
+<<<<<<< HEAD
       const searchMatch = event.name.toLowerCase().includes(searchTerm.toLowerCase());
 
       return dateMatch && typeMatch && freeMatch && searchMatch;
@@ -32,6 +41,14 @@ const EventsPage = ({ events }) => {
 
     setFilteredEvents(filtered);
   }, [date, filters, events, searchTerm]);
+=======
+
+      return dateMatch && typeMatch && freeMatch;
+    });
+
+    setFilteredEvents(filtered);
+  }, [date, filters, events]);
+>>>>>>> ef830e1 (Save local changes before rebase)
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -45,14 +62,23 @@ const EventsPage = ({ events }) => {
     <div className="max-w-7xl mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Events</h1>
+<<<<<<< HEAD
         <button onClick={() => navigate('/dashboard')} className="text-orange-500 font-medium">
+=======
+        <button onClick={() => navigate(-1)} className="text-orange-500 font-medium">
+>>>>>>> ef830e1 (Save local changes before rebase)
           Back to Dashboard
         </button>
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+<<<<<<< HEAD
         <div className="flex flex-col md:flex-row justify-between items-center mb-4">
           <div className="relative w-full md:w-auto mb-4 md:mb-0">
+=======
+        <div className="flex justify-between items-center mb-4">
+          <div className="relative">
+>>>>>>> ef830e1 (Save local changes before rebase)
             <button
               onClick={() => setShowCalendar(!showCalendar)}
               className="flex items-center px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
@@ -84,6 +110,7 @@ const EventsPage = ({ events }) => {
               </div>
             )}
           </div>
+<<<<<<< HEAD
           <div className="flex items-center space-x-4 w-full md:w-auto">
             <div className="relative flex-grow">
               <input
@@ -95,6 +122,9 @@ const EventsPage = ({ events }) => {
               />
               <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
             </div>
+=======
+          <div className="flex items-center space-x-4">
+>>>>>>> ef830e1 (Save local changes before rebase)
             <button
               onClick={() => setShowFilters(!showFilters)}
               className="flex items-center px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
@@ -132,6 +162,7 @@ const EventsPage = ({ events }) => {
         )}
 
         <div className="mt-6">
+<<<<<<< HEAD
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Events</h2>
             <Link to="/create-event" className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors flex items-center">
@@ -139,6 +170,9 @@ const EventsPage = ({ events }) => {
               Create Event
             </Link>
           </div>
+=======
+          <h2 className="text-xl font-semibold mb-4">Events</h2>
+>>>>>>> ef830e1 (Save local changes before rebase)
           {filteredEvents.length === 0 ? (
             <p className="text-gray-500">No events found for this date.</p>
           ) : (
@@ -184,4 +218,8 @@ const EventsPage = ({ events }) => {
   );
 };
 
+<<<<<<< HEAD
 export default EventsPage;
+=======
+export default EventsPage;
+>>>>>>> ef830e1 (Save local changes before rebase)

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, ArrowLeft, Search, ChevronDown, ChevronUp, MapPin, Clock, Users } from 'lucide-react';
@@ -57,6 +58,23 @@ const MyEvents = ({ events }) => {
           </button>
         </div>
       )}
+=======
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Calendar, ArrowLeft } from 'lucide-react';
+
+const MyEvents = ({ events }) => {
+  const navigate = useNavigate();
+
+  const renderEvent = (event) => (
+    <div key={event.id} className="bg-white rounded-lg shadow-md p-4 mb-4">
+      <h3 className="font-semibold text-lg mb-2">{event.name}</h3>
+      <p className="text-sm text-gray-600 mb-2">
+        <Calendar className="inline-block mr-2" size={16} />
+        {event.date} at {event.time}
+      </p>
+      <p className="text-sm text-gray-600">{event.location}</p>
+>>>>>>> ef830e1 (Save local changes before rebase)
     </div>
   );
 
@@ -69,6 +87,7 @@ const MyEvents = ({ events }) => {
         </button>
       </div>
 
+<<<<<<< HEAD
       <div className="mb-6 relative">
         <input
           type="text"
@@ -83,14 +102,27 @@ const MyEvents = ({ events }) => {
       <div className="mb-8">
         <h2 className="text-xl font-semibold mb-4">Upcoming Events</h2>
         {upcomingEvents.map(renderEvent)}
+=======
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4">Upcoming Events</h2>
+        {events.filter(event => new Date(event.date) >= new Date()).map(renderEvent)}
+>>>>>>> ef830e1 (Save local changes before rebase)
       </div>
 
       <div>
         <h2 className="text-xl font-semibold mb-4">Past Events</h2>
+<<<<<<< HEAD
         {pastEvents.map(renderEvent)}
+=======
+        {events.filter(event => new Date(event.date) < new Date()).map(renderEvent)}
+>>>>>>> ef830e1 (Save local changes before rebase)
       </div>
     </div>
   );
 };
 
+<<<<<<< HEAD
 export default MyEvents;
+=======
+export default MyEvents;
+>>>>>>> ef830e1 (Save local changes before rebase)

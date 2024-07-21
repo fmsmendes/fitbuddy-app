@@ -6,6 +6,10 @@ const UserMenu = ({ isOpen, onClose, setIsAuthenticated }) => {
   const menuItems = [
     { icon: <Calendar size={20} />, label: 'My Events', path: '/my-events' },
     { icon: <BookOpen size={20} />, label: 'My Bookings', path: '/my-bookings' },
+<<<<<<< HEAD
+=======
+    { icon: <Eye size={20} />, label: 'View my public profile', path: '/public-profile' },
+>>>>>>> ef830e1 (Save local changes before rebase)
     { icon: <CreditCard size={20} />, label: 'Membership', path: '/membership' },
     { icon: <CreditCard size={20} />, label: 'Payment', path: '/payment' },
     { icon: <Settings size={20} />, label: 'Settings', path: '/settings' },
