@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, useParams } from 'react-router-dom';
+import { supabase, getCurrentSession, getCurrentUser } from './utils/supabase';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-<<<<<<< HEAD
 import LandingPage from './components/LandingPage';
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import BuddyProfile from './components/BuddyProfile';
@@ -17,12 +15,9 @@ import FindBuddy from './components/FindBuddy';
 import EventsPage from './components/EventsPage';
 import UserProfile from './components/UserProfile';
 import TrainersPage from './components/TrainersPage';
-<<<<<<< HEAD
 import AllBuddiesPage from './components/AllBuddiesPage';
 import AllEventsPage from './components/AllEventsPage';
 import AllTrainersPage from './components/AllTrainersPage';
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
 import BuddiesPage from './components/BuddiesPage';
 import ExplorePage from './components/ExplorePage';
 import MyEvents from './components/MyEvents';
@@ -37,8 +32,7 @@ import TrainerClasses from './components/TrainerClasses';
 import TrainerFinancials from './components/TrainerFinancials';
 import TrainerChats from './components/TrainerChats';
 import CreateClass from './components/CreateClass';
-import TrainerSettings from './components/TrainerSettings'; 
-<<<<<<< HEAD
+import TrainerSettings from './components/TrainerSettings';
 import Clients from './components/Clients';
 import AddCard from './components/AddCard';
 import AddBankAccount from './components/AddBankAccount';
@@ -47,13 +41,19 @@ import BookSession from './components/BookSession';
 import CreateEvent from './components/CreateEvent';
 import MessageBuddy from './components/MessageBuddy';
 import ScheduleWorkout from './components/ScheduleWorkout';
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
+import { useJsApiLoader } from '@react-google-maps/api';
+import EditEvent from './components/EditEvent';
+
+const libraries = ["places"];
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    libraries: libraries,
+  });
 
   // Sample data (in a real app, this would likely come from an API)
   const buddyPhotos = [
@@ -154,94 +154,111 @@ function App() {
     { id: 2, name: 'Pro Plan', price: 39.99, features: ['Access to app', 'Unlimited trainer sessions', 'Nutrition planning'] },
   ]);
 
-<<<<<<< HEAD
   const [paymentMethods, setPaymentMethods] = useState([
-=======
-  const [paymentMethods] = useState([
->>>>>>> ef830e1 (Save local changes before rebase)
     { id: 1, type: 'Credit Card', lastFour: '1234', expiryMonth: '12', expiryYear: '2025' },
   ]);
 
-  const [transactions] = useState([
-    { id: 1, description: 'Monthly Subscription', date: '2024-07-01', amount: 19.99, type: 'debit' },
-    { id: 2, description: 'Personal Training Session', date: '2024-07-05', amount: 50.00, type: 'debit' },
-  ]);
+    const [transactions] = useState([
+      { id: 1, description: 'Monthly Subscription', date: '2024-07-01', amount: 19.99, type: 'debit' },
+      { id: 2, description: 'Personal Training Session', date: '2024-07-05', amount: 50.00, type: 'debit' },
+    ]);
+  
+    const exploreData = {
+      recommendations: [
+        { type: 'buddy', title: 'Sarah J.', description: 'Shares your interest in yoga' },
+        { type: 'event', title: 'Weekend Run', description: 'Join fellow runners this Saturday' },
+        { type: 'trainer', title: 'Mike T.', description: 'Specializes in HIIT workouts' },
+        { type: 'buddy', title: 'Alex M.', description: 'Looking for a cycling partner' },
+      ],
+      trendingActivities: [
+        { name: 'Virtual Fitness Challenge', description: '30-day bodyweight workout series' },
+        { name: 'Outdoor Yoga Sessions', description: 'Yoga classes in Central Park' },
+      ],
+      communityHighlights: {
+        title: 'User Spotlight: John\'s Transformation',
+        description: 'How John lost 30 pounds and gained confidence with FitBuddy',
+      },
+      localSpots: [
+        { name: 'City Gym', address: '123 Fitness St, Cityville' },
+        { name: 'Green Park Trail', address: 'Green Park, Nature Ave' },
+      ],
+      fitnessArticles: [
+        { title: '5 Quick Workouts for Busy Professionals', summary: 'Stay fit with these time-efficient routines' },
+        { title: 'Nutrition Tips for Muscle Gain', summary: 'Eat right to support your strength training' },
+      ],
+      trendingTrainers: [
+        { name: 'Emma S.', specialty: 'Yoga & Pilates', rating: 4.9, reviewCount: 120 },
+        { name: 'Jack R.', specialty: 'Strength & Conditioning', rating: 4.8, reviewCount: 95 },
+        { name: 'Mia L.', specialty: 'HIIT & Cardio', rating: 4.7, reviewCount: 88 },
+        { name: 'Tom K.', specialty: 'Bodyweight Training', rating: 4.9, reviewCount: 105 },
+      ],
+      localAds: [
+        { title: 'FreshMeal Prep', description: 'Healthy meals delivered to your door', link: 'https://freshmealprep.com' },
+        { title: 'GreenJuice Co.', description: 'Organic cold-pressed juices', link: 'https://greenjuice.com' },
+        { title: 'FitGear Store', description: '20% off on all workout equipment', link: 'https://fitgearstore.com' },
+        { title: 'Zen Yoga Studio', description: 'First class free for new members', link: 'https://zenyoga.com' },
+      ],
+    };
+  
+    useEffect(() => {
+      let mounted = true;
+  
+      async function checkAuth() {
+        try {
+          const session = await getCurrentSession();
+          if (mounted) {
+            setIsAuthenticated(!!session);
+            if (session) {
+              const user = await getCurrentUser();
+              if (user && user.id) {
+                const { data: profile, error } = await supabase
+                  .from('user_profiles')
+                  .select('role')
+                  .eq('id', user.id)
+                  .single();
+                
+                if (error) throw error;
+                
+                setCurrentUser({ ...user, role: profile?.role });
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error checking auth:', error);
+        } finally {
+          if (mounted) {
+            setIsLoading(false);
+          }
+        }
+      }
+  
+      checkAuth();
+  
+      return () => {
+        mounted = false;
+      };
+    }, []);
 
-  const exploreData = {
-    recommendations: [
-      { type: 'buddy', title: 'Sarah J.', description: 'Shares your interest in yoga' },
-      { type: 'event', title: 'Weekend Run', description: 'Join fellow runners this Saturday' },
-      { type: 'trainer', title: 'Mike T.', description: 'Specializes in HIIT workouts' },
-      { type: 'buddy', title: 'Alex M.', description: 'Looking for a cycling partner' },
-    ],
-    trendingActivities: [
-      { name: 'Virtual Fitness Challenge', description: '30-day bodyweight workout series' },
-      { name: 'Outdoor Yoga Sessions', description: 'Yoga classes in Central Park' },
-    ],
-    communityHighlights: {
-      title: 'User Spotlight: John\'s Transformation',
-      description: 'How John lost 30 pounds and gained confidence with FitBuddy',
-    },
-    localSpots: [
-      { name: 'City Gym', address: '123 Fitness St, Cityville' },
-      { name: 'Green Park Trail', address: 'Green Park, Nature Ave' },
-    ],
-    fitnessArticles: [
-      { title: '5 Quick Workouts for Busy Professionals', summary: 'Stay fit with these time-efficient routines' },
-      { title: 'Nutrition Tips for Muscle Gain', summary: 'Eat right to support your strength training' },
-    ],
-    trendingTrainers: [
-      { name: 'Emma S.', specialty: 'Yoga & Pilates', rating: 4.9, reviewCount: 120 },
-      { name: 'Jack R.', specialty: 'Strength & Conditioning', rating: 4.8, reviewCount: 95 },
-      { name: 'Mia L.', specialty: 'HIIT & Cardio', rating: 4.7, reviewCount: 88 },
-      { name: 'Tom K.', specialty: 'Bodyweight Training', rating: 4.9, reviewCount: 105 },
-    ],
-    localAds: [
-      { title: 'FreshMeal Prep', description: 'Healthy meals delivered to your door', link: 'https://freshmealprep.com' },
-      { title: 'GreenJuice Co.', description: 'Organic cold-pressed juices', link: 'https://greenjuice.com' },
-      { title: 'FitGear Store', description: '20% off on all workout equipment', link: 'https://fitgearstore.com' },
-      { title: 'Zen Yoga Studio', description: 'First class free for new members', link: 'https://zenyoga.com' },
-    ],
-  };
-
-  useEffect(() => {
-    // Simulate data loading
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }, []);
-
-  console.log('Current User:', currentUser);
-  console.log('Trainers:', trainers);
-
-  if (isLoading) {
-    return <div>Loading app data...</div>;
-  }
-
-<<<<<<< HEAD
-  function TrainerProfileWrapper({ trainers, currentUser, isViewerTrainer }) {
-    const { id } = useParams();
-    const trainer = trainers.find(t => t.id === parseInt(id));
-    return <TrainerProfile 
-      trainer={trainer} 
-      currentUser={currentUser}
-      isViewerTrainer={isViewerTrainer}
-    />;
-=======
-  function TrainerProfileWrapper({ trainers, currentUser }) {
-    const { id } = useParams();
-    const trainer = trainers.find(t => t.id === parseInt(id));
-    return <TrainerProfile trainer={trainer} currentUser={currentUser} />;
->>>>>>> ef830e1 (Save local changes before rebase)
-  }
-
-  return (
-    <Router>
-      <Routes>
-<<<<<<< HEAD
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
+   
+    function TrainerProfileWrapper({ trainers, currentUser, isViewerTrainer }) {
+      const { id } = useParams();
+      const trainer = trainers.find(t => t.id === parseInt(id));
+      return <TrainerProfile 
+        trainer={trainer} 
+        currentUser={currentUser}
+        isViewerTrainer={isViewerTrainer}
+      />;
+    }
+    return (
+      
+      <Router>
+        <Routes>
         <Route path="/" element={
           isAuthenticated ? (
-            currentUser.role === 'trainer' ? 
+            currentUser?.role === 'trainer' ? 
               <TrainerDashboard trainer={currentUser} setIsAuthenticated={setIsAuthenticated} /> :
               <Dashboard 
                 buddies={buddies} 
@@ -250,294 +267,243 @@ function App() {
                 currentUser={currentUser}
                 setIsAuthenticated={setIsAuthenticated}
               />
-          ) : <LandingPage />
-        } />
-        <Route path="/login" element={
-          isAuthenticated ? <Navigate to="/dashboard" /> : 
-=======
-        <Route path="/login" element={
+            ) : <LandingPage />
+          } />
+          <Route path="/login" element={
           isAuthenticated ? <Navigate to="/" /> : 
->>>>>>> ef830e1 (Save local changes before rebase)
           <Login 
             setIsAuthenticated={setIsAuthenticated}
             setCurrentUser={setCurrentUser}
-            defaultTrainer={defaultTrainer}
           />
         } />
-<<<<<<< HEAD
-        <Route path="/dashboard" element={
-=======
-        <Route path="/" element={
->>>>>>> ef830e1 (Save local changes before rebase)
-          isAuthenticated ? (
-            currentUser.role === 'trainer' ? 
-              <TrainerDashboard trainer={currentUser} setIsAuthenticated={setIsAuthenticated} /> :
-              <Dashboard 
+          <Route path="/dashboard" element={
+            isAuthenticated ? (
+              currentUser.role === 'trainer' ? 
+                <TrainerDashboard trainer={currentUser} setIsAuthenticated={setIsAuthenticated} /> :
+                <Dashboard 
                 buddies={buddies} 
                 events={events} 
                 trainers={trainers} 
                 currentUser={currentUser}
-              />
-          ) : <Navigate to="/login" />
-        } />
-<<<<<<< HEAD
-        <Route path="/trainer/:id" 
-        element={isAuthenticated ? (
-      <TrainerProfileWrapper 
-        trainers={trainers} 
-        currentUser={currentUser}
-        isViewerTrainer={currentUser.role === 'trainer'}
-      />
-    ) : (
-      <Navigate to="/login" />
-    )
-  } 
-/>
-=======
-        <Route 
-          path="/trainer/:id" 
-          element={
-            isAuthenticated ? (
-              <TrainerProfileWrapper trainers={trainers} currentUser={currentUser} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          } 
-        />
->>>>>>> ef830e1 (Save local changes before rebase)
-        <Route 
-          path="/trainer-profile" 
-          element={
-            isAuthenticated && currentUser?.role === 'trainer' ? (
-              <TrainerProfile 
-                trainer={currentUser}
+                setIsAuthenticated={setIsAuthenticated}
+                />
+            ) : <Navigate to="/login" />
+          } />
+          <Route path="/trainer/:id" 
+            element={isAuthenticated ? (
+              <TrainerProfileWrapper 
+                trainers={trainers} 
                 currentUser={currentUser}
+                isViewerTrainer={currentUser.role === 'trainer'}
               />
             ) : (
               <Navigate to="/login" />
             )
-          } 
-        />
-        <Route path="/buddy/:id" element={
-          isAuthenticated ? <BuddyProfile buddies={buddies} /> : <Navigate to="/login" />
-        } />
-        <Route path="/event/:id" element={
-          isAuthenticated ? <EventDetail events={events} /> : <Navigate to="/login" />
-        } />
-        <Route path="/notifications" element={
-          isAuthenticated ? <Notifications /> : <Navigate to="/login" />
-        } />
-        <Route path="/progress" element={
-          isAuthenticated ? <UserProgress /> : <Navigate to="/login" />
-        } />
-        <Route path="/find-buddy" element={
-          isAuthenticated ? <FindBuddy buddies={buddies} /> : <Navigate to="/login" />
-        } />
-        <Route path="/events" element={
-          isAuthenticated ? <EventsPage events={events} /> : <Navigate to="/login" />
-        } />
-       <Route path="/profile" element={
-  isAuthenticated ? (
-    <UserProfile 
-      user={{
-        ...currentUser,
-<<<<<<< HEAD
-        fitnessLevel: 'Intermediate',
-        joinDate: '2023-01-01',
-        interests: ['Running', 'Yoga', 'Weightlifting'],
-        availability: ['Morning', 'Evening'],
-        fitnessGoals: ['Lose weight', 'Build muscle', 'Improve endurance'],
-        dob: '1990-01-01', // Add this line for Date of Birth
-=======
-        fitnessLevel: 'Intermediate', // You can adjust this based on user data
-        joinDate: '2023-01-01', // You should set this when a user first signs up
-        interests: ['Running', 'Yoga', 'Weightlifting'], // These could be part of the user profile
-        availability: ['Morning', 'Evening'],
-        fitnessGoals: ['Lose weight', 'Build muscle', 'Improve endurance'],
->>>>>>> ef830e1 (Save local changes before rebase)
-        stats: {
-          eventsAttended: 10,
-          buddiesConnected: 5,
-          hoursExercised: 30,
-          achievementsEarned: 3,
-          likesReceived: 25
-        },
-        recentActivity: [
-          { type: 'event', name: 'Morning Run', date: '2024-07-05' },
-          { type: 'connection', name: 'Connected with Sarah', date: '2024-07-03' },
-          { type: 'achievement', name: 'Completed 10 workouts', date: '2024-07-01' }
-        ]
-      }} 
-      setIsAuthenticated={setIsAuthenticated}
-<<<<<<< HEAD
-      updateUser={(updatedUser) => {
-        // Here you would typically update the user data in your backend
-        console.log('Updating user:', updatedUser);
-        setCurrentUser(prevUser => ({...prevUser, ...updatedUser}));
-      }}
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
-    />
-  ) : <Navigate to="/login" />
-} />
-        <Route path="/trainers" element={
-          isAuthenticated ? <TrainersPage trainers={trainers} /> : <Navigate to="/login" />
-        } />
-<<<<<<< HEAD
-        <Route path="/all-buddies" element={
-          isAuthenticated ? <AllBuddiesPage buddies={buddies} /> : <Navigate to="/login" />
-        } />
-        <Route path="/all-events" element={
-          isAuthenticated ? <AllEventsPage events={events} /> : <Navigate to="/login" />
-        } />
-        <Route path="/all-trainers" element={
-          isAuthenticated ? <AllTrainersPage trainers={trainers} /> : <Navigate to="/login" />
-        } />
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
-        <Route 
-  path="/trainer-settings" 
-  element={
-    isAuthenticated && currentUser.role === 'trainer' ? (
-      <TrainerSettings 
-        trainer={currentUser}
-        updateTrainer={(newSettings) => {
-          // Function to update trainer settings
-          // This could involve making an API call and then updating your app's state
-        }}
-      />
-    ) : (
-      <Navigate to="/login" />
-    )
-  } 
-/>
-        <Route path="/buddies" element={
-          isAuthenticated ? <BuddiesPage connectedBuddies={buddies} /> : <Navigate to="/login" />
-        } />
-<<<<<<< HEAD
-        <Route path="/message-buddy/:id" element={
-          isAuthenticated ? <MessageBuddy buddies={buddies} /> : <Navigate to="/login" />
-        } />
-        <Route path="/schedule-workout/:id" element={
-          isAuthenticated ? <ScheduleWorkout buddies={buddies} /> : <Navigate to="/login" />
-        } />
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
-        <Route path="/explore" element={
-          isAuthenticated ? (
-            <ExplorePage
-              user={currentUser}
-              recommendations={exploreData.recommendations}
-              trendingActivities={exploreData.trendingActivities}
-              communityHighlights={exploreData.communityHighlights}
-              localSpots={exploreData.localSpots}
-              fitnessArticles={exploreData.fitnessArticles}
-              trendingTrainers={exploreData.trendingTrainers}
-              localAds={exploreData.localAds}
-            />
-          ) : <Navigate to="/login" />
-        } />
-        <Route path="/my-events" element={
-          isAuthenticated ? <MyEvents events={events} /> : <Navigate to="/login" />
-        } />
-        <Route path="/my-bookings" element={
-          isAuthenticated ? <MyBookings bookings={bookings} /> : <Navigate to="/login" />
-        } />
-        <Route path="/public-profile" element={
-          isAuthenticated ? <PublicProfile user={currentUser} /> : <Navigate to="/login" />
-        } />
-        <Route path="/membership" element={
-          isAuthenticated ? <Membership currentPlan={currentPlan} availablePlans={availablePlans} /> : <Navigate to="/login" />
-        } />
-        <Route path="/payment" element={
-<<<<<<< HEAD
-          isAuthenticated ? (
-            <Payment 
-              paymentMethods={paymentMethods} 
-              transactions={transactions} 
-              onAddPaymentMethod={(newMethod) => {
-                // Here you would typically send this data to your backend
-                console.log('New payment method:', newMethod);
-                // For now, we'll just add it to the existing methods
-                const newPaymentMethod = {
-                  id: paymentMethods.length + 1,
-                  type: 'Credit Card',
-                  lastFour: newMethod.cardNumber.slice(-4),
-                  expiryMonth: newMethod.expiryMonth,
-                  expiryYear: newMethod.expiryYear
-                };
-                setPaymentMethods([...paymentMethods, newPaymentMethod]);
-              }}
-            />
-          ) : <Navigate to="/login" />
-=======
-          isAuthenticated ? <Payment paymentMethods={paymentMethods} transactions={transactions} /> : <Navigate to="/login" />
->>>>>>> ef830e1 (Save local changes before rebase)
-        } />
-        <Route path="/settings" element={
-          isAuthenticated ? <Settings user={currentUser} /> : <Navigate to="/login" />
-        } />
-        <Route path="/help-feedback" element={
-          isAuthenticated ? <HelpFeedback /> : <Navigate to="/login" />
-        } />
-        <Route path="/trainer-dashboard" element={
-          isAuthenticated && currentUser.role === 'trainer' ?
-          <TrainerDashboard trainer={currentUser} setIsAuthenticated={setIsAuthenticated} /> :
-          <Navigate to="/login" />
-        } />
-        <Route path="/trainer-classes" element={
-          isAuthenticated && currentUser.role === 'trainer' ?
-          <TrainerClasses trainer={currentUser} /> :
-          <Navigate to="/login" />
-        } />
-        <Route path="/create-class" element={
-          isAuthenticated && currentUser.role === 'trainer' ?
-          <CreateClass /> :
-          <Navigate to="/login" />
-        } />
-<<<<<<< HEAD
-        <Route path="/create-event" element={
-          isAuthenticated ? <CreateEvent /> : <Navigate to="/login" />
-        } />
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
-        <Route path="/trainer-financials" element={
-          isAuthenticated && currentUser.role === 'trainer' ?
-          <TrainerFinancials trainer={currentUser} /> :
-          <Navigate to="/login" />
-        } />
-        <Route path="/trainer-chats" element={
-          isAuthenticated && currentUser.role === 'trainer' ?
-          <TrainerChats trainer={currentUser} /> :
-          <Navigate to="/login" />
-        } />
-<<<<<<< HEAD
-        <Route path="/clients" element={
-          isAuthenticated && currentUser.role === 'trainer' ?
-          <Clients /> :
-          <Navigate to="/login" />
-        } />
-        <Route path="/add-card" element={
-          isAuthenticated && currentUser.role === 'trainer' ?
-          <AddCard /> :
-          <Navigate to="/login" />
-        } />
-        <Route path="/add-bank-account" element={
-          isAuthenticated && currentUser.role === 'trainer' ?
-          <AddBankAccount /> :
-          <Navigate to="/login" />
-        } />
-        <Route path="/trainer/:id/classes" element={
-          isAuthenticated ? <TrainerClasses isTrainer={currentUser.role === 'trainer'} /> : <Navigate to="/login" />
-        } />
-        <Route path="/trainer/:id/book-session" element={
-          isAuthenticated ? <BookSession /> : <Navigate to="/login" />
-        } />
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
-      </Routes>
-    </Router>
-  );
-}
-
-export default App;
+          } />
+          <Route 
+            path="/trainer-profile" 
+            element={
+              isAuthenticated && currentUser?.role === 'trainer' ? (
+                <TrainerProfile 
+                  trainer={currentUser}
+                  currentUser={currentUser}
+                />
+              ) : (
+                <Navigate to="/login" />
+              )
+            } 
+          />
+          <Route path="/buddy/:id" element={
+            isAuthenticated ? <BuddyProfile buddies={buddies} /> : <Navigate to="/login" />
+          } />
+          <Route path="/event/:id" element={
+            isAuthenticated ? <EventDetail events={events} /> : <Navigate to="/login" />
+          } />
+          <Route path="/notifications" element={
+            isAuthenticated ? <Notifications /> : <Navigate to="/login" />
+          } />
+          <Route path="/progress" element={
+            isAuthenticated ? <UserProgress /> : <Navigate to="/login" />
+          } />
+          <Route path="/find-buddy" element={
+            isAuthenticated ? <FindBuddy buddies={buddies} /> : <Navigate to="/login" />
+          } />
+          <Route path="/events" element={
+            isAuthenticated ? <EventsPage events={events} /> : <Navigate to="/login" />
+          } />
+          <Route path="/profile" element={
+            isAuthenticated ? (
+              <UserProfile 
+                user={{
+                  ...currentUser,
+                  fitnessLevel: 'Intermediate',
+                  joinDate: '2023-01-01',
+                  interests: ['Running', 'Yoga', 'Weightlifting'],
+                  availability: ['Morning', 'Evening'],
+                  fitnessGoals: ['Lose weight', 'Build muscle', 'Improve endurance'],
+                  dob: '1990-01-01',
+                  stats: {
+                    eventsAttended: 10,
+                    buddiesConnected: 5,
+                    hoursExercised: 30,
+                    achievementsEarned: 3,
+                    likesReceived: 25
+                  },
+                  recentActivity: [
+                    { type: 'event', name: 'Morning Run', date: '2024-07-05' },
+                    { type: 'connection', name: 'Connected with Sarah', date: '2024-07-03' },
+                    { type: 'achievement', name: 'Completed 10 workouts', date: '2024-07-01' }
+                  ]
+                }} 
+                setIsAuthenticated={setIsAuthenticated}
+                updateUser={(updatedUser) => {
+                  console.log('Updating user:', updatedUser);
+                  setCurrentUser(prevUser => ({...prevUser, ...updatedUser}));
+                }}
+              />
+            ) : <Navigate to="/login" />
+          } />
+          <Route path="/trainers" element={
+            isAuthenticated ? <TrainersPage trainers={trainers} /> : <Navigate to="/login" />
+          } />
+          <Route path="/all-buddies" element={
+            isAuthenticated ? <AllBuddiesPage buddies={buddies} /> : <Navigate to="/login" />
+          } />
+          <Route path="/all-events" element={
+            isAuthenticated ? <AllEventsPage events={events} /> : <Navigate to="/login" />
+          } />
+          <Route path="/all-trainers" element={
+            isAuthenticated ? <AllTrainersPage trainers={trainers} /> : <Navigate to="/login" />
+          } />
+          <Route 
+            path="/trainer-settings" 
+            element={
+              isAuthenticated && currentUser.role === 'trainer' ? (
+                <TrainerSettings 
+                  trainer={currentUser}
+                  updateTrainer={(newSettings) => {
+                    // Function to update trainer settings
+                    // This could involve making an API call and then updating your app's state
+                  }}
+                />
+              ) : (
+                <Navigate to="/login" />
+              )
+            } 
+          />
+          <Route path="/buddies" element={
+            isAuthenticated ? <BuddiesPage connectedBuddies={buddies} /> : <Navigate to="/login" />
+          } />
+          <Route path="/message-buddy/:id" element={
+            isAuthenticated ? <MessageBuddy buddies={buddies} /> : <Navigate to="/login" />
+          } />
+          <Route path="/schedule-workout/:id" element={
+            isAuthenticated ? <ScheduleWorkout buddies={buddies} /> : <Navigate to="/login" />
+          } />
+          <Route path="/explore" element={
+            isAuthenticated ? (
+              <ExplorePage
+                user={currentUser}
+                recommendations={exploreData.recommendations}
+                trendingActivities={exploreData.trendingActivities}
+                communityHighlights={exploreData.communityHighlights}
+                localSpots={exploreData.localSpots}
+                fitnessArticles={exploreData.fitnessArticles}
+                trendingTrainers={exploreData.trendingTrainers}
+                localAds={exploreData.localAds}
+              />
+            ) : <Navigate to="/login" />
+          } />
+          <Route path="/my-events" element={
+            isAuthenticated ? <MyEvents events={events} /> : <Navigate to="/login" />
+          } />
+          <Route path="/my-bookings" element={
+            isAuthenticated ? <MyBookings bookings={bookings} /> : <Navigate to="/login" />
+          } />
+          <Route path="/public-profile" element={
+            isAuthenticated ? <PublicProfile user={currentUser} /> : <Navigate to="/login" />
+          } />
+          <Route path="/membership" element={
+            isAuthenticated ? <Membership currentPlan={currentPlan} availablePlans={availablePlans} /> : <Navigate to="/login" />
+          } />
+          <Route path="/payment" element={
+            isAuthenticated ? (
+              <Payment 
+                paymentMethods={paymentMethods} 
+                transactions={transactions} 
+                onAddPaymentMethod={(newMethod) => {
+                  console.log('New payment method:', newMethod);
+                  const newPaymentMethod = {
+                    id: paymentMethods.length + 1,
+                    type: 'Credit Card',
+                    lastFour: newMethod.cardNumber.slice(-4),
+                    expiryMonth: newMethod.expiryMonth,
+                    expiryYear: newMethod.expiryYear
+                  };
+                  setPaymentMethods([...paymentMethods, newPaymentMethod]);
+                }}
+              />
+            ) : <Navigate to="/login" />
+          } />
+          <Route path="/settings" element={
+            isAuthenticated ? <Settings user={currentUser} /> : <Navigate to="/login" />
+          } />
+          <Route path="/help-feedback" element={
+            isAuthenticated ? <HelpFeedback /> : <Navigate to="/login" />
+          } />
+          <Route path="/trainer-dashboard" element={
+            isAuthenticated && currentUser.role === 'trainer' ?
+            <TrainerDashboard trainer={currentUser} setIsAuthenticated={setIsAuthenticated} /> :
+            <Navigate to="/login" />
+          } />
+          <Route path="/trainer-classes" element={
+            isAuthenticated && currentUser.role === 'trainer' ?
+            <TrainerClasses trainer={currentUser} /> :
+            <Navigate to="/login" />
+          } />
+          <Route path="/create-class" element={
+            isAuthenticated && currentUser.role === 'trainer' ?
+            <CreateClass /> :
+            <Navigate to="/login" />
+          } />
+          <Route path="/create-event" element={
+            isAuthenticated ? <CreateEvent /> : <Navigate to="/login" />
+          } />
+          <Route path="/trainer-financials" element={
+            isAuthenticated && currentUser.role === 'trainer' ?
+            <TrainerFinancials trainer={currentUser} /> :
+            <Navigate to="/login" />
+          } />
+          <Route path="/trainer-chats" element={
+            isAuthenticated && currentUser.role === 'trainer' ?
+            <TrainerChats trainer={currentUser} /> :
+            <Navigate to="/login" />
+          } />
+          <Route path="/clients" element={
+            isAuthenticated && currentUser.role === 'trainer' ?
+            <Clients /> :
+            <Navigate to="/login" />
+          } />
+          <Route path="/add-card" element={
+            isAuthenticated && currentUser.role === 'trainer' ?
+            <AddCard /> :
+            <Navigate to="/login" />
+          } />
+          <Route path="/add-bank-account" element={
+            isAuthenticated && currentUser.role === 'trainer' ?
+            <AddBankAccount /> :
+            <Navigate to="/login" />
+          } />
+          <Route path="/trainer/:id/classes" element={
+            isAuthenticated ? <TrainerClasses isTrainer={currentUser.role === 'trainer'} /> : <Navigate to="/login" />
+          } />
+          <Route path="/trainer/:id/book-session" element={
+            isAuthenticated ? <BookSession /> : <Navigate to="/login" />
+          } />
+          <Route path="/edit-event/:id" element={<EditEvent />} />
+        </Routes>
+      </Router>
+    );
+  }
+  
+  export default App;
