@@ -84,47 +84,23 @@ const BuddiesPage = () => {
     if (error) {
       console.error('Error fetching connected buddies:', error);
     } else {
-      const formattedBuddies = await Promise.all(data.map(async (connection) => {
+      const formattedBuddies = data.map((connection) => {
         const buddy = connection.sender_id === currentUser.id ? connection.connected_buddy : connection.buddy;
-                // Fetch shared workouts where current user is organizer or participant
-                const { data: sharedWorkouts, error: sharedWorkoutsError } = await supabase
-                .from('workout_participants')
-                .select('*, workout:workouts(*), user:user_profiles(*)')
-                .or(`user_id.eq.${currentUser.id},workout.organizer_id.eq.${currentUser.id}`)
-                .eq('status', 'accepted');
-      
-              if (sharedWorkoutsError) {
-                console.error('Error fetching shared workouts:', sharedWorkoutsError);
-              }
-      
-              // Fetch workout invitations
-              const { data: workoutInvitations, error: invitationsError } = await supabase
-                .from('workout_participants')
-                .select('*, workout:workouts(*), user:user_profiles(*)')
-                .eq('user_id', currentUser.id)
-                .eq('status', 'pending');
-      
-              if (invitationsError) {
-                console.error('Error fetching workout invitations:', invitationsError);
-              }
-      
-              return {
-                ...buddy,
-                connectionId: connection.id,
-                distance: calculateDistance(
-                  currentUser.latitude,
-                  currentUser.longitude,
-                  buddy.latitude,
-                  buddy.longitude
-                ),
-                sharedWorkouts: sharedWorkouts || [],
-                workoutInvitations: workoutInvitations || []
-              };
-            }));
-        
-            setConnectedBuddies(formattedBuddies);
-          }
+        return {
+          ...buddy,
+          connectionId: connection.id,
+          distance: calculateDistance(
+            currentUser.latitude,
+            currentUser.longitude,
+            buddy.latitude,
+            buddy.longitude
+          )
         };
+      });
+      
+      setConnectedBuddies(formattedBuddies);
+    }
+  };
         const toggleChat = (buddyId) => {
           setExpandedChats(prev => ({
             ...prev,
@@ -340,7 +316,6 @@ const BuddiesPage = () => {
                     currentUser={currentUser}
                     onAcceptInvitation={handleAcceptInvitation}
                     onDeclineInvitation={handleDeclineInvitation}
-                    allUsers={allUsers}
                   />
                 </div>
               ))}
