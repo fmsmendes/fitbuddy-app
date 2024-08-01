@@ -81,20 +81,27 @@ const SharedWorkoutsAndInvitations = ({ buddy, currentUser, onAcceptInvitation, 
             {renderOrganizer(workout.organizer_id)}
           </div>
         </div>
-        <div className="flex justify-end space-x-2">
-          <button 
-            className="bg-green-500 text-white px-3 py-1 rounded-full flex items-center text-sm"
-            onClick={() => onAcceptInvitation(workout.id)}
-          >
-            <Check size={14} className="mr-1" /> Accept
-          </button>
-          <button 
-            className="bg-red-500 text-white px-3 py-1 rounded-full flex items-center text-sm"
-            onClick={() => onDeclineInvitation(workout.id)}
-          >
-            <X size={14} className="mr-1" /> Decline
-          </button>
-        </div>
+        {invitation.status === 'pending' && (
+          <div className="flex justify-end space-x-2">
+            <button 
+              className="bg-green-500 text-white px-3 py-1 rounded-full flex items-center text-sm"
+              onClick={() => onAcceptInvitation(workout.id)}
+            >
+              <Check size={14} className="mr-1" /> Accept
+            </button>
+            <button 
+              className="bg-red-500 text-white px-3 py-1 rounded-full flex items-center text-sm"
+              onClick={() => onDeclineInvitation(workout.id)}
+            >
+              <X size={14} className="mr-1" /> Decline
+            </button>
+          </div>
+        )}
+        {invitation.status !== 'pending' && (
+          <div className="text-sm text-gray-700">
+            Status: <span className="capitalize">{invitation.status}</span>
+          </div>
+        )}
       </div>
     );
   };

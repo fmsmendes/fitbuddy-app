@@ -204,19 +204,50 @@ const BuddiesPage = () => {
               .update({ status: 'declined' })
               .eq('workout_id', workoutId)
               .eq('user_id', currentUser.id);
-      
+
             if (error) throw error;
-      
+
             await fetchConnectedBuddies();
           } catch (error) {
             console.error('Error declining invitation:', error);
           }
         };
-      
+
+        const handleCreateWorkoutRequest = async (buddyId, workoutDetails) => {
+          try {
+            // Create a new workout
+            const { data: workout, error: workoutError } = await supabase
+              .from('workouts')
+              .insert([
+                { 
+                  organizer_id: currentUser.id,
+                  ...workoutDetails
+                }
+              ])
+              .single();
+
+            if (workoutError) throw workoutError;
+
+            // Create workout participants entries
+            const { error: participantsError } = await supabase
+              .from('workout_participants')
+              .insert([
+                { workout_id: workout.id, user_id: currentUser.id, status: 'accepted' },
+                { workout_id: workout.id, user_id: buddyId, status: 'pending' }
+              ]);
+
+            if (participantsError) throw participantsError;
+
+            await fetchConnectedBuddies();
+          } catch (error) {
+            console.error('Error creating workout request:', error);
+          }
+        };
+
         if (loading) {
           return <div>Loading buddies...</div>;
         }
-      
+
         return (
           <div className="max-w-4xl mx-auto p-4">
             <div className="flex justify-between items-center mb-6">
@@ -264,7 +295,7 @@ const BuddiesPage = () => {
                         <MessageCircle size={16} className="mr-1" /> Message
                       </button>
                       <button 
-                        onClick={() => navigate(`/schedule-workout/${buddy.id}`)}
+                        onClick={() => navigate(`/schedule-workout/${buddy.id}`, { state: { handleCreateWorkoutRequest } })}
                         className="px-3 py-1 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors flex items-center"
                       >
                         <Calendar size={16} className="mr-1" /> Schedule Workout
