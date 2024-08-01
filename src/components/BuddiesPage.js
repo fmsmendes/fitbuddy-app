@@ -295,7 +295,7 @@ const BuddiesPage = () => {
                         <MessageCircle size={16} className="mr-1" /> Message
                       </button>
                       <button 
-                        onClick={() => navigate(`/schedule-workout/${buddy.id}`, { state: { handleCreateWorkoutRequest } })}
+                        onClick={() => navigate(`/schedule-workout/${buddy.id}`)}
                         className="px-3 py-1 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors flex items-center"
                       >
                         <Calendar size={16} className="mr-1" /> Schedule Workout
