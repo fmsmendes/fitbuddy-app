@@ -54,17 +54,6 @@ const BuddiesPage = () => {
     }
   };
 
-  const fetchAllUsers = async () => {
-    const { data, error } = await supabase
-      .from('user_profiles')
-      .select('id, name, image_url');
-    
-    if (error) {
-      console.error('Error fetching all users:', error);
-    } else {
-      setAllUsers(data);
-    }
-  };
 
   const fetchConnectedBuddies = async () => {
     if (!currentUser) return;
