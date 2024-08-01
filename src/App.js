@@ -40,7 +40,7 @@ import AddClient from './components/AddClient';
 import BookSession from './components/BookSession';
 import CreateEvent from './components/CreateEvent';
 import MessageBuddy from './components/MessageBuddy';
-import ScheduleWorkout from './components/ScheduleWorkout';
+import ScheduleWorkoutPage from './components/ScheduleWorkoutPage';
 import { useJsApiLoader } from '@react-google-maps/api';
 import EditEvent from './components/EditEvent';
 
@@ -397,8 +397,8 @@ function App() {
           <Route path="/message-buddy/:id" element={
             isAuthenticated ? <MessageBuddy buddies={buddies} /> : <Navigate to="/login" />
           } />
-          <Route path="/schedule-workout/:id" element={
-            isAuthenticated ? <ScheduleWorkout buddies={buddies} /> : <Navigate to="/login" />
+          <Route path="/schedule-workout/:buddyId" element={
+            isAuthenticated ? <ScheduleWorkoutPage /> : <Navigate to="/login" />
           } />
           <Route path="/explore" element={
             isAuthenticated ? (
