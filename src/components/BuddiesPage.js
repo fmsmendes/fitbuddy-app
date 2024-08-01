@@ -14,12 +14,10 @@ const BuddiesPage = () => {
   const [connectedBuddies, setConnectedBuddies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
-  const [allUsers, setAllUsers] = useState([]);
   const [filteredBuddies, setFilteredBuddies] = useState([]);
 
   useEffect(() => {
     fetchCurrentUser();
-    fetchAllUsers();
   }, []);
 
   useEffect(() => {
@@ -36,10 +34,10 @@ const BuddiesPage = () => {
   }, [connectedBuddies, searchTerm]);
 
   useEffect(() => {
-    if (currentUser && allUsers.length > 0 && connectedBuddies.length > 0) {
+    if (currentUser && connectedBuddies.length > 0) {
       setLoading(false);
     }
-  }, [currentUser, allUsers, connectedBuddies]);
+  }, [currentUser, connectedBuddies]);
   const fetchCurrentUser = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
