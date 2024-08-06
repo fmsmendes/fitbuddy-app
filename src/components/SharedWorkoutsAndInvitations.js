@@ -1,144 +1,157 @@
 import React, { useState, useEffect } from 'react';
-import { Activity, Calendar, Clock, MapPin, Users, Check, X } from 'lucide-react';
+import { Clock, MapPin, Check, X } from 'lucide-react';
+import { supabase } from '../utils/supabase';
 
-const SharedWorkoutsAndInvitations = ({ buddy, currentUser, onAcceptInvitation, onDeclineInvitation, allUsers }) => {
+const SharedWorkoutsAndInvitations = ({ buddy, currentUser, onAcceptInvitation, onDeclineInvitation }) => {
   const [activeTab, setActiveTab] = useState('shared');
+  const [sharedWorkouts, setSharedWorkouts] = useState([]);
+  const [workoutInvitations, setWorkoutInvitations] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log('SharedWorkoutsAndInvitations props:', { 
-      buddy, 
-      currentUser, 
-      allUsers: allUsers ? `${allUsers.length} users` : 'undefined'
-    });
-  }, [buddy, currentUser, allUsers]);
+    fetchWorkouts();
+  }, [buddy, currentUser]);
 
-  const renderWorkout = (workout) => {
-    if (!workout || !workout.workout) {
-      console.error('Workout data is missing');
-      return null;
-    }
-
-    const workoutData = workout.workout;
-    const participants = workoutData.participants || [];
-
-    return (
-      <div key={workoutData.id} className="bg-blue-100 rounded-lg p-3 mb-2">
-        <div className="flex items-center justify-between mb-2">
-          <span className="font-semibold">{workoutData.workout_type || 'Unknown Type'}</span>
-          <span className="text-sm text-gray-600">{workoutData.date || 'Date not set'}</span>
-        </div>
-        <div className="flex items-center text-sm text-gray-700 mb-1">
-          <Clock size={14} className="mr-1" /> {workoutData.time || 'Time not set'}
-        </div>
-        <div className="flex items-center text-sm text-gray-700 mb-1">
-          <MapPin size={14} className="mr-1" /> {workoutData.location || 'Location not set'}
-        </div>
-        <div className="flex items-center text-sm text-gray-700 mb-1">
-          <Users size={14} className="mr-1" /> {participants.length} participants
-        </div>
-        <div className="text-sm text-gray-700 mt-2">
-          <strong>Participants:</strong>
-          <div className="flex flex-wrap mt-1">
-            {participants.map((participant) => (
-              <div key={participant.id} className="flex items-center mr-2 mb-2">
-                <img 
-                  src={getImageUrl(participant.image_url)} 
-                  alt={participant.name} 
-                  className="w-8 h-8 rounded-full mr-1"
-                />
-                <span className="text-sm">{participant.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderInvitation = (invitation) => {
-    if (!invitation || !invitation.workout) {
-      console.error('Invitation or workout data is missing');
-      return null;
-    }
+  const fetchWorkouts = async () => {
+    if (!buddy || !currentUser) return;
   
-    const workout = invitation.workout;
+    setIsLoading(true);
   
-    return (
-      <div key={invitation.id} className="bg-yellow-100 rounded-lg p-3 mb-2">
-        <div className="flex items-center justify-between mb-2">
-          <span className="font-semibold">{workout.workout_type || 'Unknown Type'}</span>
-          <span className="text-sm text-gray-600">{workout.date || 'Date not set'}</span>
-        </div>
-        <div className="flex items-center text-sm text-gray-700 mb-1">
-          <Clock size={14} className="mr-1" /> {workout.time || 'Time not set'}
-        </div>
-        <div className="flex items-center text-sm text-gray-700 mb-1">
-          <MapPin size={14} className="mr-1" /> {workout.location || 'Location not set'}
-        </div>
-        <div className="text-sm text-gray-700 mb-2">
-          <strong>Organizer:</strong>
-          <div className="flex items-center mt-1">
-            {renderOrganizer(workout.organizer_id)}
-          </div>
-        </div>
-        {invitation.status === 'pending' && (
-          <div className="flex justify-end space-x-2">
-            <button 
-              className="bg-green-500 text-white px-3 py-1 rounded-full flex items-center text-sm"
-              onClick={() => onAcceptInvitation(workout.id)}
-            >
-              <Check size={14} className="mr-1" /> Accept
-            </button>
-            <button 
-              className="bg-red-500 text-white px-3 py-1 rounded-full flex items-center text-sm"
-              onClick={() => onDeclineInvitation(workout.id)}
-            >
-              <X size={14} className="mr-1" /> Decline
-            </button>
-          </div>
-        )}
-        {invitation.status !== 'pending' && (
-          <div className="text-sm text-gray-700">
-            Status: <span className="capitalize">{invitation.status}</span>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const renderOrganizer = (organizerId) => {
-    if (!allUsers || allUsers.length === 0) {
-      console.error('allUsers is undefined or empty');
-      return <span>Unable to display organizer</span>;
+    try {
+      console.log('Fetching workouts for currentUser:', currentUser.id, 'and buddy:', buddy.id);
+  
+      // Fetch shared workouts
+      const { data: sharedData, error: sharedError } = await supabase
+        .from('workout_participants')
+        .select(`
+          *,
+          workout:workouts(*)
+        `)
+        .in('user_id', [currentUser.id, buddy.id])
+        .eq('status', 'accepted');
+  
+      if (sharedError) throw sharedError;
+  
+      // Fetch user profiles for participants
+      const participantIds = [...new Set(sharedData.map(p => p.user_id))];
+      const { data: userProfiles, error: userProfilesError } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .in('id', participantIds);
+  
+      if (userProfilesError) throw userProfilesError;
+  
+      // Create a map of user profiles
+      const userProfileMap = Object.fromEntries(userProfiles.map(profile => [profile.id, profile]));
+  
+      // Group participants by workout and add user profile information
+      const groupedWorkouts = sharedData.reduce((acc, participant) => {
+        const workoutId = participant.workout_id;
+        if (!acc[workoutId]) {
+          acc[workoutId] = { ...participant.workout, participants: [] };
+        }
+        acc[workoutId].participants.push({
+          ...participant,
+          user: userProfileMap[participant.user_id]
+        });
+        return acc;
+      }, {});
+  
+      console.log('Shared workouts:', Object.values(groupedWorkouts));
+      setSharedWorkouts(Object.values(groupedWorkouts));
+  
+      // Fetch invitations
+      const { data: invitationsData, error: invitationsError } = await supabase
+        .from('workout_participants')
+        .select(`
+          *,
+          workout:workouts(*)
+        `)
+        .eq('user_id', currentUser.id)
+        .eq('status', 'pending');
+  
+      if (invitationsError) throw invitationsError;
+  
+      // Add user profile information to invitations
+      const invitationsWithProfiles = invitationsData.map(invitation => ({
+        ...invitation,
+        user: userProfileMap[invitation.user_id]
+      }));
+  
+      console.log('Workout invitations:', invitationsWithProfiles);
+      setWorkoutInvitations(invitationsWithProfiles);
+  
+    } catch (error) {
+      console.error('Error fetching workouts:', error);
+    } finally {
+      setIsLoading(false);
     }
+  };
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
 
-    const organizer = allUsers.find(u => u.id === organizerId);
-    if (!organizer) {
-      console.warn(`Organizer not found: ${organizerId}`);
-      return <span className="text-sm">Unknown Organizer</span>;
-    }
-
-    return (
-      <div className="flex items-center">
-        <img 
-          src={getImageUrl(organizer.image_url)} 
-          alt={organizer.name} 
-          className="w-8 h-8 rounded-full mr-1"
-        />
-        <span className="text-sm">{organizer.name}</span>
+  const renderWorkout = (workout) => (
+    <div key={workout.id} className="bg-blue-100 rounded-lg p-3 mb-2">
+      <div className="flex items-center justify-between mb-2">
+        <span className="font-semibold">{capitalizeFirstLetter(workout.workout_type) || 'Unknown Type'}</span>
+        <span className="text-sm text-gray-600">{workout.date || 'Date not set'}</span>
       </div>
-    );
-  };
+      <div className="flex items-center text-sm text-gray-700 mb-1">
+        <Clock size={14} className="mr-1" /> {workout.time || 'Time not set'}
+      </div>
+      <div className="flex items-center text-sm text-gray-700 mb-1">
+        <MapPin size={14} className="mr-1" /> {workout.location || 'Location not set'}
+      </div>
+      <div className="flex items-center mt-2">
+        <span className="text-sm text-gray-700 mr-2">Participants:</span>
+        {workout.participants.map((participant) => (
+          <div key={participant.id} className="relative mr-2 group">
+            <img
+              src={`${process.env.REACT_APP_SUPABASE_URL}/storage/v1/object/public/profile_images/${participant.user?.image_url}`}
+              alt={participant.user?.name}
+              className="w-8 h-8 rounded-full"
+            />
+            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              {participant.user?.name}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return 'https://via.placeholder.com/150';
-    if (imagePath.startsWith('http')) return imagePath;
-    return `${process.env.REACT_APP_SUPABASE_URL}/storage/v1/object/public/profile_images/${imagePath}`;
-  };
+  const renderInvitation = (invitation) => (
+    <div key={invitation.id} className="bg-yellow-100 rounded-lg p-3 mb-2">
+      <div className="flex items-center justify-between mb-2">
+        <span className="font-semibold">{capitalizeFirstLetter(invitation.workout.workout_type) || 'Unknown Type'}</span>
+        <span className="text-sm text-gray-600">{invitation.workout.date || 'Date not set'}</span>
+      </div>
+      <div className="flex items-center text-sm text-gray-700 mb-1">
+        <Clock size={14} className="mr-1" /> {invitation.workout.time || 'Time not set'}
+      </div>
+      <div className="flex items-center text-sm text-gray-700 mb-1">
+        <MapPin size={14} className="mr-1" /> {invitation.workout.location || 'Location not set'}
+      </div>
+      <div className="flex justify-end space-x-2 mt-2">
+        <button 
+          className="bg-green-500 text-white px-3 py-1 rounded-full flex items-center text-sm"
+          onClick={() => onAcceptInvitation(invitation.id)}
+        >
+          <Check size={14} className="mr-1" /> Accept
+        </button>
+        <button 
+          className="bg-red-500 text-white px-3 py-1 rounded-full flex items-center text-sm"
+          onClick={() => onDeclineInvitation(invitation.id)}
+        >
+          <X size={14} className="mr-1" /> Decline
+        </button>
+      </div>
+    </div>
+  );
 
-  if (!buddy || !currentUser) {
-    console.error('buddy or currentUser is undefined', { buddy, currentUser });
-    return <div>Unable to display workouts and invitations</div>;
+  if (isLoading) {
+    return <div className="mt-4 text-center">Loading workouts and invitations...</div>;
   }
 
   return (
@@ -161,8 +174,8 @@ const SharedWorkoutsAndInvitations = ({ buddy, currentUser, onAcceptInvitation, 
       {activeTab === 'shared' && (
         <div>
           <h3 className="font-semibold mb-2">Shared Workouts History</h3>
-          {buddy.sharedWorkouts && buddy.sharedWorkouts.length > 0 ? (
-            buddy.sharedWorkouts.map(renderWorkout)
+          {sharedWorkouts.length > 0 ? (
+            sharedWorkouts.map(renderWorkout)
           ) : (
             <p className="text-gray-600">No shared workouts yet.</p>
           )}
@@ -172,8 +185,8 @@ const SharedWorkoutsAndInvitations = ({ buddy, currentUser, onAcceptInvitation, 
       {activeTab === 'invitations' && (
         <div>
           <h3 className="font-semibold mb-2">Workout Invitations</h3>
-          {buddy.workoutInvitations && buddy.workoutInvitations.length > 0 ? (
-            buddy.workoutInvitations.map(renderInvitation)
+          {workoutInvitations.length > 0 ? (
+            workoutInvitations.map(renderInvitation)
           ) : (
             <p className="text-gray-600">No pending invitations.</p>
           )}

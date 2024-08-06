@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Clock, Users, DollarSign, MapPin, FileText, ArrowLeft } from 'lucide-react';
+import { supabase } from '../utils/supabase';
 
 const CreateClass = () => {
   const navigate = useNavigate();
@@ -26,14 +27,38 @@ const CreateClass = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log('Class data submitted:', classData);
-    // After submission, navigate back to the classes list
-    navigate('/trainer-classes');
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('No user logged in');
+  
+      const { data, error } = await supabase
+        .from('trainer_classes')
+        .insert({
+          name: classData.name,
+          date: classData.date,
+          start_time: classData.startTime,
+          end_time: classData.endTime,
+          max_participants: parseInt(classData.maxParticipants),
+          price: parseFloat(classData.price),
+          location: classData.location,
+          description: classData.description,
+          class_type: classData.classType,
+          equipment_needed: classData.equipmentNeeded,
+          fitness_level: classData.fitnessLevel,
+          trainer_id: user.id,
+        });
+  
+      if (error) throw error;
+  
+      console.log('Class created successfully:', data);
+      navigate('/trainer-classes');
+    } catch (error) {
+      console.error('Error creating class:', error);
+      alert('Failed to create class. Please try again.');
+    }
   };
-
   return (
     <div className="max-w-4xl mx-auto p-4">
       <button onClick={() => navigate('/trainer-classes')} className="mb-4 text-orange-500 font-medium flex items-center">
@@ -90,7 +115,6 @@ const CreateClass = () => {
             </div>
           </div>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">End Time</label>
@@ -166,7 +190,6 @@ const CreateClass = () => {
             />
           </div>
         </div>
-
         <div>
           <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
           <div className="mt-1 relative rounded-md shadow-sm">

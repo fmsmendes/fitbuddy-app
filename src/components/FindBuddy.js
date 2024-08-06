@@ -1,38 +1,159 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, MapPin, Star, Filter } from 'lucide-react';
+import { Search, MapPin, Star, Filter, Sun, Moon } from 'lucide-react';
+import { supabase } from '../utils/supabase';
 
-const FindBuddy = ({ buddies }) => {
+const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
+const STORAGE_URL = `${SUPABASE_URL}/storage/v1/object/public/profile_images/`;
+
+const FindBuddy = () => {
   const navigate = useNavigate();
+  const [buddies, setBuddies] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [connections, setConnections] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterLevel, setFilterLevel] = useState('');
   const [ageRange, setAgeRange] = useState([18, 65]);
-  const [maxDistance, setMaxDistance] = useState(50);
+  const [maxDistance, setMaxDistance] = useState(100);
   const [gender, setGender] = useState('');
   const [availability, setAvailability] = useState([]);
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
+  const [loading, setLoading] = useState(true);
   const buddiesPerPage = 8;
 
-  const allInterests = [...new Set(buddies.flatMap(buddy => buddy.interests))];
+  useEffect(() => {
+    fetchCurrentUser();
+    fetchBuddies();
+    fetchConnections();
+  }, []);
 
-  const filteredBuddies = buddies.filter(buddy => 
-    buddy.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (filterLevel === '' || buddy.level === filterLevel) &&
-    buddy.age >= ageRange[0] && buddy.age <= ageRange[1] &&
-    buddy.distance <= maxDistance &&
-    (gender === '' || buddy.gender === gender) &&
-    (availability.length === 0 || availability.some(time => buddy.availability.includes(time))) &&
-    (selectedInterests.length === 0 || selectedInterests.every(interest => buddy.interests.includes(interest)))
-  );
+  const fetchCurrentUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+      if (error) {
+        console.error('Error fetching current user profile:', error);
+      } else {
+        setCurrentUser(data);
+      }
+    }
+  };
+
+  const fetchBuddies = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('*');
+      if (error) throw error;
+      setBuddies(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching buddies:', error);
+      setLoading(false);
+    }
+  };
+
+  const fetchConnections = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data, error } = await supabase
+        .from('buddy_connections')
+        .select('*')
+        .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`);
+
+      if (error) {
+        console.error('Error fetching connections:', error);
+      } else {
+        setConnections(data);
+      }
+    }
+  };
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the earth in km
+    const dLat = deg2rad(lat2 - lat1);
+    const dLon = deg2rad(lon2 - lon1);
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2)
+    ; 
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    const d = R * c; // Distance in km
+    return d;
+  };
+
+  const deg2rad = (deg) => {
+    return deg * (Math.PI/180);
+  };
+
+  const calculateAge = (dob) => {
+    const today = new Date();
+    const birthDate = new Date(dob);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return 'https://via.placeholder.com/150';
+    if (imagePath.startsWith('http')) return imagePath;
+    return `${STORAGE_URL}${imagePath}`;
+  };
+
+  const filteredBuddies = buddies
+    .filter(buddy => {
+      // Exclude the current user
+      if (buddy.id === currentUser?.id) return false;
+
+      // Exclude trainers
+    if (buddy.role === 'trainer') return false;
+      
+      // Check if there's an existing connection
+      const connection = connections.find(
+        conn => (conn.sender_id === currentUser?.id && conn.receiver_id === buddy.id) ||
+                (conn.receiver_id === currentUser?.id && conn.sender_id === buddy.id)
+      );
+
+      // Exclude if there's a connection and it's not blocked
+      if (connection && connection.status !== 'blocked') return false;
+
+      return true;
+    })
+    .map(buddy => ({
+      ...buddy,
+      age: calculateAge(buddy.dob),
+      distance: calculateDistance(
+        currentUser?.latitude || 0,
+        currentUser?.longitude || 0,
+        buddy.latitude || 0,
+        buddy.longitude || 0
+      )
+    }))
+    .filter(buddy => 
+      buddy.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (filterLevel === '' || buddy.fitness_level === filterLevel) &&
+      buddy.age >= ageRange[0] && buddy.age <= ageRange[1] &&
+      buddy.distance <= maxDistance &&
+      (gender === '' || buddy.gender === gender) &&
+      (availability.length === 0 || availability.some(time => buddy.availability?.includes(time))) &&
+      (selectedInterests.length === 0 || selectedInterests.every(interest => buddy.interests?.includes(interest)))
+    )
+    .sort((a, b) => a.distance - b.distance);
 
   const indexOfLastBuddy = currentPage * buddiesPerPage;
   const indexOfFirstBuddy = indexOfLastBuddy - buddiesPerPage;
   const currentBuddies = filteredBuddies.slice(indexOfFirstBuddy, indexOfLastBuddy);
 
   const paginate = pageNumber => setCurrentPage(pageNumber);
-
   const renderRating = (rating, reviews) => (
     <div className="flex items-center">
       <div className="flex items-center mr-2">
@@ -43,6 +164,12 @@ const FindBuddy = ({ buddies }) => {
       <span className="text-sm text-gray-600">{rating.toFixed(1)} ({reviews} reviews)</span>
     </div>
   );
+
+  const allInterests = [...new Set(buddies.flatMap(buddy => buddy.interests || []))];
+
+  if (loading) {
+    return <div className="text-center mt-8">Loading buddies...</div>;
+  }
 
   return (
     <div className="max-w-6xl mx-auto p-4">
@@ -162,23 +289,43 @@ const FindBuddy = ({ buddies }) => {
           </div>
         )}
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {currentBuddies.map(buddy => (
           <div key={buddy.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-            <img src={buddy.image} alt={buddy.name} className="w-full h-48 object-cover" />
+            <img 
+              src={getImageUrl(buddy.image_url)} 
+              alt={buddy.name} 
+              className="w-full h-48 object-cover object-top"
+              onError={(e) => {
+                e.target.onerror = null; 
+                e.target.src = 'https://via.placeholder.com/150'
+              }}
+            />
             <div className="p-4">
               <h3 className="font-semibold text-lg text-gray-800">{buddy.name} <span className="text-sm font-normal text-gray-500">{buddy.age}</span></h3>
               <div className="flex items-center text-sm text-gray-600 mb-2">
-                <MapPin size={14} className="mr-1" /> {buddy.distance} km away
+                <MapPin size={14} className="mr-1" /> {buddy.distance.toFixed(1)} km away
               </div>
-              {renderRating(buddy.rating, buddy.reviews)}
-              <p className="text-sm text-gray-700 mt-2">Fitness Level: <span className="font-medium">{buddy.level}</span></p>
+              {renderRating(buddy.rating || 0, buddy.reviews || 0)}
+              <p className="text-sm text-gray-700 mt-2">Fitness Level: <span className="font-medium">{buddy.fitness_level}</span></p>
               <div className="mt-2">
                 <p className="text-sm font-medium text-gray-700 mb-1">Interests:</p>
                 <div className="flex flex-wrap">
-                  {buddy.interests.map((interest, index) => (
+                  {(buddy.interests || []).map((interest, index) => (
                     <span key={index} className="bg-orange-100 text-orange-800 text-xs font-medium mr-2 mb-2 px-2 py-1 rounded-full">{interest}</span>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-2">
+                <p className="text-sm font-medium text-gray-700 mb-1">Availability:</p>
+                <div className="flex flex-wrap">
+                  {(buddy.availability || []).map((time, index) => (
+                    <span key={index} className="flex items-center bg-green-100 text-green-800 text-xs font-medium mr-2 mb-2 px-2 py-1 rounded-full">
+                      {time === 'Morning' && <Sun size={12} className="mr-1" />}
+                      {time === 'Afternoon' && <Sun size={12} className="mr-1" />}
+                      {time === 'Evening' && <Moon size={12} className="mr-1" />}
+                      {time}
+                    </span>
                   ))}
                 </div>
               </div>

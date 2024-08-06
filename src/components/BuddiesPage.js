@@ -144,38 +144,41 @@ const BuddiesPage = () => {
           if (imagePath.startsWith('http')) return imagePath;
           return `${STORAGE_URL}${imagePath}`;
         };
-        const handleAcceptInvitation = async (workoutId) => {
+        const handleAcceptInvitation = async (invitationId) => {
           try {
             const { data, error } = await supabase
               .from('workout_participants')
               .update({ status: 'accepted' })
-              .eq('workout_id', workoutId)
-              .eq('user_id', currentUser.id);
+              .eq('id', invitationId)
+              .select();
         
             if (error) throw error;
         
+            console.log('Accepted invitation:', data);
             await fetchConnectedBuddies();
           } catch (error) {
             console.error('Error accepting invitation:', error);
           }
         };
       
-        const handleDeclineInvitation = async (workoutId) => {
+        const handleDeclineInvitation = async (invitationId) => {
           try {
             const { data, error } = await supabase
               .from('workout_participants')
               .update({ status: 'declined' })
-              .eq('workout_id', workoutId)
-              .eq('user_id', currentUser.id);
-
+              .eq('id', invitationId)
+              .select();
+        
             if (error) throw error;
-
+        
+            console.log('Declined invitation:', data);
             await fetchConnectedBuddies();
           } catch (error) {
             console.error('Error declining invitation:', error);
           }
         };
 
+        
         const handleCreateWorkoutRequest = async (buddyId, workoutDetails) => {
           try {
             // Create a new workout
@@ -187,20 +190,26 @@ const BuddiesPage = () => {
                   ...workoutDetails
                 }
               ])
+              .select()
               .single();
-
+        
             if (workoutError) throw workoutError;
-
+        
+            console.log("Created workout:", workout);
+        
             // Create workout participants entries
-            const { error: participantsError } = await supabase
+            const { data: participantsData, error: participantsError } = await supabase
               .from('workout_participants')
               .insert([
                 { workout_id: workout.id, user_id: currentUser.id, status: 'accepted' },
                 { workout_id: workout.id, user_id: buddyId, status: 'pending' }
-              ]);
-
+              ])
+              .select();
+        
             if (participantsError) throw participantsError;
-
+        
+            console.log("Created workout participants:", participantsData);
+        
             await fetchConnectedBuddies();
           } catch (error) {
             console.error('Error creating workout request:', error);

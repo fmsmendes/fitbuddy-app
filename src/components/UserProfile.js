@@ -1,7 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
 import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target, Save, X, Dumbbell, Bike, Mountain, Snowflake, Footprints, Zap, Shirt } from 'lucide-react';
+import { supabase } from '../utils/supabase';
+import LocationInput from './LocationInput';
+
+const uploadProfileImage = async (file, userId) => {
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${userId}/${Math.random()}.${fileExt}`;
+  
+
+  const { data, error } = await supabase.storage
+    .from('profile_images')
+    .upload(fileName, file);
+
+  if (error) {
+    console.error('Error uploading file:', error);
+    return null;
+  }
+
+  return fileName;
+};
+
+const getPublicImageUrl = (path) => {
+  if (!path) return 'https://via.placeholder.com/150';
+  const { data: { publicUrl } } = supabase.storage
+    .from('profile_images')
+    .getPublicUrl(path);
+  return publicUrl;
+};
 
 const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
   const navigate = useNavigate();
@@ -9,22 +35,41 @@ const UserProfile = ({ user, setIsAuthenticated, updateUser }) => {
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState(null);
-=======
-import { User, Mail, MapPin, Calendar, Activity, Award, Edit, LogOut, Clock, Star, Heart, Target } from 'lucide-react';
+  const [selectedImage, setSelectedImage] = useState(null);
 
-const UserProfile = ({ user, setIsAuthenticated }) => {
-  const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('info');
-  const [userData, setUserData] = useState(null);
->>>>>>> ef830e1 (Save local changes before rebase)
 
   useEffect(() => {
-    console.log("User data received:", user);
-    setUserData(user);
-<<<<<<< HEAD
-    setEditedData(user);
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
+    const fetchUserProfile = async () => {
+      if (user && user.id) {
+        const { data, error } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+  
+        if (error) {
+          console.error('Error fetching user profile:', error);
+        } else {
+          const profileData = {
+            ...user,
+            ...data,
+            fitnessLevel: data.fitness_level,
+            interests: data.interests || [],
+            availability: data.availability || [],
+            fitnessGoals: data.fitness_goals || [],
+            location: data.location,
+            latitude: data.latitude,
+            longitude: data.longitude,
+            image_url: data.image_url
+          };
+  
+          setUserData(profileData);
+          setEditedData(profileData);
+        }
+      }
+    };
+  
+    fetchUserProfile();
   }, [user]);
 
   const handleLogout = () => {
@@ -45,16 +90,59 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
       </div>
     );
   };
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setSelectedImage(file);
+      const objectUrl = URL.createObjectURL(file);
+      setEditedData(prev => ({
+        ...prev,
+        image_url: null
+      }));
+    }
+  };
 
-<<<<<<< HEAD
   const handleEdit = () => {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
-    updateUser(editedData);
-    setUserData(editedData);
-    setIsEditing(false);
+  const handleSave = async () => {
+    let imagePath = editedData.image_url;
+
+    if (selectedImage) {
+      const uploadedImagePath = await uploadProfileImage(selectedImage, user.id);
+      if (uploadedImagePath) {
+        imagePath = uploadedImagePath;
+      }
+    }
+   
+    const { data, error } = await supabase
+      .from('user_profiles')
+      .update({
+        name: editedData.name,
+        gender: editedData.gender,
+        dob: editedData.dob,
+        location: editedData.location,
+        latitude: editedData.latitude,
+        longitude: editedData.longitude,
+        fitness_level: editedData.fitnessLevel,
+        interests: editedData.interests || [],
+        availability: editedData.availability || [],
+        fitness_goals: editedData.fitnessGoals || [],
+        image_url: imagePath
+      })
+      .eq('id', user.id);
+
+    if (error) {
+      console.error('Error updating user profile:', error);
+    } else {
+      const updatedData = { ...editedData, image_url: imagePath };
+      setUserData(updatedData);
+      setIsEditing(false);
+      updateUser(updatedData);
+    }
+
+    setSelectedImage(null);
   };
 
   const handleCancel = () => {
@@ -71,17 +159,19 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
     const { value } = e.target;
     setEditedData(prev => ({
       ...prev,
-      [field]: value.split(',').map(item => item.trim())
+      [field]: value.split('\n').filter(item => item.trim() !== '')
+    }));
+  };
+  
+  const handleLocationSelect = (locationData) => {
+    setEditedData(prev => ({
+      ...prev,
+      latitude: locationData.latitude,
+      longitude: locationData.longitude,
+      location: locationData.suburb
     }));
   };
 
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
-  if (!userData) {
-    return <div>Loading user data...</div>;
-  }
-
-<<<<<<< HEAD
   const calculateAge = (dob) => {
     const today = new Date();
     const birthDate = new Date(dob);
@@ -93,8 +183,9 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
     return age;
   };
 
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
+  if (!userData) {
+    return <div>Loading user data...</div>;
+  }
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -106,9 +197,39 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
             </button>
           </div>
           <div className="flex items-center mb-6">
-            <img src={userData.image} alt={userData.name} className="w-24 h-24 rounded-full object-cover mr-6" />
+          {isEditing ? (
+            <div className="relative">
+              <img
+               src={selectedImage ? URL.createObjectURL(selectedImage) : getPublicImageUrl(editedData.image_url)}
+               alt={userData.name}
+                className="w-24 h-24 rounded-full object-cover mr-6"
+                onError={(e) => {
+                  console.error('Error loading image:', e);
+                  e.target.src = 'https://via.placeholder.com/150';
+                }}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              />
+              <div className="absolute bottom-0 right-0 bg-orange-500 text-white p-1 rounded-full">
+                <Edit size={16} />
+              </div>
+            </div>
+          ) : (
+            <img
+              src={getPublicImageUrl(userData.image_url)}
+              alt={userData.name}
+              className="w-24 h-24 rounded-full object-cover mr-6"
+              onError={(e) => {
+                console.error('Error loading image:', e);
+                e.target.src = 'https://via.placeholder.com/150';
+              }}
+            />
+          )}
             <div>
-<<<<<<< HEAD
               {isEditing ? (
                 <input
                   type="text"
@@ -120,10 +241,21 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
               ) : (
                 <h2 className="text-2xl font-semibold">{userData.name}</h2>
               )}
-=======
-              <h2 className="text-2xl font-semibold">{userData.name}</h2>
->>>>>>> ef830e1 (Save local changes before rebase)
-              <p className="text-gray-600">{userData.fitnessLevel} Fitness Enthusiast</p>
+              {isEditing ? (
+                <select
+                  name="fitnessLevel"
+                  value={editedData.fitnessLevel}
+                  onChange={handleChange}
+                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                >
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                  <option value="Professional">Professional</option>
+                </select>
+              ) : (
+                <p className="text-gray-600">{userData.fitnessLevel} Fitness Enthusiast</p>
+              )}
               {renderRating(userData.rating)}
             </div>
           </div>
@@ -152,7 +284,6 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center text-gray-600">
                   <User className="mr-2" size={20} />
-<<<<<<< HEAD
                   {isEditing ? (
                     <>
                       <select
@@ -194,36 +325,21 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
                 <div className="flex items-center text-gray-600">
                   <MapPin className="mr-2" size={20} />
                   {isEditing ? (
-                    <input
-                      type="text"
-                      name="location"
-                      value={editedData.location}
-                      onChange={handleChange}
-                      className="border rounded px-2 py-1"
-                    />
+                    <LocationInput
+                     onSelectLocation={handleLocationSelect}
+                     defaultValue={editedData.location}
+                   />
                   ) : (
                     <span>{userData.location}</span>
                   )}
-=======
-                  <span>{userData.gender}, {userData.age} years old</span>
-                </div>
-                <div className="flex items-center text-gray-600">
-                  <Mail className="mr-2" size={20} />
-                  <span>{userData.email}</span>
-                </div>
-                <div className="flex items-center text-gray-600">
-                  <MapPin className="mr-2" size={20} />
-                  <span>{userData.location}</span>
->>>>>>> ef830e1 (Save local changes before rebase)
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Calendar className="mr-2" size={20} />
-                  <span>Joined {userData.joinDate}</span>
+                  <span>Joined {new Date(userData.created_at).toLocaleDateString()}</span>
                 </div>
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Interests</h3>
-<<<<<<< HEAD
                 {isEditing ? (
                   <div className="grid grid-cols-3 gap-2">
                     {[
@@ -246,13 +362,13 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
                       <button
                         key={index}
                         onClick={() => {
-                          const newInterests = editedData.interests.includes(interest.label)
-                            ? editedData.interests.filter(i => i !== interest.label)
-                            : [...editedData.interests, interest.label];
-                          setEditedData({...editedData, interests: newInterests});
+                          const newInterests = (editedData.interests || []).includes(interest.label)
+                            ? (editedData.interests || []).filter(i => i !== interest.label)
+                            : [...(editedData.interests || []), interest.label];
+                          setEditedData({ ...editedData, interests: newInterests });
                         }}
                         className={`flex items-center justify-center p-2 rounded ${
-                          editedData.interests.includes(interest.label)
+                          (editedData.interests || []).includes(interest.label)
                             ? 'bg-orange-500 text-white'
                             : 'bg-gray-200 text-gray-700'
                         }`}
@@ -264,8 +380,8 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
                   </div>
                 ) : (
                   <div className="flex flex-wrap">
-                    {userData.interests && userData.interests.length > 0 ? (
-                      userData.interests.map((interest, index) => (
+                    {(userData.interests || []).length > 0 ? (
+                      (userData.interests || []).map((interest, index) => (
                         <span key={index} className="bg-orange-100 text-orange-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
                           {interest}
                         </span>
@@ -276,6 +392,7 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
                   </div>
                 )}
               </div>
+
               <div>
                 <h3 className="font-semibold mb-2">Availability</h3>
                 {isEditing ? (
@@ -284,13 +401,13 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
                       <button
                         key={index}
                         onClick={() => {
-                          const newAvailability = editedData.availability.includes(time)
-                            ? editedData.availability.filter(t => t !== time)
-                            : [...editedData.availability, time];
-                          setEditedData({...editedData, availability: newAvailability});
+                          const newAvailability = (editedData.availability || []).includes(time)
+                            ? (editedData.availability || []).filter(t => t !== time)
+                            : [...(editedData.availability || []), time];
+                          setEditedData({ ...editedData, availability: newAvailability });
                         }}
                         className={`p-2 rounded ${
-                          editedData.availability.includes(time)
+                          (editedData.availability || []).includes(time)
                             ? 'bg-green-500 text-white'
                             : 'bg-gray-200 text-gray-700'
                         }`}
@@ -301,8 +418,8 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
                   </div>
                 ) : (
                   <div className="flex flex-wrap">
-                    {userData.availability && userData.availability.length > 0 ? (
-                      userData.availability.map((time, index) => (
+                    {(userData.availability || []).length > 0 ? (
+                      (userData.availability || []).map((time, index) => (
                         <span key={index} className="bg-green-100 text-green-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
                           {time}
                         </span>
@@ -316,17 +433,17 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
               <div>
                 <h3 className="font-semibold mb-2">Fitness Goals</h3>
                 {isEditing ? (
-                  <input
-                    type="text"
-                    value={editedData.fitnessGoals.join(', ')}
+                  <textarea
+                    value={(editedData.fitnessGoals || []).join('\n')}
                     onChange={(e) => handleArrayChange(e, 'fitnessGoals')}
                     className="w-full border rounded px-2 py-1"
-                    placeholder="Enter fitness goals separated by commas"
+                    placeholder="Enter fitness goals, one per line"
+                    rows={4}
                   />
                 ) : (
-                  userData.fitnessGoals && userData.fitnessGoals.length > 0 ? (
+                  (userData.fitnessGoals && userData.fitnessGoals.length > 0) ? (
                     <ul className="list-disc list-inside">
-                      {userData.fitnessGoals.map((goal, index) => (
+                      {(userData.fitnessGoals || []).map((goal, index) => (
                         <li key={index} className="text-gray-600">{goal}</li>
                       ))}
                     </ul>
@@ -334,33 +451,6 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
                     <span>No fitness goals specified</span>
                   )
                 )}
-=======
-                <div className="flex flex-wrap">
-                  {userData.interests && userData.interests.map((interest, index) => (
-                    <span key={index} className="bg-orange-100 text-orange-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
-                      {interest}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Availability</h3>
-                <div className="flex flex-wrap">
-                  {userData.availability && userData.availability.map((time, index) => (
-                    <span key={index} className="bg-green-100 text-green-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full">
-                      {time}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Fitness Goals</h3>
-                <ul className="list-disc list-inside">
-                  {userData.fitnessGoals && userData.fitnessGoals.map((goal, index) => (
-                    <li key={index} className="text-gray-600">{goal}</li>
-                  ))}
-                </ul>
->>>>>>> ef830e1 (Save local changes before rebase)
               </div>
             </div>
           )}
@@ -416,7 +506,6 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
         </div>
         <div className="border-t border-gray-200 p-6">
           <div className="flex justify-between">
-<<<<<<< HEAD
             {isEditing ? (
               <>
                 <button onClick={handleSave} className="flex items-center text-green-500 hover:text-green-600">
@@ -440,16 +529,6 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
                 </button>
               </>
             )}
-=======
-            <button className="flex items-center text-orange-500 hover:text-orange-600">
-              <Edit size={20} className="mr-2" />
-              Edit Profile
-            </button>
-            <button onClick={handleLogout} className="flex items-center text-red-500 hover:text-red-600">
-              <LogOut size={20} className="mr-2" />
-              Logout
-            </button>
->>>>>>> ef830e1 (Save local changes before rebase)
           </div>
         </div>
       </div>
@@ -457,8 +536,4 @@ const UserProfile = ({ user, setIsAuthenticated }) => {
   );
 };
 
-<<<<<<< HEAD
 export default UserProfile;
-=======
-export default UserProfile;
->>>>>>> ef830e1 (Save local changes before rebase)

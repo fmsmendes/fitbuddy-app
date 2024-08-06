@@ -40,9 +40,12 @@ import AddClient from './components/AddClient';
 import BookSession from './components/BookSession';
 import CreateEvent from './components/CreateEvent';
 import MessageBuddy from './components/MessageBuddy';
-import ScheduleWorkoutPage from './components/ScheduleWorkoutPage';
+import ScheduleWorkout from './components/ScheduleWorkout';
 import { useJsApiLoader } from '@react-google-maps/api';
 import EditEvent from './components/EditEvent';
+import MyAgenda from './components/MyAgenda';
+import PublicTrainerProfile from './components/PublicTrainerProfile';
+import ClassAttendance from './components/ClassAttendance'; 
 
 const libraries = ["places"];
 
@@ -202,7 +205,7 @@ function App() {
   
     useEffect(() => {
       let mounted = true;
-  
+    
       async function checkAuth() {
         try {
           const session = await getCurrentSession();
@@ -213,13 +216,13 @@ function App() {
               if (user && user.id) {
                 const { data: profile, error } = await supabase
                   .from('user_profiles')
-                  .select('role')
+                  .select('*')  // Select all fields, not just 'role'
                   .eq('id', user.id)
                   .single();
                 
                 if (error) throw error;
                 
-                setCurrentUser({ ...user, role: profile?.role });
+                setCurrentUser({ ...user, ...profile });  // Merge user and profile data
               }
             }
           }
@@ -231,9 +234,9 @@ function App() {
           }
         }
       }
-  
+    
       checkAuth();
-  
+    
       return () => {
         mounted = false;
       };
@@ -243,14 +246,15 @@ function App() {
       return <div>Loading...</div>;
     }
    
-    function TrainerProfileWrapper({ trainers, currentUser, isViewerTrainer }) {
+    function TrainerProfileWrapper({ currentUser }) {
       const { id } = useParams();
-      const trainer = trainers.find(t => t.id === parseInt(id));
-      return <TrainerProfile 
-        trainer={trainer} 
-        currentUser={currentUser}
-        isViewerTrainer={isViewerTrainer}
-      />;
+      const isOwnProfile = currentUser.id === id;
+    
+      if (isOwnProfile && currentUser.role === 'trainer') {
+        return <TrainerProfile currentUser={currentUser} />;
+      } else {
+        return <PublicTrainerProfile trainerId={id} />;
+      }
     }
     return (
       
@@ -290,29 +294,29 @@ function App() {
             ) : <Navigate to="/login" />
           } />
           <Route path="/trainer/:id" 
-            element={isAuthenticated ? (
-              <TrainerProfileWrapper 
-                trainers={trainers} 
-                currentUser={currentUser}
-                isViewerTrainer={currentUser.role === 'trainer'}
-              />
-            ) : (
-              <Navigate to="/login" />
-            )
-          } />
-          <Route 
-            path="/trainer-profile" 
-            element={
-              isAuthenticated && currentUser?.role === 'trainer' ? (
-                <TrainerProfile 
-                  trainer={currentUser}
-                  currentUser={currentUser}
-                />
-              ) : (
-                <Navigate to="/login" />
-              )
-            } 
-          />
+              element={
+                isAuthenticated ? (
+                  <TrainerProfileWrapper 
+                    currentUser={currentUser}
+                  />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              } 
+            />
+
+            <Route 
+              path="/trainer-profile" 
+              element={
+                isAuthenticated && currentUser?.role === 'trainer' ? (
+                  <TrainerProfile 
+                    currentUser={currentUser}
+                  />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              } 
+            />
           <Route path="/buddy/:id" element={
             isAuthenticated ? <BuddyProfile buddies={buddies} /> : <Navigate to="/login" />
           } />
@@ -373,7 +377,7 @@ function App() {
             isAuthenticated ? <AllEventsPage events={events} /> : <Navigate to="/login" />
           } />
           <Route path="/all-trainers" element={
-            isAuthenticated ? <AllTrainersPage trainers={trainers} /> : <Navigate to="/login" />
+            isAuthenticated ? <AllTrainersPage /> : <Navigate to="/login" />
           } />
           <Route 
             path="/trainer-settings" 
@@ -394,11 +398,9 @@ function App() {
           <Route path="/buddies" element={
             isAuthenticated ? <BuddiesPage connectedBuddies={buddies} /> : <Navigate to="/login" />
           } />
-          <Route path="/message-buddy/:id" element={
-            isAuthenticated ? <MessageBuddy buddies={buddies} /> : <Navigate to="/login" />
-          } />
+         <Route path="/message-buddy/:buddyId" element={<MessageBuddy />} />
           <Route path="/schedule-workout/:buddyId" element={
-            isAuthenticated ? <ScheduleWorkoutPage /> : <Navigate to="/login" />
+            isAuthenticated ? <ScheduleWorkout/> : <Navigate to="/login" />
           } />
           <Route path="/explore" element={
             isAuthenticated ? (
@@ -500,7 +502,9 @@ function App() {
           <Route path="/trainer/:id/book-session" element={
             isAuthenticated ? <BookSession /> : <Navigate to="/login" />
           } />
+          <Route path="/class-attendance/:classId" element={<ClassAttendance />} />
           <Route path="/edit-event/:id" element={<EditEvent />} />
+          <Route path="/my-agenda" element={<MyAgenda />} /> 
         </Routes>
       </Router>
     );

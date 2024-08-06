@@ -3,27 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-google-maps/api": "^2.19.3",
+    "@supabase/supabase-js": "^2.45.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "date-fns": "^3.6.0",
-<<<<<<< HEAD
     "framer-motion": "^11.3.2",
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
-    "lucide-react": "^0.401.0",
+    "lodash": "^4.17.21",
+    "lucide-react": "^0.424.0",
     "moment": "^2.30.1",
     "react": "^18.3.1",
-    "react-big-calendar": "^1.13.0",
+    "react-big-calendar": "^1.13.1",
     "react-date-range": "^2.0.1",
-<<<<<<< HEAD
     "react-datepicker": "^7.3.0",
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
     "react-dom": "^18.3.1",
+    "react-icons": "^5.2.1",
     "react-router-dom": "^6.24.1",
     "react-scripts": "5.0.1",
+    "react-slider": "^2.0.6",
+    "react-time-picker": "^7.0.0",
     "recharts": "^2.12.7",
+    "use-places-autocomplete": "^4.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

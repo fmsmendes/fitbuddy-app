@@ -10,13 +10,10 @@ import placeholderFitness from '../assets/placeholder-fitness.jpg';
 const ExplorePage = ({ user, recommendations, trendingActivities, communityHighlights, localSpots, fitnessArticles, trendingTrainers, localAds }) => {
   const navigate = useNavigate();
 
-<<<<<<< HEAD
   const handleBackToDashboard = () => {
     navigate('/dashboard');
   };
 
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
   const SectionTitle = ({ title, viewAll }) => (
     <div className="flex justify-between items-center mb-4">
       <h2 className="text-xl font-semibold">{title}</h2>
@@ -57,16 +54,12 @@ const ExplorePage = ({ user, recommendations, trendingActivities, communityHighl
 
   return (
     <div className="max-w-4xl mx-auto p-4 bg-gray-100">
-<<<<<<< HEAD
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Explore</h1>
-        <button onClick={() => navigate('/dashboard')} className="text-orange-500 font-medium">
+        <button onClick={handleBackToDashboard} className="text-orange-500 font-medium">
           Back to Dashboard
         </button>
       </div>
-=======
-      {/* ... (keep the header as is) ... */}
->>>>>>> ef830e1 (Save local changes before rebase)
 
       <section className="mb-8">
         <SectionTitle title="For You" viewAll={() => navigate('/recommendations')} />
@@ -208,8 +201,4 @@ const ExplorePage = ({ user, recommendations, trendingActivities, communityHighl
   );
 };
 
-<<<<<<< HEAD
 export default ExplorePage;
-=======
-export default ExplorePage;
->>>>>>> ef830e1 (Save local changes before rebase)

@@ -1,13 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Clock, MapPin, Users, DollarSign, ArrowLeft, Image as ImageIcon } from 'lucide-react';
+import { supabase } from '../utils/supabase';
+import { useLoadScript, GoogleMap, Marker } from '@react-google-maps/api';
+import { Autocomplete } from '@react-google-maps/api';
+import CustomTimePicker from './CustomTimePicker'; // Import the new CustomTimePicker
+
+const libraries = ['places'];
+
+const mapContainerStyle = {
+  width: '100%',
+  height: '400px'
+};
+
+const center = {
+  lat: -28.016666,
+  lng: 153.399994
+};
+
+const eventTypes = [
+  'Running',
+  'Yoga',
+  'HIIT',
+  'Cycling',
+  'Meditation',
+  'Walking',
+  'Gym',
+  'Outdoor',
+  'Crossfit',
+  'Beach Tennis',
+  'Tennis',
+  'Volleyball',
+  'Swimming',
+  'Pilates',
+  'Zumba',
+  'Boxing',
+  'Martial Arts',
+  'Dance',
+  'Basketball',
+  'Soccer'
+];
 
 const CreateEvent = () => {
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    libraries,
+  });
+
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [map, setMap] = useState(null);
+  const [autocomplete, setAutocomplete] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [showTimePicker, setShowTimePicker] = useState(false);
   const [eventDetails, setEventDetails] = useState({
     name: '',
     date: '',
-    time: '',
+    time: {
+      hours: 12,
+      minutes: 0,
+      ampm: 'PM'
+    },
     location: '',
     type: '',
     maxParticipants: '',
@@ -18,7 +72,51 @@ const CreateEvent = () => {
     isRecurring: false,
     recurringFrequency: '',
     recurringEndDate: '',
+    latitude: null,
+    longitude: null,
   });
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getCurrentUser();
+  }, []);
+  const onMapLoad = useCallback((map) => {
+    setMap(map);
+  }, []);
+
+  const onAutocompleteLoad = useCallback((autocomplete) => {
+    setAutocomplete(autocomplete);
+  }, []);
+
+  const onPlaceChanged = useCallback(() => {
+    if (autocomplete !== null) {
+      const place = autocomplete.getPlace();
+      if (place.geometry && place.geometry.location) {
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        setSelectedLocation({ lat, lng });
+        map.panTo({ lat, lng });
+
+        let citySuburb = '';
+        for (const component of place.address_components) {
+          if (component.types.includes('locality') || component.types.includes('sublocality')) {
+            citySuburb = component.long_name;
+            break;
+          }
+        }
+
+        setEventDetails(prev => ({
+          ...prev,
+          location: citySuburb,
+          latitude: lat,
+          longitude: lng,
+        }));
+      }
+    }
+  }, [autocomplete, map]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -26,6 +124,14 @@ const CreateEvent = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+  };
+
+  const handleTimeChange = (newTime) => {
+    setEventDetails(prev => ({
+      ...prev,
+      time: newTime
+    }));
+    setShowTimePicker(false);
   };
 
   const handleImageUpload = (e) => {
@@ -43,16 +149,128 @@ const CreateEvent = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log('Event details:', {
-      ...eventDetails,
-      recurringEndDate: eventDetails.isRecurring ? eventDetails.recurringEndDate : null
-    });
-    alert('Event created successfully!');
-    navigate('/events');
+  const formatTime = (time) => {
+    return `${time.hours.toString().padStart(2, '0')}:${time.minutes.toString().padStart(2, '0')} ${time.ampm}`;
   };
+  const uploadImages = async (eventId) => {
+    const BUCKET_NAME = 'event-images';
+    
+    const uploadPromises = eventDetails.images.map(async (image, index) => {
+      const timestamp = new Date().getTime();
+      const randomString = Math.random().toString(36).substring(2, 15);
+      const fileName = `event_${eventId}_image_${timestamp}_${randomString}.${image.name.split('.').pop()}`;
+    
+      try {
+        const { data, error } = await supabase.storage
+          .from(BUCKET_NAME)
+          .upload(fileName, image);
+    
+        if (error) {
+          console.error('Error uploading image:', error);
+          throw error;
+        }
+    
+        const { data: publicUrlData } = supabase.storage
+          .from(BUCKET_NAME)
+          .getPublicUrl(data.path);
+    
+        return publicUrlData.publicUrl;
+      } catch (error) {
+        console.error(`Failed to upload image ${index}:`, error);
+        alert(`Failed to upload image ${index}. Please try again or skip this image.`);
+        return null;
+      }
+    });
+    
+    const results = await Promise.all(uploadPromises);
+    return results.filter(Boolean);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    if (!user) {
+      alert('You must be logged in to create an event.');
+      setIsSubmitting(false);
+      return;
+    }
+    
+    try {
+      const isFree = !eventDetails.price || parseFloat(eventDetails.price) === 0;
+      
+      const formattedTime = formatTime(eventDetails.time);
+    
+      const eventData = {
+        name: eventDetails.name,
+        date: eventDetails.date,
+        time: formattedTime,
+        location: eventDetails.location,
+        type: eventDetails.type,
+        max_participants: parseInt(eventDetails.maxParticipants),
+        price: eventDetails.price ? parseFloat(eventDetails.price) : 0,
+        description: eventDetails.description,
+        duration: parseInt(eventDetails.duration),
+        is_recurring: eventDetails.isRecurring,
+        recurring_frequency: eventDetails.isRecurring ? eventDetails.recurringFrequency : null,
+        recurring_end_date: eventDetails.isRecurring ? eventDetails.recurringEndDate : null,
+        is_free: isFree,
+        host_id: user.id,
+        latitude: eventDetails.latitude,
+        longitude: eventDetails.longitude,
+      };
+    
+      console.log('Submitting event data:', eventData);
+    
+      const { data, error } = await supabase
+        .from('events')
+        .insert(eventData)
+        .select();
+    
+      if (error) throw error;
+    
+      console.log('Event created successfully:', data);
+    
+      let imagePaths = [];
+      if (eventDetails.images.length > 0) {
+        imagePaths = await uploadImages(data[0].id);
+        
+        if (imagePaths.length > 0) {
+          const updateData = {
+            image_paths: imagePaths,
+            image_url: imagePaths[0]
+          };
+    
+          const { error: updateError } = await supabase
+            .from('events')
+            .update(updateData)
+            .eq('id', data[0].id);
+    
+          if (updateError) {
+            console.error('Error updating event with image paths:', updateError);
+            throw updateError;
+          }
+        }
+      }
+    
+      alert(`Event created successfully! ${imagePaths.length} images uploaded.`);
+      navigate('/events');
+    } catch (error) {
+      console.error('Error creating event:', error);
+      let errorMessage = 'Failed to create event. ';
+      if (error.message) {
+        errorMessage += error.message;
+      }
+      if (error.details) {
+        errorMessage += ' Details: ' + error.details;
+      }
+      alert(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  if (loadError) return "Error loading maps";
+  if (!isLoaded) return "Loading maps";
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -106,13 +324,11 @@ const CreateEvent = () => {
                 <Clock className="h-5 w-5 text-gray-400" />
               </div>
               <input
-                type="time"
-                id="time"
-                name="time"
-                value={eventDetails.time}
-                onChange={handleChange}
-                required
-                className="focus:ring-orange-500 focus:border-orange-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
+                type="text"
+                readOnly
+                value={formatTime(eventDetails.time)}
+                onClick={() => setShowTimePicker(true)}
+                className="focus:ring-orange-500 focus:border-orange-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md cursor-pointer"
               />
             </div>
           </div>
@@ -137,24 +353,48 @@ const CreateEvent = () => {
           </div>
         </div>
 
+        {showTimePicker && (
+          <CustomTimePicker
+            initialTime={eventDetails.time}
+            onTimeChange={handleTimeChange}
+            onClose={() => setShowTimePicker(false)}
+          />
+        )}
+
         <div>
           <label htmlFor="location" className="block text-sm font-medium text-gray-700">Location</label>
           <div className="mt-1 relative rounded-md shadow-sm">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <MapPin className="h-5 w-5 text-gray-400" />
             </div>
-            <input
-              type="text"
-              id="location"
-              name="location"
-              value={eventDetails.location}
-              onChange={handleChange}
-              required
-              className="focus:ring-orange-500 focus:border-orange-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
-            />
+            <Autocomplete
+              onLoad={onAutocompleteLoad}
+              onPlaceChanged={onPlaceChanged}
+            >
+              <input
+                type="text"
+                id="location"
+                name="location"
+                value={eventDetails.location}
+                onChange={handleChange}
+                required
+                className="focus:ring-orange-500 focus:border-orange-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md"
+                placeholder="Enter event location"
+              />
+            </Autocomplete>
           </div>
         </div>
 
+        <div className="mt-4">
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            center={selectedLocation || center}
+            zoom={10}
+            onLoad={onMapLoad}
+          >
+            {selectedLocation && <Marker position={selectedLocation} />}
+          </GoogleMap>
+        </div>
         <div>
           <label htmlFor="type" className="block text-sm font-medium text-gray-700">Event Type</label>
           <select
@@ -166,11 +406,9 @@ const CreateEvent = () => {
             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md"
           >
             <option value="">Select a type</option>
-            <option value="Running">Running</option>
-            <option value="Yoga">Yoga</option>
-            <option value="HIIT">HIIT</option>
-            <option value="Cycling">Cycling</option>
-            <option value="Meditation">Meditation</option>
+            {eventTypes.map((type) => (
+              <option key={type} value={type}>{type}</option>
+            ))}
           </select>
         </div>
 
@@ -321,9 +559,10 @@ const CreateEvent = () => {
           </button>
           <button
             type="submit"
-            className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+            disabled={isSubmitting}
+            className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Create Event
+            {isSubmitting ? 'Creating...' : 'Create Event'}
           </button>
         </div>
       </form>

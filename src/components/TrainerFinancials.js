@@ -1,7 +1,9 @@
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, DollarSign, TrendingUp, Calendar, Users, ChevronDown, ChevronUp, Download, CreditCard, Plus } from 'lucide-react';
+import { 
+  ArrowLeft, DollarSign, TrendingUp, Calendar, Users, 
+  ChevronDown, ChevronUp, Download, CreditCard, Plus
+} from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import TrainerNavigation from './TrainerNavigation';
 
@@ -37,27 +39,16 @@ const TrainerFinancials = () => {
     return data.reduce((sum, day) => sum + day.earnings, 0).toFixed(2);
   };
 
-=======
-import React from 'react';
-import { DollarSign, TrendingUp, CreditCard, Calendar } from 'lucide-react';
-import TrainerNavigation from './TrainerNavigation';
-
-const TrainerFinancials = () => {
->>>>>>> ef830e1 (Save local changes before rebase)
   const transactions = [
     { id: 1, type: 'income', amount: 150, description: 'Personal Training Session', date: '2024-07-10' },
     { id: 2, type: 'income', amount: 200, description: 'Group Class', date: '2024-07-11' },
     { id: 3, type: 'expense', amount: 50, description: 'Equipment Purchase', date: '2024-07-12' },
-<<<<<<< HEAD
     { id: 4, type: 'income', amount: 175, description: 'Online Coaching Session', date: '2024-07-13' },
     { id: 5, type: 'income', amount: 125, description: 'Personal Training Session', date: '2024-07-14' },
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
   ];
 
   return (
     <div className="max-w-7xl mx-auto p-4 pb-16">
-<<<<<<< HEAD
       <div className="flex items-center mb-6">
         <button onClick={() => navigate('/trainer-dashboard')} className="mr-4">
           <ArrowLeft size={24} />
@@ -79,7 +70,7 @@ const TrainerFinancials = () => {
             <TrendingUp className="text-blue-500 mr-2" size={24} />
             <h2 className="text-lg font-semibold">This Month</h2>
           </div>
-          <p className="text-2xl font-bold">$1,200</p>
+          <p className="text-2xl font-bold">\$1,200</p>
           <p className="text-sm text-gray-500">Monthly Earnings</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-md">
@@ -222,67 +213,10 @@ const TrainerFinancials = () => {
               <span className="slider round"></span>
             </label>
           </div>
-          <p className="text-sm text-gray-600">Automatically withdraw earnings to your bank account when they reach $100</p>
         </div>
       </div>
-
-      <div className="flex justify-end mb-8">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center hover:bg-blue-600 transition-colors">
-          <Download size={20} className="mr-2" />
-          Download Financial Report
-        </button>
-=======
-      <h1 className="text-2xl font-semibold mb-6">Financials</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-2 flex items-center">
-            <DollarSign className="mr-2 text-green-500" /> Total Earnings
-          </h2>
-          <p className="text-3xl font-bold">$3,250</p>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-2 flex items-center">
-            <TrendingUp className="mr-2 text-blue-500" /> This Month
-          </h2>
-          <p className="text-3xl font-bold">$1,200</p>
-        </div>
-      </div>
-
-      <div className="bg-white p-4 rounded-lg shadow-md mb-6">
-        <h2 className="text-xl font-semibold mb-4">Transaction History</h2>
-        {transactions.map((transaction) => (
-          <div key={transaction.id} className="flex items-center justify-between py-2 border-b last:border-b-0">
-            <div>
-              <p className="font-medium">{transaction.description}</p>
-              <p className="text-sm text-gray-600 flex items-center">
-                <Calendar size={14} className="mr-1" />
-                {transaction.date}
-              </p>
-            </div>
-            <div className={`font-bold ${transaction.type === 'income' ? 'text-green-500' : 'text-red-500'}`}>
-              {transaction.type === 'income' ? '+' : '-'}${transaction.amount}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Payment Methods</h2>
-        <div className="flex items-center">
-          <CreditCard size={24} className="mr-2 text-gray-500" />
-          <span>Visa ending in 1234</span>
-        </div>
->>>>>>> ef830e1 (Save local changes before rebase)
-      </div>
-
-      <TrainerNavigation activeTab="financials" />
     </div>
   );
 };
 
-<<<<<<< HEAD
 export default TrainerFinancials;
-=======
-export default TrainerFinancials;
->>>>>>> ef830e1 (Save local changes before rebase)

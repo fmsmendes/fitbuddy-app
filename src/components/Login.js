@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signIn, signUp, supabase } from '../utils/supabase';
 import { Mail, Lock, User, Facebook, Chrome, UserPlus } from 'lucide-react';
 
-const LoginSignup = ({ setIsAuthenticated, setCurrentUser, defaultTrainer }) => {
+const LoginSignup = ({ setIsAuthenticated, setCurrentUser }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,45 +11,47 @@ const LoginSignup = ({ setIsAuthenticated, setCurrentUser, defaultTrainer }) => 
   const [userRole, setUserRole] = useState('buddy');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (isLogin) {
-      // Login mode
-      if (email === defaultTrainer.email && password === defaultTrainer.password) {
-        setIsAuthenticated(true);
-        setCurrentUser(defaultTrainer);
-        navigate('/');
-      } else {
-        // You can keep the default user login if needed, or remove it
-        const defaultEmail = 'user@example.com';
-        const defaultPassword = 'password123';
-        if (email === defaultEmail && password === defaultPassword) {
+    try {
+      if (isLogin) {
+        // Login mode
+        const user = await signIn(email, password);
+        console.log('User:', user);
+        
+        if (user && user.id) {
+          // Fetch user profile
+          const { data: profile, error: profileError } = await supabase
+            .from('user_profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+          
+          if (profileError) throw profileError;
+  
           setIsAuthenticated(true);
-          setCurrentUser({
-            id: 'default-user',
-            name: 'Default User',
-            email: defaultEmail,
-            role: 'buddy',
-          });
+          setCurrentUser({ ...user, role: profile.role });
           navigate('/');
         } else {
-          alert('Invalid credentials. Please use the correct email and password.');
+          throw new Error('User data is incomplete');
+        }
+      } else {
+        // Signup mode
+        const user = await signUp(email, password, name, userRole);
+        console.log('User:', user);
+        
+        if (user && user.id) {
+          setIsAuthenticated(true);
+          setCurrentUser({ ...user, role: userRole });
+          navigate('/');
+        } else {
+          throw new Error('User data is incomplete');
         }
       }
-    } else {
-      // Signup mode
-      // In a real app, you would handle user registration here
-      alert(`New ${userRole} registered:\nName: ${name}\nEmail: ${email}`);
-      setIsAuthenticated(true);
-      setCurrentUser({
-        id: 'new-user',
-        name: name,
-        email: email,
-        role: userRole,
-        // Add other default properties as needed
-      });
-      navigate('/');
+    } catch (error) {
+      console.error('Error:', error.message);
+      alert(error.message);
     }
   };
 

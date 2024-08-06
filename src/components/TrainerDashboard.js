@@ -3,23 +3,32 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Users, Calendar, DollarSign, Star, 
   Clock, Award, ChevronRight, Bell, LogOut,
-<<<<<<< HEAD
   Activity, Globe, MapPin, Target, TrendingUp,
   Menu, X, Home, Dumbbell, MessageSquare, Settings
 } from 'lucide-react';
-=======
-  Activity, Globe, MapPin, Target, TrendingUp
-} from 'lucide-react';
-import TrainerNavigation from './TrainerNavigation';
->>>>>>> ef830e1 (Save local changes before rebase)
+import { Link } from 'react-router-dom';
+import { supabase } from '../utils/supabase';
+
+const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
+const STORAGE_URL = `${SUPABASE_URL}/storage/v1/object/public/profile_images/`;
+
+const getPublicImageUrl = (path) => {
+  if (!path) return 'https://via.placeholder.com/150'; // Fallback for no path
+  try {
+    const { data } = supabase.storage
+      .from('profile_images')
+      .getPublicUrl(path);
+    return data.publicUrl;
+  } catch (error) {
+    console.error('Error getting public URL:', error);
+    return 'https://via.placeholder.com/150'; // Use placeholder on error 
+  }
+};
 
 const TrainerDashboard = ({ trainer, setIsAuthenticated }) => {
   const navigate = useNavigate();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-<<<<<<< HEAD
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-=======
->>>>>>> ef830e1 (Save local changes before rebase)
 
   if (!trainer) {
     return <div className="max-w-7xl mx-auto p-4">Loading trainer data...</div>;
@@ -35,7 +44,6 @@ const TrainerDashboard = ({ trainer, setIsAuthenticated }) => {
     { id: 1, clientName: 'Sarah Wilson', rating: 5, comment: 'Excellent trainer! Really helped me achieve my goals.' },
     { id: 2, clientName: 'Tom Brown', rating: 4, comment: 'Great sessions, very knowledgeable.' },
   ];
-
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -46,24 +54,21 @@ const TrainerDashboard = ({ trainer, setIsAuthenticated }) => {
   };
 
   const renderStatCard = (icon, title, value, suffix = '', isCurrency = false) => (
-<<<<<<< HEAD
     <div className="bg-white p-4 rounded-lg shadow-md">
-=======
-    <div className="bg-gray-50 p-4 rounded-lg">
->>>>>>> ef830e1 (Save local changes before rebase)
-      <div className="flex items-center mb-2">
-        {icon}
-        <h3 className="text-sm font-semibold ml-2">{title}</h3>
+      <div className="bg-gray-50 p-4 rounded-lg">
+        <div className="flex items-center mb-2">
+          {icon}
+          <h3 className="text-sm font-semibold ml-2">{title}</h3>
+        </div>
+        <p className="text-xl font-bold text-orange-500">
+          {value !== undefined 
+            ? (isCurrency ? formatCurrency(value) : `${value}${suffix}`)
+            : 'N/A'}
+        </p>
       </div>
-      <p className="text-xl font-bold text-orange-500">
-        {value !== undefined 
-          ? (isCurrency ? formatCurrency(value) : `${value}${suffix}`)
-          : 'N/A'}
-      </p>
     </div>
   );
 
-<<<<<<< HEAD
   const sidebarItems = [
     { icon: <Home size={20} />, label: 'Dashboard', path: '/trainer-dashboard' },
     { icon: <Calendar size={20} />, label: 'Classes', path: '/trainer-classes' },
@@ -101,7 +106,6 @@ const TrainerDashboard = ({ trainer, setIsAuthenticated }) => {
           ))}
         </nav>
       </div>
-
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="bg-white p-4 flex justify-between items-center shadow-sm">
@@ -122,7 +126,15 @@ const TrainerDashboard = ({ trainer, setIsAuthenticated }) => {
               className="w-10 h-10 rounded-full overflow-hidden"
               aria-label="User menu"
             >
-              <img src={trainer.profileImage} alt={trainer.name} className="w-full h-full object-cover" />
+              <img 
+              src={getPublicImageUrl(trainer.image_url)} 
+              alt={trainer.name} 
+              className="w-full h-full object-cover"
+             onError={(e) => {
+               e.target.onerror = null; 
+             e.target.src = 'https://via.placeholder.com/150'
+    }}
+  />
             </button>
           </div>
         </header>
@@ -156,7 +168,6 @@ const TrainerDashboard = ({ trainer, setIsAuthenticated }) => {
               {renderStatCard(<TrendingUp className="text-red-500" size={24} />, "Last Month Growth", trainer.stats?.lastMonthGrowth, "%")}
             </div>
           </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             <div className="bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold mb-4">Upcoming Sessions</h2>
@@ -201,133 +212,24 @@ const TrainerDashboard = ({ trainer, setIsAuthenticated }) => {
       </div>
 
       {/* User menu modal */}
-=======
-  return (
-    <div className="max-w-7xl mx-auto p-4 pb-16">
-      <header className="bg-white p-4 flex justify-between items-center sticky top-0 z-10 shadow-sm mb-6">
-        <div className="flex items-center space-x-2">
-          <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
-            <span className="text-white font-bold text-xl">PT</span>
-          </div>
-          <span className="font-bold text-xl">TrainerHub</span>
-        </div>
-        <div className="flex items-center">
-          <button 
-            onClick={() => navigate('/notifications')} 
-            className="relative mr-4"
-            aria-label="Notifications"
-          >
-            <Bell className="text-orange-500" />
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
-          </button>
-          <button 
-            onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} 
-            className="w-10 h-10 rounded-full overflow-hidden"
-            aria-label="User menu"
-            style={{ fontSize: 0 }}
-          >
-            <img src={trainer.profileImage} alt={trainer.name} className="w-full h-full object-cover" />
-          </button>
-        </div>
-      </header>
-
-      <main className="mb-16">
-        <h1 className="text-2xl font-semibold mb-6">Welcome back, {trainer.name}</h1>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2 flex items-center">
-              <Users className="mr-2 text-blue-500" /> Total Clients
-            </h2>
-            <p className="text-3xl font-bold">{trainer.stats?.totalClients || 0}</p>
-          </div>
-          <div className="bg-white p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2 flex items-center">
-              <Calendar className="mr-2 text-green-500" /> Sessions This Week
-            </h2>
-            <p className="text-3xl font-bold">{trainer.stats?.sessionsThisWeek || 0}</p>
-          </div>
-          <div className="bg-white p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2 flex items-center">
-              <DollarSign className="mr-2 text-yellow-500" /> Earnings This Month
-            </h2>
-            <p className="text-3xl font-bold">{formatCurrency(trainer.stats?.monthlyEarnings || 0)}</p>
-          </div>
-          <div className="bg-white p-4 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2 flex items-center">
-              <Star className="mr-2 text-purple-500" /> Average Rating
-            </h2>
-            <p className="text-3xl font-bold">{trainer.rating || 0}</p>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-          <h2 className="text-xl font-semibold mb-4">Trainer Stats</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {renderStatCard(<Users className="text-blue-500" size={24} />, "Total Clients", trainer.stats?.totalClients)}
-            {renderStatCard(<Users className="text-green-500" size={24} />, "Active Clients", trainer.stats?.activeClients)}
-            {renderStatCard(<Activity className="text-purple-500" size={24} />, "Classes Completed", trainer.stats?.classesCompleted)}
-            {renderStatCard(<Globe className="text-indigo-500" size={24} />, "Online Sessions", trainer.stats?.onlineSessionsCompleted)}
-            {renderStatCard(<MapPin className="text-red-500" size={24} />, "In-Person Sessions", trainer.stats?.inPersonSessionsCompleted)}
-            {renderStatCard(<Clock className="text-yellow-500" size={24} />, "Total Hours Worked", trainer.stats?.totalHoursWorked)}
-            {renderStatCard(<Clock className="text-pink-500" size={24} />, "Avg Session Duration", trainer.stats?.avgSessionDuration, " min")}
-            {renderStatCard(<Users className="text-teal-500" size={24} />, "Client Retention Rate", trainer.stats?.clientRetentionRate, "%")}
-            {renderStatCard(<Target className="text-orange-500" size={24} />, "Client Goals Achieved", trainer.stats?.clientGoalsAchieved, "%")}
-            {renderStatCard(<Star className="text-yellow-500" size={24} />, "Top Class", trainer.stats?.topPerformingClass)}
-            {renderStatCard(<DollarSign className="text-green-500" size={24} />, "Monthly Earnings", trainer.stats?.monthlyEarnings, "", true)}
-            {renderStatCard(<DollarSign className="text-blue-500" size={24} />, "YTD Earnings", trainer.stats?.yearToDateEarnings, "", true)}
-            {renderStatCard(<Calendar className="text-purple-500" size={24} />, "Upcoming Sessions", trainer.stats?.upcomingSessions)}
-            {renderStatCard(<TrendingUp className="text-red-500" size={24} />, "Last Month Growth", trainer.stats?.lastMonthGrowth, "%")}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Upcoming Sessions</h2>
-            {upcomingSessions.map((session) => (
-              <div key={session.id} className="mb-4 p-4 bg-gray-50 rounded-lg">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-semibold">{session.clientName}</h3>
-                  <span className="text-sm text-gray-500">{session.type}</span>
-                </div>
-                <div className="flex items-center text-sm text-gray-600">
-                  <Clock size={16} className="mr-2" />
-                  {session.time}, {session.date}
-                </div>
-              </div>
-            ))}
-            <button className="text-orange-500 font-medium flex items-center mt-2">
-              View All Sessions <ChevronRight size={20} />
-            </button>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Recent Reviews</h2>
-            {recentReviews.map((review) => (
-              <div key={review.id} className="mb-4 p-4 bg-gray-50 rounded-lg">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-semibold">{review.clientName}</h3>
-                  <div className="flex items-center">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={16} className={i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'} />
-                    ))}
-                  </div>
-                </div>
-                <p className="text-sm text-gray-600">{review.comment}</p>
-              </div>
-            ))}
-            <button className="text-orange-500 font-medium flex items-center mt-2">
-              View All Reviews <ChevronRight size={20} />
-            </button>
-          </div>
-        </div>
-      </main>
-
->>>>>>> ef830e1 (Save local changes before rebase)
       {isUserMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-80">
-            <h2 className="text-xl font-semibold mb-4">Menu</h2>
+            <div className="flex items-center mb-4">
+              <img 
+                src={getPublicImageUrl(trainer.image_url)} 
+                alt={trainer.name} 
+                className="w-16 h-16 rounded-full mr-4 object-cover"
+                onError={(e) => {
+                  e.target.onerror = null; 
+                  e.target.src = 'https://via.placeholder.com/150'
+                }}
+              />
+              <div>
+                <h2 className="text-xl font-semibold">{trainer.name}</h2>
+                <p className="text-gray-500">Trainer</p>
+              </div>
+            </div>
             <ul className="space-y-2">
               <li><button className="w-full text-left py-2 px-4 hover:bg-gray-100 rounded" onClick={() => navigate('/trainer-profile')}>View Profile</button></li>
               <li><button className="w-full text-left py-2 px-4 hover:bg-gray-100 rounded" onClick={() => navigate('/trainer-settings')}>Settings</button></li>
@@ -340,17 +242,8 @@ const TrainerDashboard = ({ trainer, setIsAuthenticated }) => {
           </div>
         </div>
       )}
-<<<<<<< HEAD
-=======
-
-      <TrainerNavigation activeTab="home" />
->>>>>>> ef830e1 (Save local changes before rebase)
     </div>
   );
 };
 
-<<<<<<< HEAD
 export default TrainerDashboard;
-=======
-export default TrainerDashboard;
->>>>>>> ef830e1 (Save local changes before rebase)
